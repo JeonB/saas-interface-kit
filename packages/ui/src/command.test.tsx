@@ -1,0 +1,35 @@
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { Command, CommandContent, CommandTrigger } from "./command";
+import { CommandInput, CommandList, CommandItem, CommandEmpty } from "./command";
+import { Button } from "./button";
+
+describe("CommandInput", () => {
+  it("renders a search input", () => {
+    render(
+      <Command open onOpenChange={() => {}}>
+        <CommandContent>
+          <CommandInput value="" onValueChange={() => {}} aria-label="Search" />
+        </CommandContent>
+      </Command>,
+    );
+    expect(screen.getByRole("searchbox", { name: "Search" })).toBeInTheDocument();
+  });
+});
+
+describe("CommandItem", () => {
+  it("calls onSelect when clicked", async () => {
+    const onSelect = vi.fn();
+    render(
+      <Command open onOpenChange={() => {}}>
+        <CommandContent>
+          <CommandList>
+            <CommandItem onSelect={onSelect}>Go to dashboard</CommandItem>
+          </CommandList>
+        </CommandContent>
+      </Command>,
+    );
+    await userEvent.click(screen.getByRole("option", { name: "Go to dashboard" }));
+    expect(onSelect).toHaveBeenCalledOnce();
+  });
+});

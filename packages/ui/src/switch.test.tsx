@@ -18,4 +18,14 @@ describe("Switch", () => {
     await user.click(sw);
     expect(sw).toHaveAttribute("aria-checked", "true");
   });
+
+  it("toggles with Space key", async () => {
+    const user = userEvent.setup();
+    render(<ControlledSwitch />);
+    const sw = screen.getByRole("switch", { name: "Alerts" });
+    expect(sw).toHaveAttribute("aria-checked", "false");
+    sw.focus();
+    await user.keyboard(" ");
+    expect(sw).toHaveAttribute("aria-checked", "true");
+  });
 });

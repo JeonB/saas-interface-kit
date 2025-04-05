@@ -26,4 +26,13 @@ describe("Tabs", () => {
     await user.click(screen.getByRole("tab", { name: "B" }));
     expect(screen.getByRole("tabpanel")).toHaveTextContent("Panel B");
   });
+
+  it("moves focus between tabs with ArrowRight", async () => {
+    const user = userEvent.setup();
+    render(<TabsDemo />);
+    const tabA = screen.getByRole("tab", { name: "A" });
+    tabA.focus();
+    await user.keyboard("{ArrowRight}");
+    expect(screen.getByRole("tab", { name: "B" })).toHaveFocus();
+  });
 });
