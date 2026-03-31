@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import { cn } from "./cn";
 
 type AlertVariant = "info" | "success" | "warning" | "error";
 
@@ -31,10 +32,7 @@ export function Alert({
 }) {
   const base = getAlertClasses(variant);
   return (
-    <div
-      className={className ? `${base} ${className}` : base}
-      role="alert"
-    >
+    <div className={cn(base, className)} role="alert">
       {title ? <p className="ui:mb-1 ui:font-semibold">{title}</p> : null}
       <div>{children}</div>
     </div>

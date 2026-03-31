@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import { cn } from "./cn";
 
 function isExternal(href: string): boolean {
   return href.startsWith("http://") || href.startsWith("https://");
@@ -23,7 +24,7 @@ export function Card({
     "ui:group ui:rounded-lg ui:border ui:border-transparent ui:px-5 ui:py-4 ui:transition-colors hover:ui:border-neutral-700 hover:ui:bg-neutral-800/30";
   return (
     <a
-      className={className ? `${baseClasses} ${className}` : baseClasses}
+      className={cn(baseClasses, className)}
       href={resolvedHref}
       {...(external && { rel: "noopener noreferrer", target: "_blank" })}
     >

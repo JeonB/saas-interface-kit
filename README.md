@@ -71,7 +71,32 @@ pnpm --filter @repo/ui build
 
 1. Add the component in `packages/ui/src/` and export it from `packages/ui/src/index.ts`.
 2. Add a story in `apps/storybook/stories/<Name>.stories.tsx`.
-3. Add the Vite alias in `apps/storybook/.storybook/main.ts` (or rely on the automated alias list if configured).
+3. Add docs in `apps/docs/app/docs/components/page.tsx` and update design-system guidance when needed.
+4. Run quality gates:
+
+```sh
+pnpm lint
+pnpm check-types
+pnpm test
+```
+
+## Design system operating model
+
+- **API contract**: components expose stable `variant`, `size`, and `className` patterns.
+- **Documentation first**: every change updates Storybook and Docs together.
+- **Quality gates**: type-check, lint, and UI tests are mandatory before merge.
+
+See docs routes:
+
+- `/docs/design-system` for contract and Do/Don't guidance
+- `/docs/quality-gates` for release checklist
+- `/docs/interview-kit` for the 5-minute demo and Q&A pack
+
+## Interview storyline (problem → solution → impact)
+
+- **Problem**: component styles drift across apps and docs lag behind implementation.
+- **Solution**: centralized `@repo/ui` contract with Storybook and docs-linked quality gates.
+- **Impact**: faster onboarding, predictable component behavior, and lower regression risk.
 
 ## Tech stack
 
