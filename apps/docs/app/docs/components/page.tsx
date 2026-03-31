@@ -11,6 +11,16 @@ export default function ComponentReferencePage() {
       <p className="mt-2 text-neutral-400">
         Usage and examples for @repo/ui components.
       </p>
+      <div className="mt-6 rounded-lg border border-neutral-800 bg-neutral-900/40 p-4">
+        <h2 className="text-sm font-semibold text-white">
+          Story documentation template
+        </h2>
+        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-neutral-300">
+          <li>Usage: 언제 이 컴포넌트를 써야 하는지</li>
+          <li>A11y: role/aria/keyboard에서 보장되는 동작</li>
+          <li>Do / Don&apos;t: 권장 패턴과 금지 패턴</li>
+        </ul>
+      </div>
 
       <section className="mt-12">
         <h2 className="text-xl font-semibold text-white">Button</h2>

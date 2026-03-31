@@ -8,8 +8,11 @@ const DOC_LINKS = [
   { label: "Getting started", href: "/docs/getting-started" },
   { label: "Monorepo", href: "/docs/monorepo" },
   { label: "Packages / UI", href: "/docs/packages/ui" },
+  { label: "Design system", href: "/docs/design-system" },
   { label: "Component reference", href: "/docs/components" },
+  { label: "Quality gates", href: "/docs/quality-gates" },
   { label: "Apps", href: "/docs/apps" },
+  { label: "Interview kit", href: "/docs/interview-kit" },
 ];
 
 export function DocsSidebar() {
