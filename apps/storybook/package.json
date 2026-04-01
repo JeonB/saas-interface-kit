@@ -11,26 +11,26 @@
   },
   "dependencies": {
     "@repo/ui": "workspace:*",
-    "react": "^19.2.0",
-    "react-dom": "^19.1.0"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^5.0.0",
+    "@chromatic-com/storybook": "^5.1.1",
     "@repo/tailwind-config": "workspace:*",
-    "@storybook/addon-a11y": "^10.2.1",
-    "@storybook/addon-docs": "^10.2.1",
-    "@storybook/addon-vitest": "^10.2.1",
-    "@storybook/react-vite": "^10.2.1",
-    "@tailwindcss/vite": "^4.1.5",
-    "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.1",
-    "@vitest/browser-playwright": "^4.0.18",
-    "@vitest/coverage-v8": "^4.0.18",
-    "baseline-browser-mapping": "^2.9.19",
-    "playwright": "^1.58.0",
-    "storybook": "^10.2.1",
-    "tailwindcss": "^4.1.5",
-    "typescript": "5.9.2",
-    "vitest": "^4.0.18"
+    "@storybook/addon-a11y": "^10.3.3",
+    "@storybook/addon-docs": "^10.3.3",
+    "@storybook/addon-vitest": "^10.3.3",
+    "@storybook/react-vite": "^10.3.3",
+    "@tailwindcss/vite": "^4.2.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitest/browser-playwright": "^4.1.2",
+    "@vitest/coverage-v8": "^4.1.2",
+    "baseline-browser-mapping": "^2.10.13",
+    "playwright": "^1.59.0",
+    "storybook": "^10.3.3",
+    "tailwindcss": "^4.2.2",
+    "typescript": "6.0.2",
+    "vitest": "^4.1.2"
   }
 }
