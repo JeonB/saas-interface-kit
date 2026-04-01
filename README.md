@@ -92,6 +92,16 @@ See docs routes:
 - `/docs/quality-gates` for release checklist
 - `/docs/interview-kit` for the 5-minute demo and Q&A pack
 
+## How to understand this quickly
+
+Use this order when you are new to the project:
+
+1. `README.md` (problem → solution → impact)
+2. `/docs/design-system` (component API contract)
+3. `/docs/quality-gates` (reliability workflow)
+4. `packages/ui/src/button.tsx` and `apps/storybook/stories/Button.stories.tsx` (contract in code + docs)
+5. `/docs/interview-kit` (5-minute demo script and interview Q&A)
+
 ## Interview storyline (problem → solution → impact)
 
 - **Problem**: component styles drift across apps and docs lag behind implementation.
