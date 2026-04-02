@@ -80,6 +80,10 @@ pnpm check-types
 pnpm test
 ```
 
+## Parallel agents for tests
+
+To split test work across multiple Cursor agents without style drift, share the brief in `packages/ui/PARALLEL_AGENTS_TEST_BRIEF.md`. It defines file naming, Testing Library rules, and a copy-paste prompt template. Run `pnpm test` once after merging agent output.
+
 ## Design system operating model
 
 - **API contract**: components expose stable `variant`, `size`, and `className` patterns.
