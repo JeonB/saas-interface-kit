@@ -42,12 +42,12 @@ export default function DesignSystemPage() {
           </li>
           <li>
             <Link
-              href="/docs/interview-kit"
+              href="/docs/foundations"
               className="text-blue-300 underline-offset-2 hover:underline"
             >
-              Interview kit
+              Foundations
             </Link>
-            에서 5분 데모 흐름과 예상 질문 답변 템플릿을 확인합니다.
+            에서 토큰과 시맨틱 컬러 역할을 확인합니다.
           </li>
         </ol>
       </section>

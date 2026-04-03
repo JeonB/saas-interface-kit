@@ -1,6 +1,6 @@
 # Turborepo — Monorepo with shared UI
 
-This Turborepo includes a shared design system (`@repo/ui`), a main web app, a documentation site, and Storybook for component development.
+This Turborepo includes a shared design system (`@repo/ui`), a main web app, a documentation site, and Storybook for component development. The UI kit is oriented toward **B2B SaaS** surfaces (dashboards, settings, alerts).
 
 ## What's inside?
 
@@ -8,14 +8,14 @@ This Turborepo includes a shared design system (`@repo/ui`), a main web app, a d
 
 | App           | Description                                                                                                       | Dev port |
 | ------------- | ----------------------------------------------------------------------------------------------------------------- | -------- |
-| **web**       | Main Next.js app. Uses `@repo/ui` for all UI (Header, Footer, hero, cards).                                       | 3001     |
-| **docs**      | Documentation site. Sidebar nav: Introduction, Getting started, Monorepo, Packages/UI, Component reference, Apps. | 3000     |
-| **storybook** | UI component stories (Alert, Avatar, Badge, Button, Card, Gradient, TurborepoLogo).                               | 6006     |
+| **web**       | Next.js app. Uses `@repo/ui` for a SaaS-style dashboard demo.                                                    | 3001     |
+| **docs**      | Documentation: introduction, foundations, design system, components, quality gates.                               | 3000     |
+| **storybook** | UI component stories (Alert, Avatar, Badge, Button, Card, and more).                                              | 6006     |
 
 ### Packages
 
 - **@repo/ui** — Shared React components and styles (Tailwind with `ui:` prefix). Used by web and docs.
-- **@repo/tailwind-config** — Shared Tailwind theme (e.g. `blue-1000`, `red-1000`).
+- **@repo/tailwind-config** — Shared Tailwind theme (semantic tokens + palette).
 - **@repo/typescript-config** — Shared `tsconfig` presets.
 - **@repo/eslint-config** — Shared ESLint config.
 
@@ -92,25 +92,25 @@ To split test work across multiple Cursor agents without style drift, share the 
 
 See docs routes:
 
+- `/docs/foundations` for tokens and semantic roles
 - `/docs/design-system` for contract and Do/Don't guidance
 - `/docs/quality-gates` for release checklist
-- `/docs/interview-kit` for the 5-minute demo and Q&A pack
 
 ## How to understand this quickly
 
-Use this order when you are new to the project:
+Suggested order for newcomers:
 
-1. `README.md` (problem → solution → impact)
-2. `/docs/design-system` (component API contract)
-3. `/docs/quality-gates` (reliability workflow)
-4. `packages/ui/src/button.tsx` and `apps/storybook/stories/Button.stories.tsx` (contract in code + docs)
-5. `/docs/interview-kit` (5-minute demo script and interview Q&A)
+1. `README.md` — repo layout and commands
+2. `/docs/foundations` — where tokens live and how they map to UI
+3. `/docs/design-system` — component API contract
+4. `/docs/quality-gates` — reliability workflow
+5. `packages/ui/src/button.tsx` and `apps/storybook/stories/Button.stories.tsx` — contract in code + Storybook
 
-## Interview storyline (problem → solution → impact)
+## Why this structure
 
 - **Problem**: component styles drift across apps and docs lag behind implementation.
-- **Solution**: centralized `@repo/ui` contract with Storybook and docs-linked quality gates.
-- **Impact**: faster onboarding, predictable component behavior, and lower regression risk.
+- **Solution**: centralized `@repo/ui` contract with Storybook, docs, and quality gates on one path.
+- **Impact**: predictable behavior, clearer reviews, and safer iteration on shared UI.
 
 ## Tech stack
 
