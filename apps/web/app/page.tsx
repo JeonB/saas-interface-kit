@@ -1,7 +1,7 @@
 import { Alert } from "@repo/ui/alert";
 import { Badge } from "@repo/ui/badge";
 import { Button } from "@repo/ui/button";
-import { Card } from "@repo/ui/card";
+import { LinkCard } from "@repo/ui/link-card";
 import { EmptyState } from "@repo/ui/empty-state";
 import { Field } from "@repo/ui/field";
 import { Gradient } from "@repo/ui/gradient";
@@ -65,12 +65,12 @@ export default function Page() {
         <div className="mt-6 grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <div className="grid gap-6 sm:grid-cols-2">
-              <Card href={`${DOCS_BASE}/docs/components`} title="Component reference">
+              <LinkCard href={`${DOCS_BASE}/docs/components`} title="Component reference">
                 Browse @repo/ui APIs, a11y notes, and examples in the docs app.
-              </Card>
-              <Card href={`${DOCS_BASE}/docs/foundations`} title="Foundations">
+              </LinkCard>
+              <LinkCard href={`${DOCS_BASE}/docs/foundations`} title="Foundations">
                 Semantic tokens, surfaces, and feedback colors used across the kit.
-              </Card>
+              </LinkCard>
             </div>
           </div>
           <EmptyState

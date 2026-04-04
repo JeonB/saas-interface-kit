@@ -13,7 +13,7 @@
   --color-semantic-success: #22c55e;
   --color-semantic-info: #2a8af6;
 
-  /* Semantic — surfaces (dark SaaS) */
+  /* Semantic — surfaces (dark SaaS default) */
   --color-surface-canvas: #030712;
   --color-surface-raised: #171717;
   --color-surface-muted: #262626;
@@ -39,7 +39,80 @@
   --shadow-ui-sm: 0 1px 2px 0 rgb(0 0 0 / 0.25);
   --shadow-ui-md: 0 4px 6px -1px rgb(0 0 0 / 0.35);
 
-  /* Spacing — named stacks (optional utilities: p-ui-section, gap-ui-stack) */
+  /* Spacing — named stacks */
   --spacing-ui-section: 2.5rem;
   --spacing-ui-stack: 1rem;
+
+  /* Typography scale (UI kit) */
+  --text-ui-xs: 0.75rem;
+  --text-ui-sm: 0.875rem;
+  --text-ui-base: 1rem;
+  --text-ui-lg: 1.125rem;
+  --text-ui-xl: 1.25rem;
+  --text-ui-2xl: 1.5rem;
+
+  --leading-ui-tight: 1.25;
+  --leading-ui-normal: 1.5;
+  --leading-ui-relaxed: 1.625;
+
+  --font-weight-ui-normal: 400;
+  --font-weight-ui-medium: 500;
+  --font-weight-ui-semibold: 600;
+  --font-weight-ui-bold: 700;
+
+  /* Spacing scale — 4px grid (named for UI composition) */
+  --spacing-ui-0: 0;
+  --spacing-ui-1: 0.25rem;
+  --spacing-ui-2: 0.5rem;
+  --spacing-ui-3: 0.75rem;
+  --spacing-ui-4: 1rem;
+  --spacing-ui-5: 1.25rem;
+  --spacing-ui-6: 1.5rem;
+  --spacing-ui-8: 2rem;
+  --spacing-ui-10: 2.5rem;
+  --spacing-ui-12: 3rem;
+  --spacing-ui-16: 4rem;
+
+  /* Motion */
+  --duration-ui-fast: 100ms;
+  --duration-ui-normal: 200ms;
+  --duration-ui-slow: 300ms;
+
+  --ease-ui-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-ui-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Stacking */
+  --z-index-ui-dropdown: 50;
+  --z-index-ui-modal: 100;
+  --z-index-ui-toast: 200;
+  --z-index-ui-tooltip: 300;
+
+  /* Focus ring (reference tokens; components use focus-visible utilities) */
+  --ring-width-ui: 2px;
+  --ring-color-ui: color-mix(in oklab, var(--color-semantic-brand) 40%, transparent);
+  --ring-offset-width-ui: 2px;
+  --ring-offset-color-ui: var(--color-surface-canvas);
+}
+
+/* Optional light theme: set class "light" or data-theme="light" on a root ancestor */
+.light,
+[data-theme="light"] {
+  --color-surface-canvas: #f8fafc;
+  --color-surface-raised: #ffffff;
+  --color-surface-muted: #f1f5f9;
+  --color-surface-overlay: #e2e8f0;
+
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
+  --color-text-on-brand: #ffffff;
+
+  --color-border-default: #e2e8f0;
+  --color-border-subtle: #f1f5f9;
+  --color-border-strong: #cbd5e1;
+
+  --shadow-ui-sm: 0 1px 2px 0 rgb(15 23 42 / 0.06);
+  --shadow-ui-md: 0 4px 6px -1px rgb(15 23 42 / 0.08);
+
+  --ring-offset-color-ui: var(--color-surface-raised);
 }

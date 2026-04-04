@@ -1,42 +1,50 @@
-import { type ReactNode } from "react";
+import type { HTMLAttributes } from "react";
 import { cn } from "./cn";
+import type { BaseComponentProps } from "./contracts";
 
-function isExternal(href: string): boolean {
-  return href.startsWith("http://") || href.startsWith("https://");
+export function Card({ className, children, ...rest }: BaseComponentProps & HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn(
+        "ui:rounded-ui-md ui:border ui:border-border-subtle ui:bg-surface-raised ui:shadow-ui-sm",
+        className,
+      )}
+      {...rest}
+    >
+      {children}
+    </div>
+  );
 }
 
-export function Card({
-  title,
-  children,
-  href,
-  className,
-}: {
-  title: string;
-  children: ReactNode;
-  href: string;
-  className?: string;
-}) {
-  const external = isExternal(href);
-  const resolvedHref = external
-    ? `${href}${href.includes("?") ? "&" : "?"}utm_source=create-turbo&utm_medium=with-tailwind&utm_campaign=create-turbo`
-    : href;
-  const baseClasses =
-    "ui:group ui:rounded-ui-md ui:border ui:border-border-subtle ui:px-5 ui:py-4 ui:transition-colors hover:ui:border-border-default hover:ui:bg-surface-muted/40 ui:shadow-ui-sm";
+export function CardHeader({ className, children }: BaseComponentProps) {
+  return <div className={cn("ui:flex ui:flex-col ui:gap-1.5 ui:px-5 ui:pt-5", className)}>{children}</div>;
+}
+
+export function CardTitle({ className, children, ...rest }: HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <a
-      className={cn(baseClasses, className)}
-      href={resolvedHref}
-      {...(external && { rel: "noopener noreferrer", target: "_blank" })}
+    <h3 className={cn("ui:text-lg ui:font-semibold ui:leading-ui-tight ui:text-text-primary", className)} {...rest}>
+      {children}
+    </h3>
+  );
+}
+
+export function CardDescription({ className, children }: BaseComponentProps) {
+  return <p className={cn("ui:text-sm ui:leading-ui-normal ui:text-text-secondary", className)}>{children}</p>;
+}
+
+export function CardBody({ className, children }: BaseComponentProps) {
+  return <div className={cn("ui:px-5 ui:py-4", className)}>{children}</div>;
+}
+
+export function CardFooter({ className, children }: BaseComponentProps) {
+  return (
+    <div
+      className={cn(
+        "ui:flex ui:flex-wrap ui:items-center ui:gap-2 ui:border-t ui:border-border-subtle ui:px-5 ui:py-4",
+        className,
+      )}
     >
-      <h2 className="ui:mb-3 ui:text-2xl ui:font-semibold ui:text-text-primary">
-        {title}{" "}
-        <span className="ui:inline-block ui:transition-transform group-hover:ui:translate-x-1 motion-reduce:ui:transform-none">
-          -&gt;
-        </span>
-      </h2>
-      <p className="ui:m-0 ui:max-w-[30ch] ui:text-sm ui:text-text-secondary">
-        {children}
-      </p>
-    </a>
+      {children}
+    </div>
   );
 }

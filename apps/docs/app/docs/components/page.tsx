@@ -2,7 +2,8 @@ import { Alert } from "@repo/ui/alert";
 import { Avatar } from "@repo/ui/avatar";
 import { Badge } from "@repo/ui/badge";
 import { Button } from "@repo/ui/button";
-import { Card } from "@repo/ui/card";
+import { Card, CardBody, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/card";
+import { LinkCard } from "@repo/ui/link-card";
 import { EmptyState } from "@repo/ui/empty-state";
 import { Field } from "@repo/ui/field";
 import { Input } from "@repo/ui/input";
@@ -169,18 +170,45 @@ import { Textarea } from "@repo/ui/textarea";`}
       </section>
 
       <section className="mt-12">
-        <h2 className="text-xl font-semibold text-white">Card</h2>
+        <h2 className="text-xl font-semibold text-white">LinkCard</h2>
         <p className="mt-2 text-sm text-neutral-400">
           <strong>Usage:</strong> link tiles to external resources or routes. <strong>A11y:</strong> single anchor with
           heading + description. External URLs open in a new tab with <code className="rounded bg-neutral-800 px-1">rel</code>{" "}
           set appropriately.
         </p>
         <pre className="mt-4 overflow-x-auto rounded-lg bg-neutral-900 p-4 text-sm text-neutral-300">
-          {`import { Card } from "@repo/ui/card";`}
+          {`import { LinkCard } from "@repo/ui/link-card";`}
         </pre>
         <div className="mt-4 max-w-[280px]">
-          <Card href="https://turborepo.com/docs" title="Documentation">
+          <LinkCard href="https://turborepo.com/docs" title="Documentation">
             Find in-depth information about Turborepo.
+          </LinkCard>
+        </div>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="text-xl font-semibold text-white">Card (compound)</h2>
+        <p className="mt-2 text-sm text-neutral-400">
+          <strong>Usage:</strong> generic panels and summaries. Compose <code className="rounded bg-neutral-800 px-1">CardHeader</code>,{" "}
+          <code className="rounded bg-neutral-800 px-1">CardBody</code>, and <code className="rounded bg-neutral-800 px-1">CardFooter</code>.
+        </p>
+        <pre className="mt-4 overflow-x-auto rounded-lg bg-neutral-900 p-4 text-sm text-neutral-300">
+          {`import { Card, CardBody, CardFooter, CardHeader, CardTitle } from "@repo/ui/card";`}
+        </pre>
+        <div className="mt-4 max-w-md">
+          <Card>
+            <CardHeader>
+              <CardTitle>API latency</CardTitle>
+              <CardDescription>P95 over the last hour</CardDescription>
+            </CardHeader>
+            <CardBody>
+              <p className="text-sm text-neutral-300">124 ms — within SLO.</p>
+            </CardBody>
+            <CardFooter>
+              <Button name="card-details" variant="primary">
+                View trace
+              </Button>
+            </CardFooter>
           </Card>
         </div>
       </section>

@@ -1,50 +1,39 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Card } from "./card";
+import { Button } from "./button";
+import { Card, CardBody, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
 
 describe("Card", () => {
-  it("renders internal href without target or rel", () => {
+  it("renders compound structure with heading and body", () => {
     render(
-      <Card href="/docs" title="Docs">
-        Read more
+      <Card>
+        <CardHeader>
+          <CardTitle>Usage</CardTitle>
+          <CardDescription>Last 24 hours</CardDescription>
+        </CardHeader>
+        <CardBody>
+          <p>Content</p>
+        </CardBody>
+        <CardFooter>
+          <Button name="ok" variant="primary">
+            OK
+          </Button>
+        </CardFooter>
       </Card>,
     );
-    const link = screen.getByRole("link", { name: /Docs/ });
-    expect(link).toHaveAttribute("href", "/docs");
-    expect(link).not.toHaveAttribute("target");
-    expect(link).not.toHaveAttribute("rel");
+
+    expect(screen.getByRole("heading", { name: "Usage" })).toBeInTheDocument();
+    expect(screen.getByText("Last 24 hours")).toBeInTheDocument();
+    expect(screen.getByText("Content")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "OK" })).toBeInTheDocument();
   });
 
-  it("opens external links in new tab with noopener", () => {
-    render(
-      <Card href="https://example.com/page" title="External">
-        Out
+  it("merges className on root", () => {
+    const { container } = render(
+      <Card className="ui:max-w-sm">
+        <CardBody>X</CardBody>
       </Card>,
     );
-    const link = screen.getByRole("link", { name: /External/ });
-    expect(link).toHaveAttribute("target", "_blank");
-    expect(link).toHaveAttribute("rel", "noopener noreferrer");
-    expect(link.getAttribute("href")).toMatch(/^https:\/\/example\.com\/page\?/);
-    expect(link.getAttribute("href")).toContain("utm_source=create-turbo");
-  });
-
-  it("appends UTM with ampersand when href already has query", () => {
-    render(
-      <Card href="https://example.com/p?q=1" title="Q">
-        Body
-      </Card>,
-    );
-    const link = screen.getByRole("link", { name: /Q/ });
-    expect(link.getAttribute("href")).toContain("q=1");
-    expect(link.getAttribute("href")).toContain("&utm_source=create-turbo");
-  });
-
-  it("merges className on the anchor", () => {
-    render(
-      <Card className="ui:max-w-xs" href="/x" title="T">
-        C
-      </Card>,
-    );
-    expect(screen.getByRole("link", { name: /T/ })).toHaveClass("ui:max-w-xs");
+    expect(container.firstChild).toHaveClass("ui:max-w-sm");
   });
 });
