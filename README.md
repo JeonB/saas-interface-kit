@@ -10,7 +10,7 @@ This Turborepo includes a shared design system (`@repo/ui`), a main web app, a d
 | ------------- | ----------------------------------------------------------------------------------------------------------------- | -------- |
 | **web**       | Next.js app. Uses `@repo/ui` for a SaaS-style dashboard demo.                                                    | 3001     |
 | **docs**      | Documentation: introduction, foundations, design system, components, quality gates.                               | 3000     |
-| **storybook** | UI component stories (Alert, Avatar, Badge, Button, Card, and more).                                              | 6006     |
+| **storybook** | UI stories: Button, Field, Input, StatCard, EmptyState, Alert, Badge, Card, Avatar, etc.                          | 6006     |
 
 ### Packages
 
