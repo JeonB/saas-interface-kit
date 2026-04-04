@@ -9,6 +9,21 @@ const CHECKLIST = [
   },
   { name: "Lint", command: "pnpm lint", desc: "일관된 코드 스타일과 잠재 이슈 검출" },
   { name: "UI tests", command: "pnpm test", desc: "핵심 컴포넌트 상호작용/접근성 회귀 방지" },
+  {
+    name: "Bundle size",
+    command: "pnpm --filter @repo/ui build && pnpm --filter @repo/ui size",
+    desc: "size-limit으로 dist 번들 상한을 CI에서 함께 검증합니다.",
+  },
+  {
+    name: "CI (GitHub Actions)",
+    command: ".github/workflows/ci.yml",
+    desc: "PR/푸시 시 lint, 타입체크, 테스트, UI 빌드, size-limit을 자동 실행합니다.",
+  },
+  {
+    name: "Changesets",
+    command: "pnpm changeset && pnpm version-packages",
+    desc: "워크스페이스 패키지 버전과 CHANGELOG를 관리합니다 (@changesets/cli).",
+  },
 ];
 
 export default function QualityGatesPage() {
@@ -44,6 +59,12 @@ export default function QualityGatesPage() {
           Run <code className="text-blue-300">pnpm --filter storybook dev</code> for interactive review. The a11y addon
           surfaces roles and contrast issues early; keep stories aligned with the docs templates (usage, a11y, Do
           / Don&apos;t).
+        </p>
+        <p className="text-sm text-neutral-300">
+          시각 회귀는 Chromatic 등 외부 서비스와 연동할 수 있습니다. 템플릿은{" "}
+          <code className="text-blue-300">.github/workflows/chromatic.yml</code>를 참고하고, 저장소 시크릿에{" "}
+          <code className="text-blue-300">CHROMATIC_PROJECT_TOKEN</code>을 설정한 뒤 워크플로의{" "}
+          <code className="text-blue-300">if: false</code>를 제거하세요.
         </p>
       </section>
 

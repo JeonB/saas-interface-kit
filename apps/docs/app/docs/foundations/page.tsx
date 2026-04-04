@@ -68,6 +68,19 @@ export default function FoundationsPage() {
           Legacy palette keys (<code className="rounded bg-neutral-900 px-1">blue-1000</code>, etc.) remain in the
           theme for app-level styling outside the UI package.
         </p>
+        <p className="mt-2 text-sm text-neutral-400">
+          <strong className="text-neutral-300">Light mode (optional):</strong> add{" "}
+          <code className="rounded bg-neutral-900 px-1">class=&quot;light&quot;</code> or{" "}
+          <code className="rounded bg-neutral-900 px-1">data-theme=&quot;light&quot;</code> on a root ancestor to swap
+          semantic surface and text tokens. Default tokens stay optimized for dark analytics dashboards.
+        </p>
+        <p className="mt-2 text-sm text-neutral-400">
+          <strong className="text-neutral-300">Extended tokens:</strong> typography (<code className="rounded bg-neutral-900 px-1">text-ui-*</code>,{" "}
+          <code className="rounded bg-neutral-900 px-1">leading-ui-*</code>), spacing scale (<code className="rounded bg-neutral-900 px-1">spacing-ui-*</code>),
+          motion (<code className="rounded bg-neutral-900 px-1">duration-ui-*</code>, <code className="rounded bg-neutral-900 px-1">ease-ui-*</code>),
+          z-index (<code className="rounded bg-neutral-900 px-1">z-index-ui-*</code>), and focus ring references (
+          <code className="rounded bg-neutral-900 px-1">ring-*-ui</code>) are defined alongside semantic colors.
+        </p>
       </section>
 
       <section className="mt-10 space-y-3">

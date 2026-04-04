@@ -27,15 +27,15 @@ export default function PackagesUiPage() {
         <pre className="mt-2 overflow-x-auto rounded-lg bg-neutral-900 p-4 text-sm text-neutral-300">
           {`import "@repo/ui/styles.css";
 import { Button } from "@repo/ui/button";
-import { Card } from "@repo/ui/card";`}
+import { LinkCard } from "@repo/ui/link-card";`}
         </pre>
       </section>
 
       <section className="mt-10">
         <h2 className="text-xl font-semibold text-white">Components</h2>
         <p className="mt-2 text-neutral-400">
-          Available exports include: Alert, Avatar, Badge, Button, Card, EmptyState, Field, Gradient, Input, StatCard,
-          Textarea, TurborepoLogo. See the{" "}
+          Available exports include primitives and patterns such as Alert, Avatar, Badge, Button, Card, DataTable,
+          Dialog, LinkCard, MetricCard, Tabs, Toast, and layout shells. See the{" "}
           <a
             href="/docs/components"
             className="text-blue-1000 underline hover:no-underline"

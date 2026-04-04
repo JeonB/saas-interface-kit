@@ -10,7 +10,7 @@ This Turborepo includes a shared design system (`@repo/ui`), a main web app, a d
 | ------------- | ----------------------------------------------------------------------------------------------------------------- | -------- |
 | **web**       | Next.js app. Uses `@repo/ui` for a SaaS-style dashboard demo.                                                    | 3001     |
 | **docs**      | Documentation: introduction, foundations, design system, components, quality gates.                               | 3000     |
-| **storybook** | UI stories: Button, Field, Input, StatCard, EmptyState, Alert, Badge, Card, Avatar, etc.                          | 6006     |
+| **storybook** | UI stories for primitives, patterns, LinkCard, layout shells, and more.                                            | 6006     |
 
 ### Packages
 
@@ -55,11 +55,14 @@ In any app that depends on `@repo/ui`:
 
 ```ts
 import "@repo/ui/styles.css";
-import { Button, Card } from "@repo/ui"; // barrel import
+import { Button, Card, LinkCard } from "@repo/ui"; // barrel import
 // or
 import { Button } from "@repo/ui/button";
 import { Card } from "@repo/ui/card";
+import { LinkCard } from "@repo/ui/link-card";
 ```
+
+`@repo/ui` lists **`lucide-react`** as a peer dependency (icons in components such as `Alert`). Apps must install a compatible version (see each app `package.json`).
 
 Components support an optional `className` prop for layout/spacing. Build the UI package from the repo root or from `packages/ui`:
 
