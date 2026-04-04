@@ -4,7 +4,7 @@ import { Badge } from "@repo/ui/badge";
 import { DOCS_BASE } from "../lib/config";
 
 const NAV_LINKS = [
-  { label: "Home", href: "/" },
+  { label: "Overview", href: "/" },
   { label: "Docs", href: `${DOCS_BASE}/docs` },
 ];
 
@@ -17,7 +17,7 @@ export function Header() {
             href="/"
             className="text-sm font-semibold text-white hover:text-neutral-300"
           >
-            Turbo Repo
+            Northline Console
           </Link>
           <ul className="flex items-center gap-4">
             {NAV_LINKS.map(({ label, href }) => (
@@ -44,8 +44,8 @@ export function Header() {
           </ul>
         </nav>
         <div className="flex items-center gap-3">
-          <Badge variant="success">@repo/ui</Badge>
-          <Avatar fallback="U" size="sm" />
+          <Badge variant="success">Live</Badge>
+          <Avatar fallback="SK" size="sm" />
           <a
             href={`${DOCS_BASE}/docs/getting-started`}
             className="inline-flex items-center justify-center rounded-md bg-blue-1000 px-4 py-2 text-sm font-semibold text-white transition-colors hover:opacity-90"
