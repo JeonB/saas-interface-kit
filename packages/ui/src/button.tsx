@@ -17,7 +17,7 @@ function getButtonClasses(
   disabled: boolean,
 ): string {
   const base =
-    "ui:inline-flex ui:items-center ui:justify-center ui:rounded-md ui:px-4 ui:py-2 ui:text-sm ui:font-semibold ui:transition-colors ui:cursor-pointer";
+    "ui:inline-flex ui:items-center ui:justify-center ui:rounded-ui-md ui:px-4 ui:py-2 ui:text-sm ui:font-semibold ui:transition-colors ui:cursor-pointer";
   const sizeClasses =
     size === "sm"
       ? "ui:h-8 ui:px-3 ui:text-xs"
@@ -26,16 +26,32 @@ function getButtonClasses(
         : "ui:h-10 ui:px-4 ui:text-sm";
 
   if (disabled) {
-    return cn(base, sizeClasses, "ui:bg-neutral-800 ui:text-neutral-500 ui:cursor-not-allowed");
+    return cn(
+      base,
+      sizeClasses,
+      "ui:bg-surface-muted ui:text-text-muted ui:cursor-not-allowed",
+    );
   }
 
   switch (variant) {
     case "primary":
-      return cn(base, sizeClasses, "ui:bg-blue-1000 ui:text-white hover:ui:opacity-90");
+      return cn(
+        base,
+        sizeClasses,
+        "ui:bg-semantic-brand ui:text-text-on-brand hover:ui:opacity-90",
+      );
     case "danger":
-      return cn(base, sizeClasses, "ui:bg-red-1000 ui:text-white hover:ui:opacity-90");
+      return cn(
+        base,
+        sizeClasses,
+        "ui:bg-semantic-danger ui:text-text-on-brand hover:ui:opacity-90",
+      );
     case "default":
-      return cn(base, sizeClasses, "ui:bg-neutral-900 ui:text-white hover:ui:bg-neutral-800");
+      return cn(
+        base,
+        sizeClasses,
+        "ui:bg-surface-raised ui:text-text-primary hover:ui:bg-surface-muted",
+      );
   }
 }
 

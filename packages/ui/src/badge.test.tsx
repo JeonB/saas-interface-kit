@@ -18,7 +18,7 @@ describe("Badge", () => {
   it("renders success variant", () => {
     const { container } = render(<Badge variant="success">OK</Badge>);
     const span = container.querySelector("span");
-    expect(span).toHaveClass("ui:bg-blue-1000");
+    expect(span).toHaveClass("ui:bg-semantic-success");
   });
 
   it("merges className for layout overrides", () => {
@@ -29,6 +29,6 @@ describe("Badge", () => {
     );
     const span = container.querySelector("span");
     expect(span).toHaveClass("ui:ml-2");
-    expect(span).toHaveClass("ui:bg-purple-1000");
+    expect(span).toHaveClass("ui:bg-semantic-warning");
   });
 });

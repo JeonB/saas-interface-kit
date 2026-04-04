@@ -1,21 +1,20 @@
 import { type ReactNode } from "react";
 import { cn } from "./cn";
+import type { FeedbackVariant } from "./contracts";
 
-type AlertVariant = "info" | "success" | "warning" | "error";
-
-function getAlertClasses(variant: AlertVariant): string {
+function getAlertClasses(variant: FeedbackVariant): string {
   const base =
-    "ui:rounded-lg ui:border ui:px-4 ui:py-3 ui:text-sm ui:font-medium";
+    "ui:rounded-ui-md ui:border ui:border-border-default/40 ui:px-4 ui:py-3 ui:text-sm ui:font-medium";
 
   switch (variant) {
     case "info":
-      return `${base} ui:border-blue-1000/30 ui:bg-blue-1000/10 ui:text-blue-1000`;
+      return `${base} ui:border-semantic-info/30 ui:bg-semantic-info/10 ui:text-semantic-info`;
     case "success":
-      return `${base} ui:border-blue-1000/30 ui:bg-blue-1000/10 ui:text-blue-1000`;
+      return `${base} ui:border-semantic-success/30 ui:bg-semantic-success/10 ui:text-semantic-success`;
     case "warning":
-      return `${base} ui:border-purple-1000/30 ui:bg-purple-1000/10 ui:text-purple-1000`;
+      return `${base} ui:border-semantic-warning/30 ui:bg-semantic-warning/10 ui:text-semantic-warning`;
     case "error":
-      return `${base} ui:border-red-1000/30 ui:bg-red-1000/10 ui:text-red-1000`;
+      return `${base} ui:border-semantic-danger/30 ui:bg-semantic-danger/10 ui:text-semantic-danger`;
   }
 }
 
@@ -27,7 +26,7 @@ export function Alert({
 }: {
   children: ReactNode;
   title?: string;
-  variant?: AlertVariant;
+  variant?: FeedbackVariant;
   className?: string;
 }) {
   const base = getAlertClasses(variant);

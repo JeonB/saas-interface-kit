@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import { cn } from "./cn";
 
 type BadgeVariant = "default" | "success" | "warning" | "danger";
 
@@ -8,13 +9,13 @@ function getBadgeClasses(variant: BadgeVariant): string {
 
   switch (variant) {
     case "success":
-      return `${base} ui:bg-blue-1000 ui:text-white`;
+      return `${base} ui:bg-semantic-success ui:text-text-on-brand`;
     case "warning":
-      return `${base} ui:bg-purple-1000 ui:text-white`;
+      return `${base} ui:bg-semantic-warning ui:text-text-on-brand`;
     case "danger":
-      return `${base} ui:bg-red-1000 ui:text-white`;
+      return `${base} ui:bg-semantic-danger ui:text-text-on-brand`;
     case "default":
-      return `${base} ui:bg-neutral-900 ui:text-white`;
+      return `${base} ui:bg-surface-raised ui:text-text-primary`;
   }
 }
 
@@ -27,10 +28,5 @@ export function Badge({
   variant?: BadgeVariant;
   className?: string;
 }) {
-  const base = getBadgeClasses(variant);
-  return (
-    <span className={className ? `${base} ${className}` : base}>
-      {children}
-    </span>
-  );
+  return <span className={cn(getBadgeClasses(variant), className)}>{children}</span>;
 }

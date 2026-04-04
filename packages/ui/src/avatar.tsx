@@ -27,7 +27,7 @@ export function Avatar({
 }) {
   const sizeClasses = getSizeClasses(size);
   const baseClasses =
-    "ui:inline-flex ui:items-center ui:justify-center ui:rounded-full ui:font-semibold ui:bg-neutral-700 ui:text-white ui:overflow-hidden ui:flex-shrink-0";
+    "ui:inline-flex ui:items-center ui:justify-center ui:rounded-full ui:font-semibold ui:bg-surface-overlay ui:text-text-on-brand ui:overflow-hidden ui:flex-shrink-0";
   const combined = className ? `${baseClasses} ${sizeClasses} ${className}` : `${baseClasses} ${sizeClasses}`;
 
   if (src) {
