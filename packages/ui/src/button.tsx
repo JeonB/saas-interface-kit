@@ -1,12 +1,18 @@
+import { Slot } from "@radix-ui/react-slot";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "./cn";
 import type { ComponentSize, ComponentVariant } from "./contracts";
+import { Spinner } from "./spinner";
 
 type ButtonVariant = ComponentVariant;
 type ButtonSize = ComponentSize;
 
 export type ButtonProps = {
+  asChild?: boolean;
   children: ReactNode;
+  leftIcon?: ReactNode;
+  loading?: boolean;
+  rightIcon?: ReactNode;
   variant?: ButtonVariant;
   size?: ButtonSize;
 } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children">;
@@ -15,9 +21,10 @@ function getButtonClasses(
   variant: ButtonVariant,
   size: ButtonSize,
   disabled: boolean,
+  loading: boolean,
 ): string {
   const base =
-    "ui:inline-flex ui:items-center ui:justify-center ui:rounded-ui-md ui:px-4 ui:py-2 ui:text-sm ui:font-semibold ui:transition-colors ui:cursor-pointer";
+    "ui:inline-flex ui:items-center ui:justify-center ui:gap-2 ui:rounded-ui-md ui:px-4 ui:py-2 ui:text-sm ui:font-semibold ui:transition-colors ui:cursor-pointer";
   const sizeClasses =
     size === "sm"
       ? "ui:h-8 ui:px-3 ui:text-xs"
@@ -25,7 +32,7 @@ function getButtonClasses(
         ? "ui:h-11 ui:px-6 ui:text-base"
         : "ui:h-10 ui:px-4 ui:text-sm";
 
-  if (disabled) {
+  if (disabled || loading) {
     return cn(
       base,
       sizeClasses,
@@ -56,23 +63,44 @@ function getButtonClasses(
 }
 
 export function Button({
+  asChild = false,
   children,
-  variant = "default",
-  size = "md",
-  disabled = false,
-  type = "button",
   className,
+  disabled = false,
+  leftIcon,
+  loading = false,
+  rightIcon,
+  size = "md",
+  type = "button",
+  variant = "default",
   ...rest
 }: ButtonProps) {
-  const base = getButtonClasses(variant, size, disabled);
+  const Comp = asChild ? Slot : "button";
+  const isDisabled = Boolean(disabled || loading);
+  const base = getButtonClasses(variant, size, Boolean(disabled), loading);
+
+  if (asChild) {
+    return (
+      <Comp className={cn(base, className)} {...rest}>
+        {children}
+      </Comp>
+    );
+  }
+
   return (
     <button
-      type={type}
-      disabled={disabled}
+      aria-busy={loading || undefined}
       className={cn(base, className)}
+      disabled={isDisabled}
+      type={type}
       {...rest}
     >
+      {loading ? (
+        <Spinner decorative size={size === "lg" ? "md" : "sm"} />
+      ) : null}
+      {!loading && leftIcon ? <span className="ui:inline-flex ui:shrink-0">{leftIcon}</span> : null}
       {children}
+      {!loading && rightIcon ? <span className="ui:inline-flex ui:shrink-0">{rightIcon}</span> : null}
     </button>
   );
 }
