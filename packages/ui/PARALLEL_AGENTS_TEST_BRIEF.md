@@ -1,84 +1,84 @@
-# Parallel agents: UI test writing brief
+# 병렬 에이전트: UI 테스트 작성 브리프
 
-Use this as the **shared preamble** when spawning multiple Cursor agents to add tests in parallel. Keeps style consistent and avoids merge conflicts.
+Cursor 에이전트를 여러 개 동시에 돌려 테스트를 추가할 때 **공통으로 붙이는 전제 문단**으로 쓰세요. 스타일을 맞추고 머지 충돌을 줄입니다.
 
-## Scope rules
+## 범위 규칙
 
-- **Tests only**: add or edit `*.test.ts` / `*.test.tsx` under `packages/ui/src/`. Do **not** change component implementation unless the ticket explicitly says so.
-- **No snapshots** for markup: prefer explicit assertions (`toHaveTextContent`, `toHaveAttribute`, `toBeDisabled`, `toHaveClass`, role queries).
+- **테스트만**: `packages/ui/src/` 아래 `*.test.ts` / `*.test.tsx`만 추가·수정합니다. 티켓에 명시되지 않은 한 **컴포넌트 구현은 수정하지 않습니다**.
+- 마크업에 **스냅샷 테스트 금지**: `toHaveTextContent`, `toHaveAttribute`, `toBeDisabled`, `toHaveClass`, 역할(role) 쿼리 등 **명시적 assertion**을 우선합니다.
 
-## File patterns
+## 파일 패턴
 
-- Component tests: `packages/ui/src/<Component>.test.tsx` (same basename as the component).
-- Pure utilities: `packages/ui/src/<module>.test.ts` (included by Vitest; excluded from `tsc` build via `tsconfig.json`).
+- 컴포넌트 테스트: `packages/ui/src/<Component>.test.tsx` (컴포넌트 파일과 같은 베이스 이름).
+- 순수 유틸: `packages/ui/src/<module>.test.ts` (Vitest에 포함, `tsconfig.json`으로 `tsc` 빌드에서 제외).
 
-## Imports and style
+## import 및 스타일
 
-- Import the component under test with a **relative** path: `import { Badge } from "./badge";` (matches existing `button.test.tsx`).
-- Use `@testing-library/react` + `vitest` globals pattern:
+- 테스트 대상 컴포넌트는 **상대 경로**로 import: `import { Badge } from "./badge";` (기존 `button.test.tsx`와 동일).
+- `@testing-library/react` + `vitest` 패턴:
 
 ```ts
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 ```
 
-- Query priority: **role + accessible name** > label text > `data-testid` (avoid `testid` unless necessary).
+- 쿼리 우선순위: **역할(role) + 접근 가능한 이름** > 라벨 텍스트 > `data-testid` (필요할 때만 `testid` 사용).
 
-## What each agent should receive
+## 각 에이전트에게 넘길 것
 
-1. **Target file(s)**: e.g. `badge.tsx` → `badge.test.tsx`.
-2. **Verification checklist** (bullets): concrete behaviors to assert, not implementation details.
-3. **Out of scope**: other components, refactors, dependency bumps.
+1. **대상 파일**: 예) `badge.tsx` → `badge.test.tsx`.
+2. **검증 체크리스트**(불릿): 구현 세부가 아니라 **검증할 동작**만 구체적으로.
+3. **범위 밖**: 다른 컴포넌트, 리팩터, 의존성 버전 올리기 등.
 
-## Splitting work (example)
+## 작업 분할 예시
 
-| Agent | Deliverable |
-|-------|-------------|
-| A | `badge.test.tsx` — variants + className |
-| B | `avatar.test.tsx` — image vs fallback + a11y |
-| C | `card.test.tsx` — internal vs external `href` |
+| 에이전트 | 산출물 |
+|----------|--------|
+| A | `badge.test.tsx` — variant + className |
+| B | `avatar.test.tsx` — 이미지 vs fallback + 접근성 |
+| C | `card.test.tsx` — 내부 vs 외부 `href` |
 
-**Integrator (you or one agent)**: unify naming, remove duplicate cases, run `pnpm test` from repo root.
+**통합 담당(본인 또는 에이전트 1명)**: 네이밍 통일, 중복 케이스 제거, 저장소 루트에서 `pnpm test` 실행.
 
-## Commands
+## 명령어
 
 ```sh
-pnpm test              # all packages (turbo)
+pnpm test              # 전체 패키지 (turbo)
 pnpm --filter @repo/ui test
 ```
 
-## Prompt template (copy-paste)
+## 프롬프트 템플릿 (복사용)
 
 ```
-Repo: turbo-repo-ex, package @repo/ui.
-Read packages/ui/PARALLEL_AGENTS_TEST_BRIEF.md and follow it exactly.
+저장소: turbo-repo-ex, 패키지 @repo/ui.
+packages/ui/PARALLEL_AGENTS_TEST_BRIEF.md 를 읽고 그대로 따를 것.
 
-Task: Add packages/ui/src/<NAME>.test.tsx only.
-Component: packages/ui/src/<name>.tsx
+작업: packages/ui/src/<NAME>.test.tsx 만 추가.
+컴포넌트: packages/ui/src/<name>.tsx
 
-Verify (bullets):
+검증 (불릿):
 - ...
 
-Do not modify the component file. No snapshot tests.
+컴포넌트 파일은 수정하지 말 것. 스냅샷 테스트 금지.
 ```
 
-## Example verification checklists (for parallel prompts)
+## 병렬 프롬프트용 검증 체크리스트 예시
 
 **Badge**
 
-- Renders `children` text.
-- Root is a `span` with shared layout classes (e.g. `ui:inline-flex`).
-- `variant="success"` applies success background class.
-- `className` is merged with variant classes (layout override).
+- `children` 텍스트가 렌더된다.
+- 루트가 `span`이며 공통 레이아웃 클래스를 가진다(예: `ui:inline-flex`).
+- `variant="success"`일 때 성공 배경 클래스가 적용된다.
+- `className`이 variant 클래스와 병합된다(레이아웃 오버라이드).
 
 **Avatar**
 
-- With `src`: `img` with correct `src`, `alt`, and `referrerpolicy="no-referrer"`.
-- Without `src`: `span` with `role="img"` and sensible `aria-label` (from `alt`, `fallback`, or default).
-- `className` applies on the `img` branch when `src` is set.
+- `src`가 있으면: `src`, `alt`, `referrerpolicy="no-referrer"`가 올바른 `img`.
+- `src`가 없으면: `role="img"`인 `span`, 적절한 `aria-label`(`alt`, `fallback`, 또는 기본값).
+- `src`가 있을 때 `className`이 `img` 분기에 적용된다.
 
 **Card**
 
-- Internal `href` (not http(s)): no `target` / `rel`, `href` unchanged.
-- External `href`: `target="_blank"`, `rel` includes `noopener`, UTM query appended (`?` or `&` as appropriate).
-- `className` merged on the anchor.
+- 내부 `href`(http(s) 아님): `target` / `rel` 없음, `href` 그대로.
+- 외부 `href`: `target="_blank"`, `rel`에 `noopener` 포함, UTM 쿼리 부착(`?` 또는 `&` 상황에 맞게).
+- 앵커에 `className`이 병합된다.
