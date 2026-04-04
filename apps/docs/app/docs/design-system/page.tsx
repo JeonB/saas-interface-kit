@@ -65,7 +65,8 @@ export default function DesignSystemPage() {
         <h2 className="text-xl font-semibold text-white">Evidence checklist</h2>
         <ul className="list-disc space-y-2 pl-6 text-sm text-neutral-300">
           <li>Button 컴포넌트에서 variant/size/disabled가 타입으로 강제되는지 확인</li>
-          <li>Storybook Button 스토리에서 Do/Don&apos;t가 API 계약과 일치하는지 확인</li>
+          <li>Storybook에서 Button, Field, Input 등 핵심 스토리의 Do/Don&apos;t가 API 계약과 일치하는지 확인</li>
+          <li>새 폼 컴포넌트에 <code className="rounded bg-neutral-800 px-1">name</code>과 접근 가능한 이름이 있는지 확인</li>
           <li>품질 게이트 페이지 체크리스트가 실제 실행 명령과 맞는지 확인</li>
         </ul>
       </section>

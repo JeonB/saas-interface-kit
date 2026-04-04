@@ -2,7 +2,11 @@ import { Alert } from "@repo/ui/alert";
 import { Badge } from "@repo/ui/badge";
 
 const CHECKLIST = [
-  { name: "Type safety", command: "pnpm check-types", desc: "컴포넌트 API 계약이 깨지지 않는지 확인" },
+  {
+    name: "Type safety",
+    command: "pnpm check-types",
+    desc: "Turbo가 @repo/ui 빌드(dist)를 먼저 실행한 뒤 앱 타입체크를 돌립니다. API 계약과 서브패스 import가 맞는지 확인합니다.",
+  },
   { name: "Lint", command: "pnpm lint", desc: "일관된 코드 스타일과 잠재 이슈 검출" },
   { name: "UI tests", command: "pnpm test", desc: "핵심 컴포넌트 상호작용/접근성 회귀 방지" },
 ];
@@ -32,6 +36,15 @@ export default function QualityGatesPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="mt-10 space-y-3">
+        <h2 className="text-xl font-semibold text-white">Storybook</h2>
+        <p className="text-sm text-neutral-300">
+          Run <code className="text-blue-300">pnpm --filter storybook dev</code> for interactive review. The a11y addon
+          surfaces roles and contrast issues early; keep stories aligned with the docs templates (usage, a11y, Do
+          / Don&apos;t).
+        </p>
       </section>
 
       <section className="mt-10 space-y-3">
