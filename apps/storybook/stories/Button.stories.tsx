@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Primary action component. Keep `variant` semantic, and prefer `size` for visual hierarchy instead of adding custom paddings.",
+          "Primary action control for SaaS surfaces. **Variant** encodes meaning (`primary` = main action, `danger` = destructive, `default` = secondary). **Size** encodes density—do not replace it with large `className` padding overrides. Default `type=\"button\"` avoids accidental form submits. Pair with `name` when the button participates in forms or analytics.",
       },
     },
   },
@@ -103,7 +103,7 @@ export const DoAndDont: Story = {
     docs: {
       description: {
         story:
-          "Do keep semantic variants. Don't style around the component with large class overrides unless required by layout.",
+          "Do keep semantic variants aligned with product language. Don't use `className` to simulate a new variant—add a variant or compose with layout wrappers instead.",
       },
     },
   },

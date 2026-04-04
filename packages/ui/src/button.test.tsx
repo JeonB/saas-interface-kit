@@ -17,6 +17,12 @@ describe("Button", () => {
     expect(button).toBeDisabled();
   });
 
+  it("applies primary variant semantic background class", () => {
+    const { container } = render(<Button variant="primary">Go</Button>);
+    const button = container.querySelector("button");
+    expect(button).toHaveClass("ui:bg-semantic-brand");
+  });
+
   it("fires click for enabled actions", () => {
     let count = 0;
     render(

@@ -8,8 +8,8 @@ import { Header } from "../components/Header";
 const geist = Geist({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Turbo Repo — Monorepo",
-  description: "Monorepo example with Turborepo, shared UI, and apps.",
+  title: "Northline Console — Usage overview",
+  description: "Example B2B SaaS dashboard built with @repo/ui and Turborepo.",
 };
 
 export default function RootLayout({

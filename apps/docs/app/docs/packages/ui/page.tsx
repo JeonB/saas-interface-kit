@@ -34,8 +34,8 @@ import { Card } from "@repo/ui/card";`}
       <section className="mt-10">
         <h2 className="text-xl font-semibold text-white">Components</h2>
         <p className="mt-2 text-neutral-400">
-          Available exports: Alert, Avatar, Badge, Button, Card, Gradient,
-          TurborepoLogo. See the{" "}
+          Available exports include: Alert, Avatar, Badge, Button, Card, EmptyState, Field, Gradient, Input, StatCard,
+          Textarea, TurborepoLogo. See the{" "}
           <a
             href="/docs/components"
             className="text-blue-1000 underline hover:no-underline"

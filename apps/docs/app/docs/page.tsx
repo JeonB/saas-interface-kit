@@ -3,13 +3,13 @@ import { Badge } from "@repo/ui/badge";
 
 const SECTIONS = [
   { title: "Getting started", href: "/docs/getting-started", description: "Installation, pnpm, and running with Turbo." },
+  { title: "Foundations", href: "/docs/foundations", description: "Design tokens, theme location, and semantic roles." },
   { title: "Monorepo", href: "/docs/monorepo", description: "Package structure, workspace, and dependencies." },
   { title: "Packages / UI", href: "/docs/packages/ui", description: "Overview and usage of @repo/ui." },
   { title: "Design system", href: "/docs/design-system", description: "Component API contracts and operating principles." },
   { title: "Component reference", href: "/docs/components", description: "API and examples for each @repo/ui component." },
   { title: "Quality gates", href: "/docs/quality-gates", description: "Type, lint, a11y, and tests for reliable UI changes." },
   { title: "Apps", href: "/docs/apps", description: "Web, Docs, and Storybook apps." },
-  { title: "Interview kit", href: "/docs/interview-kit", description: "5-minute demo scenario and Q&A talking points." },
 ];
 
 export default function DocsIntroPage() {
