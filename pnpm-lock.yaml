@@ -305,6 +305,9 @@ importers:
       '@types/react':
         specifier: ^19.2.14
         version: 19.2.14
+      '@vitest/expect':
+        specifier: 4.1.2
+        version: 4.1.2
       axe-core:
         specifier: ^4.11.2
         version: 4.11.2

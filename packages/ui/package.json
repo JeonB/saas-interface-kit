@@ -15,10 +15,10 @@
   "scripts": {
     "build": "pnpm run build:styles && pnpm run build:components",
     "build:styles": "tailwindcss -i ./src/styles.css -o ./dist/index.css",
-    "build:components": "tsc",
+    "build:components": "tsc -p tsconfig.build.json",
     "check-types": "tsc --noEmit",
     "dev:styles": "tailwindcss -i ./src/styles.css -o ./dist/index.css --watch",
-    "dev:components": "tsc --watch",
+    "dev:components": "tsc -p tsconfig.build.json --watch",
     "lint": "eslint src --max-warnings 0",
     "size": "size-limit",
     "test": "vitest run"
@@ -44,6 +44,7 @@
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.2.14",
+    "@vitest/expect": "4.1.2",
     "axe-core": "^4.11.2",
     "eslint": "^9.39.4",
     "jsdom": "^29.0.1",
