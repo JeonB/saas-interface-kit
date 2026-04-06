@@ -83,6 +83,147 @@ export default function FoundationsPage() {
         </p>
       </section>
 
+      {/* ── Token Visualization ─────────────────────────── */}
+      <section className="mt-10 space-y-4">
+        <h2 className="text-xl font-semibold text-white">Color tokens</h2>
+        <p className="text-sm text-neutral-400">
+          Semantic colors used across <code className="rounded bg-neutral-900 px-1">@repo/ui</code>.
+          Each maps to a CSS custom property in <code className="rounded bg-neutral-900 px-1">@theme</code>.
+        </p>
+
+        <h3 className="mt-4 text-sm font-semibold uppercase tracking-wide text-neutral-400">Feedback</h3>
+        <div className="flex flex-wrap gap-3">
+          {[
+            { name: "semantic-brand", color: "var(--color-semantic-brand)" },
+            { name: "semantic-success", color: "var(--color-semantic-success)" },
+            { name: "semantic-warning", color: "var(--color-semantic-warning)" },
+            { name: "semantic-danger", color: "var(--color-semantic-danger)" },
+            { name: "semantic-info", color: "var(--color-semantic-info)" },
+          ].map((t) => (
+            <div key={t.name} className="flex flex-col items-center gap-1.5">
+              <div className="h-12 w-12 rounded-lg border border-neutral-700" style={{ backgroundColor: t.color }} />
+              <span className="text-[10px] text-neutral-400">{t.name}</span>
+            </div>
+          ))}
+        </div>
+
+        <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-neutral-400">Surfaces</h3>
+        <div className="flex flex-wrap gap-3">
+          {[
+            { name: "surface-canvas", color: "var(--color-surface-canvas)" },
+            { name: "surface-raised", color: "var(--color-surface-raised)" },
+            { name: "surface-muted", color: "var(--color-surface-muted)" },
+            { name: "surface-overlay", color: "var(--color-surface-overlay)" },
+          ].map((t) => (
+            <div key={t.name} className="flex flex-col items-center gap-1.5">
+              <div className="h-12 w-12 rounded-lg border border-neutral-700" style={{ backgroundColor: t.color }} />
+              <span className="text-[10px] text-neutral-400">{t.name}</span>
+            </div>
+          ))}
+        </div>
+
+        <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-neutral-400">Text</h3>
+        <div className="flex flex-wrap gap-3">
+          {[
+            { name: "text-primary", color: "var(--color-text-primary)" },
+            { name: "text-secondary", color: "var(--color-text-secondary)" },
+            { name: "text-muted", color: "var(--color-text-muted)" },
+            { name: "text-on-brand", color: "var(--color-text-on-brand)" },
+          ].map((t) => (
+            <div key={t.name} className="flex flex-col items-center gap-1.5">
+              <div className="h-12 w-12 rounded-lg border border-neutral-700" style={{ backgroundColor: t.color }} />
+              <span className="text-[10px] text-neutral-400">{t.name}</span>
+            </div>
+          ))}
+        </div>
+
+        <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-neutral-400">Border</h3>
+        <div className="flex flex-wrap gap-3">
+          {[
+            { name: "border-default", color: "var(--color-border-default)" },
+            { name: "border-subtle", color: "var(--color-border-subtle)" },
+            { name: "border-strong", color: "var(--color-border-strong)" },
+          ].map((t) => (
+            <div key={t.name} className="flex flex-col items-center gap-1.5">
+              <div className="h-12 w-12 rounded-lg border border-neutral-700" style={{ backgroundColor: t.color }} />
+              <span className="text-[10px] text-neutral-400">{t.name}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-10 space-y-4">
+        <h2 className="text-xl font-semibold text-white">Spacing scale</h2>
+        <p className="text-sm text-neutral-400">
+          4px-based scale from <code className="rounded bg-neutral-900 px-1">spacing-ui-0</code> to{" "}
+          <code className="rounded bg-neutral-900 px-1">spacing-ui-16</code>.
+        </p>
+        <div className="flex flex-col gap-2">
+          {[0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16].map((n) => (
+            <div key={n} className="flex items-center gap-3">
+              <code className="w-20 text-right text-xs text-neutral-400">ui-{n}</code>
+              <div className="h-3 rounded-sm bg-blue-1000/60" style={{ width: `${n * 4}px` }} />
+              <span className="text-xs text-neutral-500">{n * 4}px</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-10 space-y-4">
+        <h2 className="text-xl font-semibold text-white">Typography scale</h2>
+        <p className="text-sm text-neutral-400">
+          Font sizes from <code className="rounded bg-neutral-900 px-1">text-ui-xs</code> to{" "}
+          <code className="rounded bg-neutral-900 px-1">text-ui-2xl</code>.
+        </p>
+        <div className="flex flex-col gap-3">
+          {[
+            { name: "text-ui-xs", size: "0.75rem" },
+            { name: "text-ui-sm", size: "0.875rem" },
+            { name: "text-ui-base", size: "1rem" },
+            { name: "text-ui-lg", size: "1.125rem" },
+            { name: "text-ui-xl", size: "1.25rem" },
+            { name: "text-ui-2xl", size: "1.5rem" },
+          ].map((t) => (
+            <div key={t.name} className="flex items-baseline gap-4">
+              <code className="w-28 shrink-0 text-right text-xs text-neutral-400">{t.name}</code>
+              <span className="text-white" style={{ fontSize: t.size }}>The quick brown fox</span>
+              <span className="text-xs text-neutral-500">{t.size}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-10 space-y-4">
+        <h2 className="text-xl font-semibold text-white">Radius &amp; Shadow</h2>
+        <div className="flex flex-wrap gap-6">
+          {[
+            { name: "rounded-ui-sm", radius: "var(--radius-ui-sm)", shadow: "" },
+            { name: "rounded-ui-md", radius: "var(--radius-ui-md)", shadow: "" },
+            { name: "rounded-ui-lg", radius: "var(--radius-ui-lg)", shadow: "" },
+          ].map((t) => (
+            <div key={t.name} className="flex flex-col items-center gap-2">
+              <div
+                className="h-16 w-16 border border-neutral-600 bg-neutral-800"
+                style={{ borderRadius: t.radius, boxShadow: t.shadow }}
+              />
+              <span className="text-[10px] text-neutral-400">{t.name}</span>
+            </div>
+          ))}
+          {[
+            { name: "shadow-ui-sm", shadow: "var(--shadow-ui-sm)" },
+            { name: "shadow-ui-md", shadow: "var(--shadow-ui-md)" },
+          ].map((t) => (
+            <div key={t.name} className="flex flex-col items-center gap-2">
+              <div
+                className="h-16 w-16 rounded-lg border border-neutral-600 bg-neutral-800"
+                style={{ boxShadow: t.shadow }}
+              />
+              <span className="text-[10px] text-neutral-400">{t.name}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="mt-10 space-y-3">
         <h2 className="text-xl font-semibold text-white">Next steps</h2>
         <ol className="list-decimal space-y-2 pl-6 text-sm text-neutral-300">

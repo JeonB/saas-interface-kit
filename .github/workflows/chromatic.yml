@@ -1,13 +1,17 @@
-# Optional: add CHROMATIC_PROJECT_TOKEN in repo secrets, then uncomment jobs below
-# or run `npx chromatic --project-token=<token>` locally from apps/storybook.
 name: Chromatic
 
 on:
+  pull_request:
+    branches: [main]
   workflow_dispatch:
+
+concurrency:
+  group: chromatic-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   chromatic:
-    if: false
+    if: ${{ github.event_name == 'workflow_dispatch' || secrets.CHROMATIC_PROJECT_TOKEN != '' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,10 +19,10 @@ jobs:
           fetch-depth: 0
       - uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: 10.19.0
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 23.1.0
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @repo/ui build
@@ -26,3 +30,4 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           workingDir: apps/storybook
+          exitZeroOnChanges: true

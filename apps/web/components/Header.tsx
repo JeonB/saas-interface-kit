@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Avatar } from "@repo/ui/avatar";
 import { Badge } from "@repo/ui/badge";
 import { DOCS_BASE } from "../lib/config";
+import { ThemeToggle } from "./ThemeToggle";
 
 const NAV_LINKS = [
   { label: "Overview", href: "/" },
@@ -44,6 +45,7 @@ export function Header() {
           </ul>
         </nav>
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           <Badge variant="success">Live</Badge>
           <Avatar fallback="SK" size="sm" />
           <a

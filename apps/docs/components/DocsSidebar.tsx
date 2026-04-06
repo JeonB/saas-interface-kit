@@ -12,6 +12,7 @@ const DOC_LINKS = [
   { label: "Design system", href: "/docs/design-system" },
   { label: "Component reference", href: "/docs/components" },
   { label: "Quality gates", href: "/docs/quality-gates" },
+  { label: "Patterns", href: "/docs/patterns" },
   { label: "Apps", href: "/docs/apps" },
 ];
 

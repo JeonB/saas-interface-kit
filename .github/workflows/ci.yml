@@ -42,3 +42,6 @@ jobs:
 
       - name: Bundle size (@repo/ui)
         run: pnpm --filter @repo/ui size
+
+      - name: Build Storybook
+        run: pnpm --filter storybook build

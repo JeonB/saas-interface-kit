@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, expect, it } from "vitest";
@@ -23,5 +23,15 @@ describe("Dialog", () => {
     render(<DialogDemo />);
     await user.click(screen.getByRole("button", { name: "Open" }));
     expect(await screen.findByRole("heading", { name: "Title" })).toBeInTheDocument();
+  });
+
+  it("closes on cancel event (Escape in real browsers)", async () => {
+    const user = userEvent.setup();
+    render(<DialogDemo />);
+    await user.click(screen.getByRole("button", { name: "Open" }));
+    expect(await screen.findByRole("heading", { name: "Title" })).toBeInTheDocument();
+    const dialog = screen.getByRole("heading", { name: "Title" }).closest("dialog")!;
+    fireEvent(dialog, new Event("cancel"));
+    expect(screen.queryByRole("heading", { name: "Title" })).not.toBeInTheDocument();
   });
 });

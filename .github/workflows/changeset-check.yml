@@ -1,0 +1,34 @@
+name: Changeset check
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  changeset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.19.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 23.1.0
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Check for changeset
+        run: |
+          CHANGED=$(git diff --name-only origin/main...HEAD -- packages/ui/src/)
+          if [ -n "$CHANGED" ]; then
+            CHANGESETS=$(find .changeset -name '*.md' ! -name 'README.md' | head -1)
+            if [ -z "$CHANGESETS" ]; then
+              echo "::warning::packages/ui/src has changes but no changeset found. Run 'pnpm changeset' to document your changes."
+            fi
+          fi
