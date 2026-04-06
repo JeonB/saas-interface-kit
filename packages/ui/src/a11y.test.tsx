@@ -1,8 +1,8 @@
+import "vitest-axe/extend-expect";
 import { render } from "@testing-library/react";
 import type { ReactElement } from "react";
-import { describe, expect, it } from "vitest";
+import { describe, it } from "vitest";
 import { axe } from "vitest-axe";
-import { toHaveNoViolations } from "vitest-axe/matchers";
 
 import { Alert } from "./alert";
 import { AlertBanner } from "./alert-banner";
@@ -26,8 +26,6 @@ import { StatCard } from "./stat-card";
 import { StatusIndicator } from "./status-indicator";
 import { Switch } from "./switch";
 import { Textarea } from "./textarea";
-
-expect.extend({ toHaveNoViolations });
 
 async function expectNoA11yViolations(ui: ReactElement) {
   const { container } = render(ui);
