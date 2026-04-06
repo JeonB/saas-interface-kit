@@ -1,8 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Command, CommandContent, CommandTrigger } from "./command";
-import { CommandInput, CommandList, CommandItem, CommandEmpty } from "./command";
-import { Button } from "./button";
+import { Command, CommandContent } from "./command";
+import { CommandInput, CommandList, CommandItem } from "./command";
 
 describe("CommandInput", () => {
   it("renders a search input", () => {
@@ -11,9 +10,11 @@ describe("CommandInput", () => {
         <CommandContent>
           <CommandInput value="" onValueChange={() => {}} aria-label="Search" />
         </CommandContent>
-      </Command>,
+      </Command>
     );
-    expect(screen.getByRole("searchbox", { name: "Search" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("searchbox", { name: "Search" })
+    ).toBeInTheDocument();
   });
 });
 
@@ -27,9 +28,11 @@ describe("CommandItem", () => {
             <CommandItem onSelect={onSelect}>Go to dashboard</CommandItem>
           </CommandList>
         </CommandContent>
-      </Command>,
+      </Command>
     );
-    await userEvent.click(screen.getByRole("option", { name: "Go to dashboard" }));
+    await userEvent.click(
+      screen.getByRole("option", { name: "Go to dashboard" })
+    );
     expect(onSelect).toHaveBeenCalledOnce();
   });
 });
