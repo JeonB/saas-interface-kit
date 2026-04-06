@@ -2,7 +2,7 @@ name: Chromatic
 
 on:
   pull_request:
-    branches: [main]
+    branches: [dev]
   workflow_dispatch:
 
 concurrency:
