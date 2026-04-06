@@ -12,11 +12,7 @@ function getStoredTheme(): Theme {
 }
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("dark");
-
-  useEffect(() => {
-    setTheme(getStoredTheme());
-  }, []);
+  const [theme, setTheme] = useState<Theme>(() => getStoredTheme());
 
   useEffect(() => {
     const root = document.documentElement;
