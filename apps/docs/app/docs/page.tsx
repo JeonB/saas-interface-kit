@@ -2,6 +2,11 @@ import Link from "next/link";
 import { Badge } from "@repo/ui/badge";
 
 const SECTIONS = [
+  {
+    title: "Cursor in Slack",
+    href: "/docs/cursor-help",
+    description: "@Cursor mentions, starting tasks, and the @Cursor help command for Cloud Agents.",
+  },
   { title: "Getting started", href: "/docs/getting-started", description: "Installation, pnpm, and running with Turbo." },
   { title: "Foundations", href: "/docs/foundations", description: "Design tokens, theme location, and semantic roles." },
   { title: "Monorepo", href: "/docs/monorepo", description: "Package structure, workspace, and dependencies." },
