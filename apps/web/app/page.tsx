@@ -9,7 +9,14 @@ import { Input } from "@repo/ui/input";
 import { StatCard } from "@repo/ui/stat-card";
 import { DOCS_BASE } from "../lib/config";
 
+function isExternalDocsHref(href: string): boolean {
+  return href.startsWith("http://") || href.startsWith("https://");
+}
+
 export default function Page() {
+  const cursorHelpHref = `${DOCS_BASE}/docs/cursor-help`;
+  const cursorHelpExternal = isExternalDocsHref(cursorHelpHref);
+
   return (
     <div className="flex flex-col">
       <section className="relative overflow-hidden border-b border-neutral-800 px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
@@ -85,7 +92,8 @@ export default function Page() {
                 <code className="rounded bg-neutral-800 px-1 text-xs">@Cursor help</code> for Cloud Agent tips—see{" "}
                 <a
                   className="text-white underline underline-offset-2 hover:text-neutral-200"
-                  href={`${DOCS_BASE}/docs/cursor-help`}
+                  href={cursorHelpHref}
+                  {...(cursorHelpExternal && { rel: "noopener noreferrer", target: "_blank" })}
                 >
                   Cursor in Slack
                 </a>
