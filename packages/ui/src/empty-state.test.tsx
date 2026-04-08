@@ -27,4 +27,19 @@ describe("EmptyState", () => {
 
     expect(screen.getByRole("button", { name: "Create project" })).toBeInTheDocument();
   });
+
+  it("renders ReactNode description", () => {
+    render(
+      <EmptyState
+        description={
+          <>
+            See <a href="/help">help</a> for details.
+          </>
+        }
+        title="Empty"
+      />,
+    );
+
+    expect(screen.getByRole("link", { name: "help" })).toHaveAttribute("href", "/help");
+  });
 });

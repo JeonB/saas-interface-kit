@@ -79,7 +79,19 @@ export default function Page() {
                 Connect Slack
               </Button>
             }
-            description="Get alerts in-channel when usage spikes or limits approach."
+            description={
+              <>
+                Get alerts in-channel when usage spikes or limits approach. With Cursor linked, use{" "}
+                <code className="rounded bg-neutral-800 px-1 text-xs">@Cursor help</code> for Cloud Agent tips—see{" "}
+                <a
+                  className="text-white underline underline-offset-2 hover:text-neutral-200"
+                  href={`${DOCS_BASE}/docs/cursor-help`}
+                >
+                  Cursor in Slack
+                </a>
+                .
+              </>
+            }
             title="No chat notifications"
           />
         </div>

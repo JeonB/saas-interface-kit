@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 const DOC_LINKS = [
   { label: "Introduction", href: "/docs" },
+  { label: "Cursor in Slack", href: "/docs/cursor-help" },
   { label: "Getting started", href: "/docs/getting-started" },
   { label: "Foundations", href: "/docs/foundations" },
   { label: "Monorepo", href: "/docs/monorepo" },
