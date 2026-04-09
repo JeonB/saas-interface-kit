@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Placeholder pulse animation for loading states. **A11y:** `aria-hidden` so assistive tech skips it—pair with a live region or Spinner for screen reader users. **Do:** match skeleton dimensions to expected content. **Don't:** use as a generic background shimmer.",
+          "로딩 상태용 플레이스홀더 펄스 애니메이션입니다. **접근성:** `aria-hidden`으로 보조 기술이 건너뜀 — 스크린 리더 사용자에게는 live region이나 Spinner와 짝지으세요. **권장:** 예상 콘텐츠 크기에 맞출 것. **비권장:** 일반 배경 반짝임 용도.",
       },
     },
   },
@@ -35,6 +35,6 @@ export const CardPlaceholder: Story = {
     </div>
   ),
   parameters: {
-    docs: { description: { story: "Compose multiple skeletons to approximate card content during loading." } },
+    docs: { description: { story: "로딩 중 카드 콘텐츠를 여러 Skeleton으로 근사합니다." } },
   },
 };

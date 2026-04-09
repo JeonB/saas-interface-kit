@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Accessible loading indicator. Default `role=\"status\"` with `aria-label=\"Loading\"`. **A11y:** set `decorative` when nested inside a button with `aria-busy`. **Do:** use `size` for density context. **Don't:** display without accompanying loading context.",
+          "접근 가능한 로딩 표시입니다. 기본 `role=\"status\"`와 `aria-label=\"로딩 중\"`. **접근성:** `aria-busy` 버튼 안에 넣을 때는 `decorative` 설정. **권장:** 밀도 맥락에 맞게 `size`. **비권장:** 로딩 맥락 없이 단독 표시.",
       },
     },
   },

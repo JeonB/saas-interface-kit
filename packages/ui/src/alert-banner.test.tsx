@@ -17,12 +17,12 @@ describe("AlertBanner", () => {
   it("calls onDismiss when dismiss button clicked", async () => {
     const onDismiss = vi.fn();
     render(<AlertBanner onDismiss={onDismiss} variant="error">Error occurred.</AlertBanner>);
-    await userEvent.click(screen.getByRole("button", { name: "Dismiss banner" }));
+    await userEvent.click(screen.getByRole("button", { name: "배너 닫기" }));
     expect(onDismiss).toHaveBeenCalledOnce();
   });
 
   it("does not render dismiss button when onDismiss is omitted", () => {
     render(<AlertBanner variant="success">All good.</AlertBanner>);
-    expect(screen.queryByRole("button", { name: "Dismiss banner" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "배너 닫기" })).not.toBeInTheDocument();
   });
 });

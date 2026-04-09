@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Breadcrumb trail for hierarchical navigation. **A11y:** `<nav aria-label=\"Breadcrumb\">` with `<ol>`. Separators are `aria-hidden`. **Do:** keep paths short (3-4 levels). **Don't:** make the last item a link—it represents the current page.",
+          "계층 내비용 경로입니다. **접근성:** `<nav aria-label=\"경로\">`와 `<ol>`. 구분자는 `aria-hidden`. **권장:** 짧은 경로(3~4단계). **비권장:** 마지막 항목을 링크로 — 현재 페이지를 나타냅니다.",
       },
     },
   },
@@ -22,11 +22,21 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: () => (
     <Breadcrumb>
-      <BreadcrumbItem><a href="#" className="ui:text-text-secondary hover:ui:text-text-primary">Home</a></BreadcrumbItem>
+      <BreadcrumbItem>
+        <a href="#" className="ui:text-text-secondary hover:ui:text-text-primary">
+          홈
+        </a>
+      </BreadcrumbItem>
       <BreadcrumbSeparator />
-      <BreadcrumbItem><a href="#" className="ui:text-text-secondary hover:ui:text-text-primary">Projects</a></BreadcrumbItem>
+      <BreadcrumbItem>
+        <a href="#" className="ui:text-text-secondary hover:ui:text-text-primary">
+          프로젝트
+        </a>
+      </BreadcrumbItem>
       <BreadcrumbSeparator />
-      <BreadcrumbItem><span className="ui:text-text-primary">Analytics API</span></BreadcrumbItem>
+      <BreadcrumbItem>
+        <span className="ui:text-text-primary">Analytics API</span>
+      </BreadcrumbItem>
     </Breadcrumb>
   ),
 };

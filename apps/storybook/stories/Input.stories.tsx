@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Text input for forms and filters. Always set `name` (and usually `id` when not inside `Field`). Use `size` for density; avoid overriding height with arbitrary `className` unless layout requires it.",
+          "폼·필터용 텍스트 입력입니다. 항상 `name`을 설정하고(`Field` 밖이면 보통 `id`도). 밀도는 `size`로 맞추고, 레이아웃상 필요할 때가 아니면 임의 `className`으로 높이를 덮어쓰지 마세요.",
       },
     },
   },
@@ -26,8 +26,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     name: "q",
-    placeholder: "Search…",
-    "aria-label": "Search",
+    placeholder: "검색…",
+    "aria-label": "검색",
     size: "md",
   },
 };
@@ -35,15 +35,15 @@ export const Default: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="ui:flex ui:w-80 ui:flex-col ui:gap-3">
-      <Input aria-label="Small" name="s" placeholder="Small" size="sm" />
-      <Input aria-label="Medium" name="m" placeholder="Medium" size="md" />
-      <Input aria-label="Large" name="l" placeholder="Large" size="lg" />
+      <Input aria-label="작게" name="s" placeholder="작게" size="sm" />
+      <Input aria-label="보통" name="m" placeholder="보통" size="md" />
+      <Input aria-label="크게" name="l" placeholder="크게" size="lg" />
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: "Match input size to surrounding controls (e.g. `sm` in dense tables, `md` in default forms).",
+        story: "주변 컨트롤과 입력 크기를 맞추세요(밀집 테이블은 `sm`, 기본 폼은 `md` 등).",
       },
     },
   },

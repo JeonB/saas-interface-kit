@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Vertical navigation panel with grouped links. **A11y:** renders as `<nav aria-label=\"Main\">`. **Do:** use SidebarGroup for logical sections and SidebarItem for links. **Don't:** place form controls directly inside the sidebar.",
+          "그룹 링크가 있는 세로 내비 패널입니다. **접근성:** `<nav aria-label=\"주 메뉴\">`로 렌더링. **권장:** 논리 구역은 SidebarGroup, 링크는 SidebarItem. **비권장:** 사이드바 안에 폼 컨트롤을 직접 배치.",
       },
     },
   },
@@ -23,14 +23,16 @@ export const Default: Story = {
   render: () => (
     <div className="ui:w-56 ui:rounded-ui-md ui:border ui:border-border-subtle ui:bg-surface-raised">
       <Sidebar>
-        <SidebarGroup label="Platform">
-          <SidebarItem href="#" active>Overview</SidebarItem>
-          <SidebarItem href="#">Analytics</SidebarItem>
-          <SidebarItem href="#">Settings</SidebarItem>
+        <SidebarGroup label="플랫폼">
+          <SidebarItem href="#" active>
+            개요
+          </SidebarItem>
+          <SidebarItem href="#">분석</SidebarItem>
+          <SidebarItem href="#">설정</SidebarItem>
         </SidebarGroup>
-        <SidebarGroup label="Resources">
-          <SidebarItem href="#">Docs</SidebarItem>
-          <SidebarItem href="#">Support</SidebarItem>
+        <SidebarGroup label="리소스">
+          <SidebarItem href="#">문서</SidebarItem>
+          <SidebarItem href="#">지원</SidebarItem>
         </SidebarGroup>
       </Sidebar>
     </div>

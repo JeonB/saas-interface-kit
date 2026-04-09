@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Visual divider with `role=\"separator\"` and `aria-orientation`. **Do:** use between logical content sections. **Don't:** use purely for spacing—use padding/margin instead.",
+          "`role=\"separator\"`와 `aria-orientation`이 있는 시각적 구분선입니다. **권장:** 논리적 콘텐츠 구역 사이에 사용. **비권장:** 순수 간격용 — 패딩·마진 사용.",
       },
     },
   },
@@ -25,9 +25,9 @@ type Story = StoryObj<typeof meta>;
 export const Horizontal: Story = {
   render: () => (
     <div style={{ width: 300 }}>
-      <p className="ui:text-sm ui:text-text-primary">Section A</p>
+      <p className="ui:text-sm ui:text-text-primary">섹션 A</p>
       <Separator className="ui:my-3" />
-      <p className="ui:text-sm ui:text-text-primary">Section B</p>
+      <p className="ui:text-sm ui:text-text-primary">섹션 B</p>
     </div>
   ),
 };
@@ -35,9 +35,9 @@ export const Horizontal: Story = {
 export const Vertical: Story = {
   render: () => (
     <div className="ui:flex ui:items-center ui:gap-3" style={{ height: 40 }}>
-      <span className="ui:text-sm ui:text-text-primary">Left</span>
+      <span className="ui:text-sm ui:text-text-primary">왼쪽</span>
       <Separator orientation="vertical" />
-      <span className="ui:text-sm ui:text-text-primary">Right</span>
+      <span className="ui:text-sm ui:text-text-primary">오른쪽</span>
     </div>
   ),
 };

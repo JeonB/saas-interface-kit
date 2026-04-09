@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Controlled tab panels with ArrowLeft/ArrowRight keyboard navigation. **A11y:** `role=\"tablist\"`, `role=\"tab\"` with `aria-selected`, and `role=\"tabpanel\"` with `tabIndex={0}`. **Do:** use for in-page content switching. **Don't:** confuse with NavTabs (route-based navigation).",
+          "좌우 화살표 키 내비가 있는 제어 탭 패널입니다. **접근성:** `role=\"tablist\"`, `aria-selected`가 있는 `role=\"tab\"`, `tabIndex={0}`인 `role=\"tabpanel\"`. **권장:** 페이지 내 콘텐츠 전환. **비권장:** NavTabs(라우트 기반 내비)와 혼동.",
       },
     },
   },
@@ -26,18 +26,18 @@ export const Default: Story = {
     return (
       <Tabs value={value} onValueChange={setValue}>
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsTrigger value="overview">개요</TabsTrigger>
+          <TabsTrigger value="analytics">분석</TabsTrigger>
+          <TabsTrigger value="settings">설정</TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
-          <p className="ui:text-sm ui:text-text-secondary">Dashboard overview content.</p>
+          <p className="ui:text-sm ui:text-text-secondary">대시보드 개요 콘텐츠입니다.</p>
         </TabsContent>
         <TabsContent value="analytics">
-          <p className="ui:text-sm ui:text-text-secondary">Analytics charts and data.</p>
+          <p className="ui:text-sm ui:text-text-secondary">분석 차트와 데이터입니다.</p>
         </TabsContent>
         <TabsContent value="settings">
-          <p className="ui:text-sm ui:text-text-secondary">Configuration options.</p>
+          <p className="ui:text-sm ui:text-text-secondary">설정 옵션입니다.</p>
         </TabsContent>
       </Tabs>
     );

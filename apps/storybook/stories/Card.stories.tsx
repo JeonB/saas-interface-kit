@@ -25,17 +25,17 @@ export const Default: Story = {
   render: () => (
     <Card className="ui:w-80">
       <CardHeader>
-        <CardTitle>Usage spike</CardTitle>
-        <CardDescription>Last 24 hours · All regions</CardDescription>
+        <CardTitle>사용량 급증</CardTitle>
+        <CardDescription>최근 24시간 · 전체 리전</CardDescription>
       </CardHeader>
       <CardBody>
         <p className="ui:text-sm ui:text-text-secondary">
-          Requests are up 12% vs prior day. No SLO breaches detected.
+          요청이 전일 대비 12% 증가했습니다. SLO 위반은 없습니다.
         </p>
       </CardBody>
       <CardFooter>
         <Button name="open-runbook" variant="primary">
-          Open runbook
+          런북 열기
         </Button>
       </CardFooter>
     </Card>

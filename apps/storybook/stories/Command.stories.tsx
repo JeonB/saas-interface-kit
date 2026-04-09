@@ -23,7 +23,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Command palette pattern: Dialog + searchable list. **A11y:** input is `type="search"`; items are `role="option"` inside `role="listbox"`. **Do:** group items with CommandGroup. **Don\'t:** use for simple select—use Select or RadioGroup instead.',
+          "커맨드 팔레트 패턴: Dialog + 검색 목록. **접근성:** 입력은 `type=\"search\"`; 항목은 `role=\"listbox\"` 안의 `role=\"option\"`. **권장:** CommandGroup으로 묶기. **비권장:** 단순 선택 — Select나 RadioGroup.",
       },
     },
   },
@@ -39,30 +39,30 @@ export const Default: Story = {
     const [search, setSearch] = useState("");
     const items = [
       {
-        group: "Navigation",
-        items: ["Dashboard", "Analytics", "Settings"],
+        group: "내비게이션",
+        items: ["대시보드", "분석", "설정"],
       },
       {
-        group: "Actions",
-        items: ["Create project", "Invite member", "Export data"],
+        group: "동작",
+        items: ["프로젝트 만들기", "멤버 초대", "데이터 내보내기"],
       },
     ];
     return (
       <Command open={open} onOpenChange={setOpen}>
         <CommandTrigger>
           <Button name="openCommand" variant="default">
-            Open command palette
+            커맨드 팔레트 열기
           </Button>
         </CommandTrigger>
         <CommandContent>
           <CommandHeader>
-            <CommandTitle>Command palette</CommandTitle>
+            <CommandTitle>커맨드 팔레트</CommandTitle>
           </CommandHeader>
           <CommandInput
             value={search}
             onValueChange={setSearch}
-            placeholder="Search commands..."
-            aria-label="Search commands"
+            placeholder="명령 검색…"
+            aria-label="명령 검색"
           />
           <CommandList>
             {items.map((g) => (
@@ -83,12 +83,12 @@ export const Default: Story = {
                 g.items.filter((i) =>
                   i.toLowerCase().includes(search.toLowerCase())
                 ).length === 0
-            ) && <CommandEmpty>No results found.</CommandEmpty>}
+            ) && <CommandEmpty>결과가 없습니다.</CommandEmpty>}
           </CommandList>
           <div className="ui:border-t ui:border-border-subtle ui:px-4 ui:py-2">
             <CommandClose>
               <Button name="closeCmd" variant="default" size="sm">
-                Close
+                닫기
               </Button>
             </CommandClose>
           </div>

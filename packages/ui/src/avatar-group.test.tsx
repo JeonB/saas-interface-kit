@@ -25,7 +25,7 @@ describe("AvatarGroup", () => {
         <Avatar fallback="D" size="md" />
       </AvatarGroup>,
     );
-    const overflow = screen.getByRole("img", { name: "2 more" });
+    const overflow = screen.getByRole("img", { name: "2명 더 있음" });
     expect(overflow).toHaveTextContent("+2");
   });
 
@@ -36,6 +36,6 @@ describe("AvatarGroup", () => {
       </AvatarGroup>,
     );
     expect(screen.getByText("X")).toBeInTheDocument();
-    expect(screen.queryByRole("img", { name: /more/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("img", { name: /더 있음/ })).not.toBeInTheDocument();
   });
 });

@@ -5,20 +5,20 @@ describe("Breadcrumb", () => {
   it("renders nav with aria-label", () => {
     render(
       <Breadcrumb>
-        <BreadcrumbItem>Home</BreadcrumbItem>
+        <BreadcrumbItem>홈</BreadcrumbItem>
         <BreadcrumbSeparator />
-        <BreadcrumbItem>Settings</BreadcrumbItem>
+        <BreadcrumbItem>설정</BreadcrumbItem>
       </Breadcrumb>,
     );
-    expect(screen.getByRole("navigation", { name: "Breadcrumb" })).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "경로" })).toBeInTheDocument();
   });
 
   it("renders items as list items", () => {
     render(
       <Breadcrumb>
-        <BreadcrumbItem>Home</BreadcrumbItem>
+        <BreadcrumbItem>홈</BreadcrumbItem>
         <BreadcrumbSeparator />
-        <BreadcrumbItem>Projects</BreadcrumbItem>
+        <BreadcrumbItem>프로젝트</BreadcrumbItem>
       </Breadcrumb>,
     );
     expect(screen.getAllByRole("listitem")).toHaveLength(2);

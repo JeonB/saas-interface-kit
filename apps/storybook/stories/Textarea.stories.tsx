@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Multi-line text. Pair with `Field` for label, hint, and error wiring. Prefer `resize-y` default; constrain width with layout containers, not one-off height hacks.",
+          "여러 줄 텍스트입니다. 레이블·힌트·오류 연결은 `Field`와 짝지으세요. 기본 `resize-y`를 선호하고, 너비는 레이아웃 컨테이너로 제한하세요.",
       },
     },
   },
@@ -25,8 +25,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     name: "notes",
-    placeholder: "Add context for your team…",
-    "aria-label": "Notes",
+    placeholder: "팀을 위한 맥락을 입력하세요…",
+    "aria-label": "메모",
     rows: 4,
     size: "md",
   },

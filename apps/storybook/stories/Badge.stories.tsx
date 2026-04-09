@@ -22,28 +22,28 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: "Badge",
+    children: "배지",
     variant: "default",
   },
 };
 
 export const Success: Story = {
   args: {
-    children: "Success",
+    children: "성공",
     variant: "success",
   },
 };
 
 export const Warning: Story = {
   args: {
-    children: "Warning",
+    children: "경고",
     variant: "warning",
   },
 };
 
 export const Danger: Story = {
   args: {
-    children: "Danger",
+    children: "위험",
     variant: "danger",
   },
 };

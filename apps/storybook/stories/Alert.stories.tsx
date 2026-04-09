@@ -23,39 +23,39 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: "This is an informational alert.",
+    children: "안내용 알림입니다.",
     variant: "info",
   },
 };
 
 export const Info: Story = {
   args: {
-    title: "Info",
-    children: "You can use this for general information.",
+    title: "안내",
+    children: "일반적인 정보 표시에 사용할 수 있습니다.",
     variant: "info",
   },
 };
 
 export const Success: Story = {
   args: {
-    title: "Success",
-    children: "Your changes have been saved.",
+    title: "성공",
+    children: "변경 사항이 저장되었습니다.",
     variant: "success",
   },
 };
 
 export const Warning: Story = {
   args: {
-    title: "Warning",
-    children: "Please review before continuing.",
+    title: "경고",
+    children: "계속하기 전에 내용을 확인하세요.",
     variant: "warning",
   },
 };
 
 export const Error: Story = {
   args: {
-    title: "Error",
-    children: "Something went wrong. Please try again.",
+    title: "오류",
+    children: "문제가 발생했습니다. 다시 시도하세요.",
     variant: "error",
   },
 };

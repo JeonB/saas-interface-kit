@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Hover/focus tooltip using Floating UI. **A11y:** `role="tooltip"`; shows on hover (120ms delay) and focus; dismisses on Escape. **Do:** keep content to a single short phrase. **Don\'t:** put interactive elements inside tooltip content.',
+          "Floating UI 기반 호버/포커스 툴팁입니다. **접근성:** `role=\"tooltip\"`; 호버(120ms 지연)·포커스 시 표시, Escape로 닫힘. **권장:** 짧은 한 문장. **비권장:** 툴팁 안에 상호작용 요소.",
       },
     },
   },
@@ -28,10 +28,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    content: "This is a tooltip",
+    content: "툴팁입니다",
     children: (
       <Button name="tooltipDemo" variant="default">
-        Hover me
+        마우스를 올리세요
       </Button>
     ),
   },
@@ -40,24 +40,24 @@ export const Default: Story = {
 export const Placements: Story = {
   render: () => (
     <div className="ui:flex ui:gap-4">
-      <Tooltip content="Top" placement="top">
+      <Tooltip content="위" placement="top">
         <Button name="top" variant="default">
-          Top
+          위
         </Button>
       </Tooltip>
-      <Tooltip content="Bottom" placement="bottom">
+      <Tooltip content="아래" placement="bottom">
         <Button name="bottom" variant="default">
-          Bottom
+          아래
         </Button>
       </Tooltip>
-      <Tooltip content="Left" placement="left">
+      <Tooltip content="왼쪽" placement="left">
         <Button name="left" variant="default">
-          Left
+          왼쪽
         </Button>
       </Tooltip>
-      <Tooltip content="Right" placement="right">
+      <Tooltip content="오른쪽" placement="right">
         <Button name="right" variant="default">
-          Right
+          오른쪽
         </Button>
       </Tooltip>
     </div>

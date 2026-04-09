@@ -8,9 +8,9 @@ describe("Pagination", () => {
     const user = userEvent.setup();
     const onPageChange = vi.fn();
     render(<Pagination page={2} pageCount={3} onPageChange={onPageChange} />);
-    await user.click(screen.getByRole("button", { name: "Next" }));
+    await user.click(screen.getByRole("button", { name: "다음" }));
     expect(onPageChange).toHaveBeenCalledWith(3);
-    await user.click(screen.getByRole("button", { name: "Previous" }));
+    await user.click(screen.getByRole("button", { name: "이전" }));
     expect(onPageChange).toHaveBeenCalledWith(1);
   });
 });

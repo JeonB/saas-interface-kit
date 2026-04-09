@@ -8,7 +8,7 @@ export type SidebarProps = {
 
 export function Sidebar({ children, className }: SidebarProps) {
   return (
-    <nav aria-label="Main" className={cn("ui:flex ui:flex-col ui:gap-1 ui:p-3", className)}>
+    <nav aria-label="주 메뉴" className={cn("ui:flex ui:flex-col ui:gap-1 ui:p-3", className)}>
       {children}
     </nav>
   );

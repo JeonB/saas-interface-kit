@@ -25,7 +25,7 @@ export function Spinner({
   className,
   decorative = false,
   size = "md",
-  "aria-label": ariaLabel = "Loading",
+  "aria-label": ariaLabel = "로딩 중",
 }: SpinnerProps) {
   const cls = cn(
     "ui:inline-block ui:shrink-0 ui:animate-spin ui:rounded-full ui:border-current ui:border-t-transparent",

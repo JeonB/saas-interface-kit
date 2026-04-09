@@ -32,7 +32,7 @@ export const Default: Story = {
 export const WithImage: Story = {
   args: {
     src: "https://github.com/vercel.png",
-    alt: "Vercel",
+    alt: "Vercel 로고",
     size: "md",
   },
 };

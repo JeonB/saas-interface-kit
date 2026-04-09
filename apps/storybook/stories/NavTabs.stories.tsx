@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Horizontal anchor-based navigation tabs, typically placed below a header. **A11y:** renders as `<nav aria-label=\"Sections\">` with anchor children. **Do:** use for page-level route switching. **Don't:** confuse with `Tabs` (controlled tab panels).",
+          "헤더 아래에 두는 가로 앵커 기반 내비 탭입니다. **접근성:** `<nav aria-label=\"섹션\">`과 앵커 자식. **권장:** 페이지 수준 라우트 전환. **비권장:** `Tabs`(제어 탭 패널)와 혼동.",
       },
     },
   },
@@ -22,9 +22,11 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: () => (
     <NavTabs>
-      <NavTabsItem href="#" active>Overview</NavTabsItem>
-      <NavTabsItem href="#">Analytics</NavTabsItem>
-      <NavTabsItem href="#">Settings</NavTabsItem>
+      <NavTabsItem href="#" active>
+        개요
+      </NavTabsItem>
+      <NavTabsItem href="#">분석</NavTabsItem>
+      <NavTabsItem href="#">설정</NavTabsItem>
     </NavTabs>
   ),
 };

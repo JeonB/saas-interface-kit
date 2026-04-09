@@ -5,13 +5,13 @@ import { Spinner } from "./spinner";
 describe("Spinner", () => {
   it("exposes status role and default label", () => {
     render(<Spinner />);
-    const el = screen.getByRole("status", { name: "Loading" });
+    const el = screen.getByRole("status", { name: "로딩 중" });
     expect(el).toHaveClass("ui:animate-spin");
   });
 
   it("allows custom aria-label", () => {
-    render(<Spinner aria-label="Saving" />);
-    expect(screen.getByRole("status", { name: "Saving" })).toBeInTheDocument();
+    render(<Spinner aria-label="저장 중" />);
+    expect(screen.getByRole("status", { name: "저장 중" })).toBeInTheDocument();
   });
 
   it("decorative spinner is hidden from accessibility tree", () => {

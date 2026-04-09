@@ -45,7 +45,7 @@ export function Avatar({
     <span
       className={combined}
       role="img"
-      aria-label={alt || fallback || "Avatar"}
+      aria-label={alt || fallback || "아바타"}
     >
       {fallback ?? "?"}
     </span>
