@@ -15,7 +15,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Click-triggered dropdown with `role="menu"`. **A11y:** trigger sets `aria-expanded` and `aria-haspopup="menu"`; items are `role="menuitem"` buttons. Closes on outside click. **Do:** keep item labels concise. **Don\'t:** nest dropdowns.',
+          "`role=\"menu\"` 클릭 트리거 드롭다운입니다. **접근성:** 트리거에 `aria-expanded`와 `aria-haspopup=\"menu\"`; 항목은 `role=\"menuitem\"` 버튼. 바깥 클릭 시 닫힘. **권장:** 항목 레이블은 짧게. **비권장:** 드롭다운 중첩.",
       },
     },
   },
@@ -30,13 +30,13 @@ export const Default: Story = {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Button name="actions" variant="default">
-          Actions
+          동작
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => {}}>Edit</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => {}}>Duplicate</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => {}}>Delete</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => {}}>편집</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => {}}>복제</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => {}}>삭제</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   ),

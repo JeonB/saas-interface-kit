@@ -9,7 +9,7 @@ export type NavTabsProps = {
 export function NavTabs({ children, className }: NavTabsProps) {
   return (
     <nav
-      aria-label="Sections"
+      aria-label="섹션"
       className={cn("ui:flex ui:flex-wrap ui:gap-4 ui:border-b ui:border-border-subtle", className)}
     >
       {children}

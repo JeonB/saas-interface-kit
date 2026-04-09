@@ -5,29 +5,29 @@ describe("Sidebar", () => {
   it("renders as nav with aria-label", () => {
     render(
       <Sidebar>
-        <SidebarGroup label="Main">
-          <SidebarItem href="#">Dashboard</SidebarItem>
+        <SidebarGroup label="메인">
+          <SidebarItem href="#">대시보드</SidebarItem>
         </SidebarGroup>
       </Sidebar>,
     );
     expect(
-      screen.getByRole("navigation", { name: "Main" }),
+      screen.getByRole("navigation", { name: "주 메뉴" }),
     ).toBeInTheDocument();
   });
 
   it("renders group label and items", () => {
     render(
       <Sidebar>
-        <SidebarGroup label="Platform">
+        <SidebarGroup label="플랫폼">
           <SidebarItem href="#" active>
-            Overview
+            개요
           </SidebarItem>
-          <SidebarItem href="#">Analytics</SidebarItem>
+          <SidebarItem href="#">분석</SidebarItem>
         </SidebarGroup>
       </Sidebar>,
     );
-    expect(screen.getByText("Platform")).toBeInTheDocument();
-    expect(screen.getByText("Overview")).toBeInTheDocument();
-    expect(screen.getByText("Analytics")).toBeInTheDocument();
+    expect(screen.getByText("플랫폼")).toBeInTheDocument();
+    expect(screen.getByText("개요")).toBeInTheDocument();
+    expect(screen.getByText("분석")).toBeInTheDocument();
   });
 });

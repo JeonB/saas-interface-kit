@@ -10,7 +10,7 @@ export type PaginationProps = {
 
 export function Pagination({ className, onPageChange, page, pageCount }: PaginationProps) {
   return (
-    <nav aria-label="Pagination" className={cn("ui:flex ui:items-center ui:gap-3", className)}>
+    <nav aria-label="페이지 탐색" className={cn("ui:flex ui:items-center ui:gap-3", className)}>
       <Button
         disabled={page <= 1}
         name="paginationPrev"
@@ -20,10 +20,10 @@ export function Pagination({ className, onPageChange, page, pageCount }: Paginat
         type="button"
         variant="default"
       >
-        Previous
+        이전
       </Button>
       <span className="ui:text-sm ui:text-text-secondary">
-        Page {page} of {pageCount}
+        {page} / {pageCount} 페이지
       </span>
       <Button
         disabled={page >= pageCount}
@@ -34,7 +34,7 @@ export function Pagination({ className, onPageChange, page, pageCount }: Paginat
         type="button"
         variant="default"
       >
-        Next
+        다음
       </Button>
     </nav>
   );

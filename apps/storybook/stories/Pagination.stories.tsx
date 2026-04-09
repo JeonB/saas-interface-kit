@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Previous/Next pagination with page indicator. **A11y:** `<nav aria-label=\"Pagination\">`; buttons disable at bounds. **Do:** pair with DataTable. **Don't:** use for content carousels—use a dedicated slider.",
+          "이전/다음과 페이지 표시가 있는 페이지네이션입니다. **접근성:** `<nav aria-label=\"페이지 탐색\">`; 경계에서 버튼 비활성. **권장:** DataTable과 짝. **비권장:** 콘텐츠 캐러셀 — 전용 슬라이더 사용.",
       },
     },
   },

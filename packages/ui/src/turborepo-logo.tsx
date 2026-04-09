@@ -2,7 +2,7 @@ export function TurborepoLogo({ className }: { className?: string }) {
   return (
     <span className={className ?? ""}>
       <svg
-        aria-label="Turbo logomark"
+        aria-label="Turbo 로고"
         height="80"
         role="img"
         viewBox="0 0 40 40"

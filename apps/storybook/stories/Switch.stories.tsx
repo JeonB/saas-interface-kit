@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Toggle switch with `role="switch"` and `aria-checked`. **A11y:** focus ring, disabled state. Pair with a `<label>` for accessible name. **Do:** use for instant boolean toggles (e.g. feature flags). **Don\'t:** use inside a form where Checkbox better conveys "agree" semantics.',
+          "`role=\"switch\"`와 `aria-checked`가 있는 토글 스위치입니다. **접근성:** 포커스 링, 비활성 상태. 접근 가능한 이름은 `<label>`과 짝지으세요. **권장:** 즉시 반영되는 불리언(기능 플래그 등). **비권장:** \"동의\" 의미가 더 맞는 폼에서는 Checkbox.",
       },
     },
   },
@@ -33,13 +33,13 @@ export const Default: Story = {
           checked={checked}
           onCheckedChange={setChecked}
           id="notifications"
-          aria-label="Enable notifications"
+          aria-label="알림 켜기"
         />
         <label
           htmlFor="notifications"
           className="ui:text-sm ui:text-text-primary"
         >
-          Enable notifications
+          알림 켜기
         </label>
       </div>
     );
@@ -57,19 +57,19 @@ export const Sizes: Story = {
           checked={a}
           onCheckedChange={setA}
           size="sm"
-          aria-label="Small"
+          aria-label="작게"
         />
         <Switch
           checked={b}
           onCheckedChange={setB}
           size="md"
-          aria-label="Medium"
+          aria-label="보통"
         />
         <Switch
           checked={c}
           onCheckedChange={setC}
           size="lg"
-          aria-label="Large"
+          aria-label="크게"
         />
       </div>
     );

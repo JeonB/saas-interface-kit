@@ -4,17 +4,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const DOC_LINKS = [
-  { label: "Introduction", href: "/docs" },
-  { label: "Cursor in Slack", href: "/docs/cursor-help" },
-  { label: "Getting started", href: "/docs/getting-started" },
-  { label: "Foundations", href: "/docs/foundations" },
-  { label: "Monorepo", href: "/docs/monorepo" },
-  { label: "Packages / UI", href: "/docs/packages/ui" },
-  { label: "Design system", href: "/docs/design-system" },
-  { label: "Component reference", href: "/docs/components" },
-  { label: "Quality gates", href: "/docs/quality-gates" },
-  { label: "Patterns", href: "/docs/patterns" },
-  { label: "Apps", href: "/docs/apps" },
+  { label: "소개", href: "/docs" },
+  { label: "Slack의 Cursor", href: "/docs/cursor-help" },
+  { label: "시작하기", href: "/docs/getting-started" },
+  { label: "파운데이션", href: "/docs/foundations" },
+  { label: "모노레포", href: "/docs/monorepo" },
+  { label: "패키지 / UI", href: "/docs/packages/ui" },
+  { label: "디자인 시스템", href: "/docs/design-system" },
+  { label: "컴포넌트 참고", href: "/docs/components" },
+  { label: "품질 게이트", href: "/docs/quality-gates" },
+  { label: "패턴", href: "/docs/patterns" },
+  { label: "앱", href: "/docs/apps" },
 ];
 
 export function DocsSidebar() {
@@ -22,7 +22,7 @@ export function DocsSidebar() {
 
   return (
     <aside className="w-56 shrink-0 border-r border-neutral-800 bg-neutral-950 py-6">
-      <nav aria-label="Documentation" className="px-4">
+      <nav aria-label="문서" className="px-4">
         <ul className="space-y-1">
           {DOC_LINKS.map(({ label, href }) => {
             const isActive = pathname === href;

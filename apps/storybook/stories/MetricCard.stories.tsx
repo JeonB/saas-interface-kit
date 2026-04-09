@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Extended KPI card with optional delta, comparison label, and chart slot. **A11y:** plain text structure. **Do:** use `trend` for semantic color on delta. **Don't:** embed interactive controls inside the card.",
+          "선택 델타, 비교 레이블, 차트 슬롯이 있는 확장 KPI 카드입니다. **접근성:** 단순 텍스트 구조. **권장:** 델타 색은 `trend`로. **비권장:** 카드 안에 상호작용 컨트롤 삽입.",
       },
     },
   },
@@ -24,17 +24,17 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    label: "Monthly revenue",
+    label: "월 매출",
     value: "$48.2k",
     delta: "+6.1%",
     trend: "up",
-    comparisonLabel: "vs last month",
+    comparisonLabel: "전월 대비",
   },
 };
 
 export const WithChart: Story = {
   args: {
-    label: "API latency",
+    label: "API 지연",
     value: "124 ms",
     delta: "-12ms",
     trend: "down",

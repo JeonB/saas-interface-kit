@@ -5,8 +5,8 @@ import { DOCS_BASE } from "../lib/config";
 import { ThemeToggle } from "./ThemeToggle";
 
 const NAV_LINKS = [
-  { label: "Overview", href: "/" },
-  { label: "Docs", href: `${DOCS_BASE}/docs` },
+  { label: "개요", href: "/" },
+  { label: "문서", href: `${DOCS_BASE}/docs` },
 ];
 
 export function Header() {
@@ -18,7 +18,7 @@ export function Header() {
             href="/"
             className="text-sm font-semibold text-white hover:text-neutral-300"
           >
-            Northline Console
+            Northline 콘솔
           </Link>
           <ul className="flex items-center gap-4">
             {NAV_LINKS.map(({ label, href }) => (
@@ -46,13 +46,13 @@ export function Header() {
         </nav>
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          <Badge variant="success">Live</Badge>
+          <Badge variant="success">실시간</Badge>
           <Avatar fallback="SK" size="sm" />
           <a
             href={`${DOCS_BASE}/docs/getting-started`}
             className="inline-flex items-center justify-center rounded-md bg-blue-1000 px-4 py-2 text-sm font-semibold text-white transition-colors hover:opacity-90"
           >
-            Get started
+            시작하기
           </a>
         </div>
       </div>

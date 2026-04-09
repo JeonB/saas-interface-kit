@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Full-width banner for system-level notices (maintenance, incidents). **A11y:** `role=\"alert\"`; dismiss button has `aria-label=\"Dismiss banner\"`. **Do:** use at the top of the page, outside AppShell. **Don't:** stack multiple banners.",
+          "시스템 수준 공지(점검, 장애)용 전폭 배너입니다. **접근성:** `role=\"alert\"`; 닫기 버튼은 `aria-label=\"배너 닫기\"`. **권장:** 페이지 상단, AppShell 밖. **비권장:** 배너 여러 개 쌓기.",
       },
     },
   },
@@ -25,16 +25,16 @@ type Story = StoryObj<typeof meta>;
 export const Warning: Story = {
   args: {
     variant: "warning",
-    title: "Scheduled maintenance",
-    children: "Platform will be briefly unavailable on Sunday 2:00 AM UTC.",
+    title: "예정된 점검",
+    children: "일요일 02:00 UTC에 플랫폼이 잠시 중단될 수 있습니다.",
   },
 };
 
 export const Error: Story = {
   args: {
     variant: "error",
-    title: "Incident detected",
-    children: "Elevated error rates on US-East. Our team is investigating.",
+    title: "장애 감지",
+    children: "US-East에서 오류율이 높습니다. 팀이 조사 중입니다.",
     onDismiss: () => {},
   },
 };
@@ -42,7 +42,7 @@ export const Error: Story = {
 export const Info: Story = {
   args: {
     variant: "info",
-    children: "New dashboard features are now available. Check the changelog.",
+    children: "새 대시보드 기능이 출시되었습니다. 변경 로그를 확인하세요.",
     onDismiss: () => {},
   },
 };

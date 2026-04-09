@@ -10,45 +10,45 @@ function ToastDemo() {
         name="info"
         variant="default"
         onClick={() =>
-          toast({ message: "Deployment queued.", variant: "info" })
+          toast({ message: "배포가 대기열에 추가되었습니다.", variant: "info" })
         }
       >
-        Info
+        안내
       </Button>
       <Button
         name="success"
         variant="default"
         onClick={() =>
           toast({
-            title: "Success",
-            message: "Changes saved.",
+            title: "성공",
+            message: "변경 사항이 저장되었습니다.",
             variant: "success",
           })
         }
       >
-        Success
+        성공
       </Button>
       <Button
         name="warning"
         variant="default"
         onClick={() =>
-          toast({ message: "Rate limit approaching.", variant: "warning" })
+          toast({ message: "요율 한도에 가까워집니다.", variant: "warning" })
         }
       >
-        Warning
+        경고
       </Button>
       <Button
         name="error"
         variant="default"
         onClick={() =>
           toast({
-            title: "Error",
-            message: "Build failed.",
+            title: "오류",
+            message: "빌드에 실패했습니다.",
             variant: "error",
           })
         }
       >
-        Error
+        오류
       </Button>
     </div>
   );
@@ -62,7 +62,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Toast notification system via context provider. Auto-dismisses after 4.5s. **A11y:** region is `aria-live="polite"`, each toast is `role="status"`. **Do:** wrap your app root with ToastProvider. **Don\'t:** use for critical blocking errors—use Dialog or Alert instead.',
+          "컨텍스트 프로바이더 기반 토스트 알림입니다. 약 4.5초 후 자동으로 사라집니다. **접근성:** 영역은 `aria-live=\"polite\"`, 각 토스트는 `role=\"status\"`. **권장:** 앱 루트를 ToastProvider로 감싸기. **비권장:** 막는 치명 오류 — Dialog나 Alert 사용.",
       },
     },
   },

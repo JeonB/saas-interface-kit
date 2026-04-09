@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Controlled radio group with `role="radiogroup"`. **A11y:** native `<input type="radio">` with associated `<label>`. **Do:** provide unique `id` per RadioItem. **Don\'t:** use for multi-select—use Checkbox instead.',
+          "`role=\"radiogroup\"` 제어 라디오 그룹입니다. **접근성:** 네이티브 `<input type=\"radio\">`와 연결된 `<label>`. **권장:** RadioItem마다 고유 `id`. **비권장:** 다중 선택 — Checkbox 사용.",
       },
     },
   },
@@ -25,10 +25,10 @@ export const Default: Story = {
     const [value, setValue] = useState("monthly");
     return (
       <RadioGroup name="billing" value={value} onValueChange={setValue}>
-        <RadioItem id="monthly" label="Monthly billing" value="monthly" />
+        <RadioItem id="monthly" label="월간 결제" value="monthly" />
         <RadioItem
           id="annual"
-          label="Annual billing (save 20%)"
+          label="연간 결제 (20% 절약)"
           value="annual"
         />
       </RadioGroup>

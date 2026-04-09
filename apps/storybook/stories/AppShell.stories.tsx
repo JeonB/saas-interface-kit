@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Top-level layout shell for SaaS dashboards. Composes Sidebar, Header, and Content into a responsive grid. **A11y:** sidebar renders as `<aside>`, header as `<header>`, content as `<main>`. **Do:** compose with Sidebar and NavTabs for navigation. **Don't:** nest AppShell inside another AppShell.",
+          "SaaS 대시보드용 최상위 레이아웃 셸입니다. Sidebar, Header, Content를 반응형 그리드로 조합합니다. **접근성:** 사이드바는 `<aside>`, 헤더는 `<header>`, 본문은 `<main>`. **권장:** 내비는 Sidebar·NavTabs와 조합. **비권장:** AppShell 중첩.",
       },
     },
   },
@@ -23,14 +23,14 @@ export const Default: Story = {
   render: () => (
     <AppShell className="ui:h-[400px]">
       <AppShellSidebar>
-        <div className="ui:p-4 ui:text-sm ui:text-text-secondary">Sidebar</div>
+        <div className="ui:p-4 ui:text-sm ui:text-text-secondary">사이드바</div>
       </AppShellSidebar>
       <AppShellMain>
         <AppShellHeader>
-          <span className="ui:text-sm ui:font-medium ui:text-text-primary">Header</span>
+          <span className="ui:text-sm ui:font-medium ui:text-text-primary">헤더</span>
         </AppShellHeader>
         <AppShellContent>
-          <p className="ui:text-sm ui:text-text-secondary">Main content area</p>
+          <p className="ui:text-sm ui:text-text-secondary">본문 영역</p>
         </AppShellContent>
       </AppShellMain>
     </AppShell>

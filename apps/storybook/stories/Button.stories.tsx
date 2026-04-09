@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Primary action control for SaaS surfaces. **Variant** encodes meaning (`primary` = main action, `danger` = destructive, `default` = secondary). **Size** encodes density—do not replace it with large `className` padding overrides. Default `type=\"button\"` avoids accidental form submits. Pair with `name` when the button participates in forms or analytics.",
+          "SaaS 화면의 주요 동작 컨트롤입니다. **Variant**는 의미를 (`primary` = 주요 동작, `danger` = 파괴적, `default` = 보조). **Size**는 밀도를 나타냅니다 — 큰 `className` 패딩으로 대체하지 마세요. 기본 `type=\"button\"`은 의도치 않은 폼 제출을 막습니다. 폼·분석에 참여할 때는 `name`을 함께 두세요.",
       },
     },
   },
@@ -37,7 +37,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: "Button",
+    children: "버튼",
     variant: "default",
     size: "md",
   },
@@ -45,7 +45,7 @@ export const Default: Story = {
 
 export const Primary: Story = {
   args: {
-    children: "Primary",
+    children: "주요",
     variant: "primary",
     size: "md",
   },
@@ -53,7 +53,7 @@ export const Primary: Story = {
 
 export const Danger: Story = {
   args: {
-    children: "Danger",
+    children: "위험",
     variant: "danger",
     size: "md",
   },
@@ -61,7 +61,7 @@ export const Danger: Story = {
 
 export const Disabled: Story = {
   args: {
-    children: "Disabled",
+    children: "비활성",
     variant: "default",
     size: "md",
     disabled: true,
@@ -71,16 +71,15 @@ export const Disabled: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="ui:flex ui:items-center ui:gap-2">
-      <Button size="sm">Small</Button>
-      <Button size="md">Medium</Button>
-      <Button size="lg">Large</Button>
+      <Button size="sm">작게</Button>
+      <Button size="md">보통</Button>
+      <Button size="lg">크게</Button>
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story:
-          "Use `sm` in dense contexts and `lg` only for primary CTAs. Keep size decisions consistent per page.",
+        story: "밀집한 맥락에는 `sm`, 주요 CTA에만 `lg`를 쓰세요. 페이지마다 크기 결정을 일관되게 유지하세요.",
       },
     },
   },
@@ -90,12 +89,12 @@ export const DoAndDont: Story = {
   render: () => (
     <div className="ui:grid ui:gap-4">
       <div className="ui:flex ui:items-center ui:gap-2">
-        <Button variant="primary">Do: Primary action</Button>
-        <Button variant="default">Secondary</Button>
+        <Button variant="primary">권장: 주요 동작</Button>
+        <Button variant="default">보조</Button>
       </div>
       <div className="ui:flex ui:items-center ui:gap-2">
-        <Button className="ui:px-14">Don't: Override spacing heavily</Button>
-        <Button variant="danger">Delete</Button>
+        <Button className="ui:px-14">비권장: 간격을 과하게 덮어쓰기</Button>
+        <Button variant="danger">삭제</Button>
       </div>
     </div>
   ),
@@ -103,7 +102,7 @@ export const DoAndDont: Story = {
     docs: {
       description: {
         story:
-          "Do keep semantic variants aligned with product language. Don't use `className` to simulate a new variant—add a variant or compose with layout wrappers instead.",
+          "시맨틱 variant는 제품 문구와 맞추세요. `className`으로 새 variant를 흉내 내지 말고 variant를 추가하거나 레이아웃 래퍼로 조합하세요.",
       },
     },
   },

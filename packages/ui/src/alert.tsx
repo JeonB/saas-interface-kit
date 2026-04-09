@@ -56,7 +56,7 @@ export function Alert({ children, title, variant = "info", className, onDismiss 
         </div>
         {onDismiss ? (
           <button
-            aria-label="Dismiss alert"
+            aria-label="알림 닫기"
             className="ui:-m-1 ui:shrink-0 ui:rounded-ui-sm ui:p-1 ui:text-current hover:ui:bg-black/10 focus-visible:ui:outline-none focus-visible:ui:ring-2 focus-visible:ui:ring-semantic-brand/40"
             name="dismissAlert"
             onClick={onDismiss}

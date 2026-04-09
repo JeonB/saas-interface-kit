@@ -32,7 +32,7 @@ export function ThemeToggle() {
 
   return (
     <button
-      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+      aria-label={theme === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"}
       className="inline-flex h-8 w-8 items-center justify-center rounded-md text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
       name="themeToggle"
       onClick={toggle}

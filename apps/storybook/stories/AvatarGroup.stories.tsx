@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Stacked avatar group with overflow indicator. **A11y:** overflow chip has `role=\"img\"` with `aria-label` like \"+3 more\". **Do:** set `max` to limit visible count. **Don't:** use without Avatar children.",
+          "겹쳐 쌓인 아바타 그룹과 넘침 표시입니다. **접근성:** 넘침 칩은 `role=\"img\"`와 `aria-label` 예: \"3명 더 있음\". **권장:** 보이는 개수 제한에 `max` 설정. **비권장:** Avatar 자식 없이 사용.",
       },
     },
   },

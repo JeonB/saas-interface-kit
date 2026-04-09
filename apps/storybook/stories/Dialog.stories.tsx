@@ -20,7 +20,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Modal dialog using native `<dialog>` with `showModal`. **A11y:** `aria-labelledby` from DialogTitle; Escape closes via `cancel` event. **Do:** always include DialogTitle for screen readers. **Don't:** stack multiple dialogs.",
+          "네이티브 `<dialog>`와 `showModal`을 쓰는 모달입니다. **접근성:** DialogTitle의 `aria-labelledby`; Escape는 `cancel`로 닫힘. **권장:** 스크린 리더를 위해 DialogTitle 항상 포함. **비권장:** 다이얼로그 중첩.",
       },
     },
   },
@@ -37,29 +37,25 @@ export const Default: Story = {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger>
           <Button name="openDialog" variant="primary">
-            Open dialog
+            대화상자 열기
           </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Confirm action</DialogTitle>
-            <DialogDescription>
-              This will permanently delete the resource.
-            </DialogDescription>
+            <DialogTitle>동작 확인</DialogTitle>
+            <DialogDescription>리소스가 영구적으로 삭제됩니다.</DialogDescription>
           </DialogHeader>
           <div className="ui:px-6 ui:py-4">
-            <p className="ui:text-sm ui:text-text-secondary">
-              Are you sure you want to continue?
-            </p>
+            <p className="ui:text-sm ui:text-text-secondary">계속하시겠습니까?</p>
           </div>
           <DialogFooter>
             <DialogClose>
               <Button name="cancel" variant="default">
-                Cancel
+                취소
               </Button>
             </DialogClose>
             <Button name="confirm" variant="danger">
-              Delete
+              삭제
             </Button>
           </DialogFooter>
         </DialogContent>

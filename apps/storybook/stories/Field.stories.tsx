@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Label + control wrapper. Clones the child to set `id`, `aria-describedby`, and `aria-invalid`. Use one interactive child (e.g. `Input`, `Textarea`).",
+          "레이블 + 컨트롤 래퍼입니다. 자식에 `id`, `aria-describedby`, `aria-invalid`를 연결합니다. 상호작용 자식은 하나만 두세요(예: `Input`, `Textarea`).",
       },
     },
   },
@@ -23,7 +23,7 @@ type Story = StoryObj<typeof meta>;
 export const WithHint: Story = {
   render: () => (
     <div className="ui:w-80">
-      <Field hint="Shown on invoices and reports." id="display-name" label="Display name">
+      <Field hint="청구서와 보고서에 표시됩니다." id="display-name" label="표시 이름">
         <Input name="displayName" placeholder="Acme Corp" />
       </Field>
     </div>
@@ -33,7 +33,7 @@ export const WithHint: Story = {
 export const WithError: Story = {
   render: () => (
     <div className="ui:w-80">
-      <Field error="Company name is required." id="company" label="Company">
+      <Field error="회사 이름은 필수입니다." id="company" label="회사">
         <Input name="company" />
       </Field>
     </div>
@@ -41,7 +41,7 @@ export const WithError: Story = {
   parameters: {
     docs: {
       description: {
-        story: "When `error` is set, hint is hidden and `aria-invalid` is applied for assistive tech.",
+        story: "`error`가 설정되면 힌트는 숨겨지고 보조 기술용으로 `aria-invalid`가 적용됩니다.",
       },
     },
   },

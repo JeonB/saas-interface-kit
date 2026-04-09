@@ -46,13 +46,13 @@ export function AlertBanner({
       </div>
       {onDismiss ? (
         <button
-          aria-label="Dismiss banner"
+          aria-label="배너 닫기"
           className="ui:shrink-0 ui:rounded-ui-sm ui:px-2 ui:py-1 ui:text-sm ui:font-medium hover:ui:bg-black/10 focus-visible:ui:outline-none focus-visible:ui:ring-2 focus-visible:ui:ring-semantic-brand/40"
           name="dismissBanner"
           onClick={onDismiss}
           type="button"
         >
-          Dismiss
+          닫기
         </button>
       ) : null}
     </div>

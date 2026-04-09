@@ -22,61 +22,66 @@ import { Textarea } from "@repo/ui/textarea";
 export default function ComponentReferencePage() {
   return (
     <>
-      <h1 className="text-3xl font-bold text-white">Component reference</h1>
+      <h1 className="text-3xl font-bold text-white">컴포넌트 참고</h1>
       <p className="mt-2 text-neutral-400">
-        Usage, accessibility notes, and examples for <code className="rounded bg-neutral-800 px-1">@repo/ui</code>{" "}
-        (B2B SaaS-oriented). Components are grouped by role.
+        <code className="rounded bg-neutral-800 px-1">@repo/ui</code>의 사용법, 접근성 메모, 예시입니다(B2B SaaS 지향).
+        역할별로 묶었습니다.
       </p>
       <div className="mt-6 rounded-lg border border-neutral-800 bg-neutral-900/40 p-4">
-        <h2 className="text-sm font-semibold text-white">Documentation template</h2>
+        <h2 className="text-sm font-semibold text-white">문서 템플릿</h2>
         <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-neutral-300">
           <li>
-            <strong>Usage:</strong> when to use vs. plain HTML or app-level layout
+            <strong>용도:</strong> 일반 HTML·앱 레이아웃 대비 언제 쓸지
           </li>
           <li>
-            <strong>A11y:</strong> roles, labels, keyboard, and what the component guarantees
+            <strong>접근성:</strong> 역할, 레이블, 키보드, 컴포넌트가 보장하는 것
           </li>
           <li>
-            <strong>Do / Don&apos;t:</strong> API-first patterns; avoid token drift via ad-hoc classes
+            <strong>권장 / 비권장:</strong> API 우선 패턴; 임의 class로 토큰이 흐트러지지 않게
           </li>
         </ul>
       </div>
 
-      {/* ── Form ──────────────────────────────────────────── */}
-      <h2 className="mt-14 border-b border-neutral-800 pb-2 text-2xl font-bold text-white">Form</h2>
+      <h2 className="mt-14 border-b border-neutral-800 pb-2 text-2xl font-bold text-white">폼</h2>
 
       <section className="mt-8">
         <h3 className="text-xl font-semibold text-white">Button</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> primary actions, form submits, destructive confirmations.{" "}
-          <strong>A11y:</strong> native <code className="rounded bg-neutral-800 px-1">button</code>; use explicit{" "}
-          <code className="rounded bg-neutral-800 px-1">type=&quot;submit&quot;</code> in forms.{" "}
-          <strong>Do:</strong> choose <code className="rounded bg-neutral-800 px-1">variant</code> for meaning,{" "}
-          <code className="rounded bg-neutral-800 px-1">size</code> for density.{" "}
-          <strong>Don&apos;t:</strong> override spacing with large <code className="rounded bg-neutral-800 px-1">className</code> paddings.
+          <strong>용도:</strong> 주요 동작, 폼 제출, 파괴적 확인.{" "}
+          <strong>접근성:</strong> 네이티브 <code className="rounded bg-neutral-800 px-1">button</code>; 폼에서는 명시적으로{" "}
+          <code className="rounded bg-neutral-800 px-1">type=&quot;submit&quot;</code>.{" "}
+          <strong>권장:</strong> 의미는 <code className="rounded bg-neutral-800 px-1">variant</code>, 밀도는{" "}
+          <code className="rounded bg-neutral-800 px-1">size</code>로 선택.{" "}
+          <strong>비권장:</strong> 큰 <code className="rounded bg-neutral-800 px-1">className</code> 패딩으로 간격 덮어쓰기.
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
-          <Button name="demo-default" variant="default">Default</Button>
-          <Button name="demo-primary" variant="primary">Primary</Button>
-          <Button name="demo-danger" variant="danger">Danger</Button>
+          <Button name="demo-default" variant="default">
+            기본
+          </Button>
+          <Button name="demo-primary" variant="primary">
+            주요
+          </Button>
+          <Button name="demo-danger" variant="danger">
+            위험
+          </Button>
         </div>
       </section>
 
       <section className="mt-10">
-        <h3 className="text-xl font-semibold text-white">Input &amp; Textarea</h3>
+        <h3 className="text-xl font-semibold text-white">Input 및 Textarea</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> filters, settings, and record forms.{" "}
-          <strong>A11y:</strong> always expose an accessible name via <code className="rounded bg-neutral-800 px-1">Field</code> or{" "}
-          <code className="rounded bg-neutral-800 px-1">aria-label</code>.{" "}
-          <strong>Do:</strong> set <code className="rounded bg-neutral-800 px-1">name</code> on every field.{" "}
-          <strong>Don&apos;t:</strong> rely on placeholder as the only label.
+          <strong>용도:</strong> 필터, 설정, 레코드 폼.{" "}
+          <strong>접근성:</strong> <code className="rounded bg-neutral-800 px-1">Field</code> 또는{" "}
+          <code className="rounded bg-neutral-800 px-1">aria-label</code>로 접근 가능한 이름을 항상 제공.{" "}
+          <strong>권장:</strong> 모든 필드에 <code className="rounded bg-neutral-800 px-1">name</code> 설정.{" "}
+          <strong>비권장:</strong> placeholder만 레이블로 쓰기.
         </p>
         <div className="mt-4 max-w-md space-y-4">
-          <Field hint="Used in notifications." id="docs-project" label="Project name">
+          <Field hint="알림에 사용됩니다." id="docs-project" label="프로젝트 이름">
             <Input name="project" placeholder="Analytics API" />
           </Field>
-          <Field id="docs-notes" label="Notes">
-            <Textarea name="notes" placeholder="Optional context…" rows={3} />
+          <Field id="docs-notes" label="메모">
+            <Textarea name="notes" placeholder="선택 맥락…" rows={3} />
           </Field>
         </div>
       </section>
@@ -84,15 +89,15 @@ export default function ComponentReferencePage() {
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">Field</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> one labeled control with optional hint or error.{" "}
-          <strong>A11y:</strong> wires <code className="rounded bg-neutral-800 px-1">htmlFor/id</code>,{" "}
-          <code className="rounded bg-neutral-800 px-1">aria-describedby</code>, and{" "}
-          <code className="rounded bg-neutral-800 px-1">aria-invalid</code>.{" "}
-          <strong>Do:</strong> pass a single input child.{" "}
-          <strong>Don&apos;t:</strong> nest multiple controls inside one Field.
+          <strong>용도:</strong> 레이블이 있는 단일 컨트롤, 선택적 힌트·오류.{" "}
+          <strong>접근성:</strong> <code className="rounded bg-neutral-800 px-1">htmlFor/id</code>,{" "}
+          <code className="rounded bg-neutral-800 px-1">aria-describedby</code>,{" "}
+          <code className="rounded bg-neutral-800 px-1">aria-invalid</code> 연결.{" "}
+          <strong>권장:</strong> 자식으로 input 하나만.{" "}
+          <strong>비권장:</strong> 한 Field 안에 여러 컨트롤 중첩.
         </p>
         <div className="mt-4 max-w-md">
-          <Field error="This field is required." id="docs-error-demo" label="Workspace">
+          <Field error="필수 항목입니다." id="docs-error-demo" label="워크스페이스">
             <Input name="workspace" />
           </Field>
         </div>
@@ -101,121 +106,120 @@ export default function ComponentReferencePage() {
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">Select</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> native dropdown for short option lists.{" "}
-          <strong>A11y:</strong> built-in keyboard and screen reader support.{" "}
-          <strong>Do:</strong> always provide <code className="rounded bg-neutral-800 px-1">name</code> and label.{" "}
-          <strong>Don&apos;t:</strong> use for 15+ options — consider Command palette.
+          <strong>용도:</strong> 짧은 옵션 목록용 네이티브 드롭다운.{" "}
+          <strong>접근성:</strong> 키보드·스크린 리더 지원 내장.{" "}
+          <strong>권장:</strong> <code className="rounded bg-neutral-800 px-1">name</code>과 레이블 항상 제공.{" "}
+          <strong>비권장:</strong> 15개 이상 옵션 — Command 팔레트 검토.
         </p>
       </section>
 
       <section className="mt-10">
-        <h3 className="text-xl font-semibold text-white">Checkbox &amp; RadioGroup</h3>
+        <h3 className="text-xl font-semibold text-white">Checkbox 및 RadioGroup</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> Checkbox for multi-select toggles; RadioGroup for exclusive single-select.{" "}
-          <strong>A11y:</strong> native inputs with <code className="rounded bg-neutral-800 px-1">label</code> association;{" "}
-          RadioGroup has <code className="rounded bg-neutral-800 px-1">role=&quot;radiogroup&quot;</code>.{" "}
-          <strong>Do:</strong> provide unique <code className="rounded bg-neutral-800 px-1">id</code> per item.{" "}
-          <strong>Don&apos;t:</strong> use Checkbox for instant boolean toggles — use Switch instead.
+          <strong>용도:</strong> Checkbox는 다중 선택 토글; RadioGroup은 단일 선택.{" "}
+          <strong>접근성:</strong> 네이티브 input과 <code className="rounded bg-neutral-800 px-1">label</code> 연결;
+          RadioGroup은 <code className="rounded bg-neutral-800 px-1">role=&quot;radiogroup&quot;</code>.{" "}
+          <strong>권장:</strong> 항목마다 고유 <code className="rounded bg-neutral-800 px-1">id</code>.{" "}
+          <strong>비권장:</strong> 즉시 켜고 끄는 불리언에는 Checkbox 대신 Switch.
         </p>
       </section>
 
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">Switch</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> instant boolean toggles (feature flags, preferences).{" "}
-          <strong>A11y:</strong> <code className="rounded bg-neutral-800 px-1">role=&quot;switch&quot;</code> with{" "}
-          <code className="rounded bg-neutral-800 px-1">aria-checked</code>; focus ring; disabled state.{" "}
-          <strong>Do:</strong> pair with a label.{" "}
-          <strong>Don&apos;t:</strong> use inside forms where Checkbox is more appropriate.
+          <strong>용도:</strong> 즉시 반영되는 불리언(기능 플래그, 환경설정).{" "}
+          <strong>접근성:</strong> <code className="rounded bg-neutral-800 px-1">role=&quot;switch&quot;</code>와{" "}
+          <code className="rounded bg-neutral-800 px-1">aria-checked</code>; 포커스 링; 비활성 상태.{" "}
+          <strong>권장:</strong> 레이블과 짝지음.{" "}
+          <strong>비권장:</strong> Checkbox가 더 맞는 폼 안에 Switch 남용.
         </p>
       </section>
 
       <section className="mt-10">
-        <h3 className="text-xl font-semibold text-white">FilterBar &amp; FilterChip</h3>
+        <h3 className="text-xl font-semibold text-white">FilterBar 및 FilterChip</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> horizontal filter bar with toggle-able chips.{" "}
-          <strong>A11y:</strong> chips are buttons with focus ring.{" "}
-          <strong>Do:</strong> manage active state externally.{" "}
-          <strong>Don&apos;t:</strong> use for navigation — use NavTabs.
+          <strong>용도:</strong> 토글 가능한 칩이 있는 가로 필터 바.{" "}
+          <strong>접근성:</strong> 칩은 포커스 링이 있는 버튼.{" "}
+          <strong>권장:</strong> 활성 상태는 외부에서 관리.{" "}
+          <strong>비권장:</strong> 내비게이션 용도 — NavTabs 사용.
         </p>
         <div className="mt-4">
           <FilterBar>
-            <FilterChip active>All</FilterChip>
-            <FilterChip>Active</FilterChip>
-            <FilterChip>Paused</FilterChip>
+            <FilterChip active>전체</FilterChip>
+            <FilterChip>활성</FilterChip>
+            <FilterChip>일시중지</FilterChip>
           </FilterBar>
         </div>
       </section>
 
-      {/* ── Data Display ──────────────────────────────────── */}
-      <h2 className="mt-14 border-b border-neutral-800 pb-2 text-2xl font-bold text-white">Data Display</h2>
+      <h2 className="mt-14 border-b border-neutral-800 pb-2 text-2xl font-bold text-white">데이터 표시</h2>
 
       <section className="mt-8">
-        <h3 className="text-xl font-semibold text-white">StatCard &amp; MetricCard</h3>
+        <h3 className="text-xl font-semibold text-white">StatCard 및 MetricCard</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> KPI tiles on dashboards. MetricCard extends StatCard with chart slot and comparison label.{" "}
-          <strong>A11y:</strong> structured as text; keep labels short.{" "}
-          <strong>Do:</strong> use <code className="rounded bg-neutral-800 px-1">trend</code> for delta semantics.{" "}
-          <strong>Don&apos;t:</strong> overload with charts — link to detail view.
+          <strong>용도:</strong> 대시보드 KPI 타일. MetricCard는 차트 슬롯·비교 레이블을 확장.{" "}
+          <strong>접근성:</strong> 텍스트 구조; 레이블은 짧게.{" "}
+          <strong>권장:</strong> 델타 의미는 <code className="rounded bg-neutral-800 px-1">trend</code>.{" "}
+          <strong>비권장:</strong> 차트 과부하 — 상세는 링크로.
         </p>
         <div className="mt-4 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3">
           <StatCard delta="+4.2%" label="MRR" trend="up" value="$52.1k" />
-          <StatCard delta="-0.4pp" label="Churn" trend="down" value="1.1%" />
-          <StatCard delta="—" label="Active orgs" trend="neutral" value="86" />
+          <StatCard delta="-0.4pp" label="이탈률" trend="down" value="1.1%" />
+          <StatCard delta="—" label="활성 조직" trend="neutral" value="86" />
         </div>
       </section>
 
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">DataTable</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> headless table shell powered by TanStack Table.{" "}
-          <strong>A11y:</strong> semantic <code className="rounded bg-neutral-800 px-1">&lt;table&gt;</code> with{" "}
+          <strong>용도:</strong> TanStack Table 기반 헤드리스 테이블 셸.{" "}
+          <strong>접근성:</strong> 시맨틱 <code className="rounded bg-neutral-800 px-1">&lt;table&gt;</code>와{" "}
           <code className="rounded bg-neutral-800 px-1">&lt;th scope=&quot;col&quot;&gt;</code>.{" "}
-          <strong>Do:</strong> define columns with TanStack ColumnDef.{" "}
-          <strong>Don&apos;t:</strong> add inline sorting — extend with TanStack sorting model.
+          <strong>권장:</strong> TanStack ColumnDef로 열 정의.{" "}
+          <strong>비권장:</strong> 인라인 정렬만 추가 — TanStack 정렬 모델로 확장.
         </p>
       </section>
 
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">Badge</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> status and metadata chips. Semantic colors map to design tokens.{" "}
-          <strong>A11y:</strong> text exposed as span content.
+          <strong>용도:</strong> 상태·메타데이터 칩. 시맨틱 색은 디자인 토큰에 매핑.{" "}
+          <strong>접근성:</strong> span 텍스트로 노출.
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
-          <Badge variant="default">Default</Badge>
-          <Badge variant="success">Success</Badge>
-          <Badge variant="warning">Warning</Badge>
-          <Badge variant="danger">Danger</Badge>
+          <Badge variant="default">기본</Badge>
+          <Badge variant="success">성공</Badge>
+          <Badge variant="warning">경고</Badge>
+          <Badge variant="danger">위험</Badge>
         </div>
       </section>
 
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">StatusIndicator</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> colored dot + label for system health.{" "}
-          <strong>A11y:</strong> dot is <code className="rounded bg-neutral-800 px-1">aria-hidden</code>; label conveys meaning.{" "}
-          <strong>Do:</strong> use standard states (<code className="rounded bg-neutral-800 px-1">online</code>,{" "}
+          <strong>용도:</strong> 시스템 상태용 색 점 + 레이블.{" "}
+          <strong>접근성:</strong> 점은 <code className="rounded bg-neutral-800 px-1">aria-hidden</code>; 의미는 레이블.{" "}
+          <strong>권장:</strong> 표준 상태(<code className="rounded bg-neutral-800 px-1">online</code>,{" "}
           <code className="rounded bg-neutral-800 px-1">degraded</code>,{" "}
           <code className="rounded bg-neutral-800 px-1">offline</code>,{" "}
-          <code className="rounded bg-neutral-800 px-1">maintenance</code>).
+          <code className="rounded bg-neutral-800 px-1">maintenance</code>) 사용.
         </p>
         <div className="mt-4 flex flex-wrap gap-6">
-          <StatusIndicator state="online" label="Operational" />
-          <StatusIndicator state="degraded" label="Degraded" />
-          <StatusIndicator state="offline" label="Down" />
-          <StatusIndicator state="maintenance" label="Maintenance" />
+          <StatusIndicator state="online" label="정상" />
+          <StatusIndicator state="degraded" label="저하" />
+          <StatusIndicator state="offline" label="중단" />
+          <StatusIndicator state="maintenance" label="점검" />
         </div>
       </section>
 
       <section className="mt-10">
-        <h3 className="text-xl font-semibold text-white">Skeleton &amp; Spinner</h3>
+        <h3 className="text-xl font-semibold text-white">Skeleton 및 Spinner</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> Skeleton for content-shaped loading; Spinner for indeterminate loading.{" "}
-          <strong>A11y:</strong> Skeleton is <code className="rounded bg-neutral-800 px-1">aria-hidden</code>;{" "}
-          Spinner uses <code className="rounded bg-neutral-800 px-1">role=&quot;status&quot;</code> with{" "}
+          <strong>용도:</strong> Skeleton은 콘텐츠 형태 로딩; Spinner는 무한 로딩.{" "}
+          <strong>접근성:</strong> Skeleton은 <code className="rounded bg-neutral-800 px-1">aria-hidden</code>;
+          Spinner는 <code className="rounded bg-neutral-800 px-1">role=&quot;status&quot;</code>와{" "}
           <code className="rounded bg-neutral-800 px-1">aria-label</code>.{" "}
-          Set <code className="rounded bg-neutral-800 px-1">decorative</code> on Spinner when inside a busy button.
+          Spinner가 바쁜 버튼 안에 있으면 <code className="rounded bg-neutral-800 px-1">decorative</code> 설정.
         </p>
         <div className="mt-4 flex items-center gap-6">
           <div className="flex flex-col gap-2">
@@ -231,50 +235,51 @@ export default function ComponentReferencePage() {
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">Timeline</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> vertical activity feed with connector lines and optional icons.{" "}
-          <strong>A11y:</strong> semantic <code className="rounded bg-neutral-800 px-1">&lt;ul&gt;/&lt;li&gt;</code>.{" "}
-          <strong>Do:</strong> use <code className="rounded bg-neutral-800 px-1">time</code> prop for timestamps.
+          <strong>용도:</strong> 연결선·선택 아이콘이 있는 세로 활동 피드.{" "}
+          <strong>접근성:</strong> 시맨틱 <code className="rounded bg-neutral-800 px-1">&lt;ul&gt;/&lt;li&gt;</code>.{" "}
+          <strong>권장:</strong> 타임스탬프는 <code className="rounded bg-neutral-800 px-1">time</code> prop.
         </p>
       </section>
 
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">EmptyState</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> zero-state panels in tables or overview sections.{" "}
-          <strong>A11y:</strong> plain text headings; place actions as real Button elements.{" "}
-          <strong>Do:</strong> offer one clear CTA.
+          <strong>용도:</strong> 테이블·개요 영역의 제로 상태.{" "}
+          <strong>접근성:</strong> 일반 텍스트 제목; 동작은 실제 Button으로.{" "}
+          <strong>권장:</strong> 명확한 CTA 하나.
         </p>
         <div className="mt-4 max-w-lg">
           <EmptyState
-            action={<Button name="docs-invite" variant="primary">Invite teammate</Button>}
-            description="Invite colleagues to collaborate on this workspace."
-            title="No members yet"
+            action={<Button name="docs-invite" variant="primary">팀원 초대</Button>}
+            description="이 워크스페이스에서 협업할 동료를 초대하세요."
+            title="아직 멤버가 없습니다"
           />
         </div>
       </section>
 
-      {/* ── Layout ────────────────────────────────────────── */}
-      <h2 className="mt-14 border-b border-neutral-800 pb-2 text-2xl font-bold text-white">Layout</h2>
+      <h2 className="mt-14 border-b border-neutral-800 pb-2 text-2xl font-bold text-white">레이아웃</h2>
 
       <section className="mt-8">
-        <h3 className="text-xl font-semibold text-white">Card (compound)</h3>
+        <h3 className="text-xl font-semibold text-white">Card(복합)</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> generic panels and summaries. Compose{" "}
+          <strong>용도:</strong> 일반 패널·요약.{" "}
           <code className="rounded bg-neutral-800 px-1">CardHeader</code>,{" "}
-          <code className="rounded bg-neutral-800 px-1">CardBody</code>, and{" "}
-          <code className="rounded bg-neutral-800 px-1">CardFooter</code>.
+          <code className="rounded bg-neutral-800 px-1">CardBody</code>,{" "}
+          <code className="rounded bg-neutral-800 px-1">CardFooter</code>로 조합.
         </p>
         <div className="mt-4 max-w-md">
           <Card>
             <CardHeader>
-              <CardTitle>API latency</CardTitle>
-              <CardDescription>P95 over the last hour</CardDescription>
+              <CardTitle>API 지연</CardTitle>
+              <CardDescription>최근 1시간 P95</CardDescription>
             </CardHeader>
             <CardBody>
-              <p className="text-sm text-neutral-300">124 ms — within SLO.</p>
+              <p className="text-sm text-neutral-300">124 ms — SLO 이내.</p>
             </CardBody>
             <CardFooter>
-              <Button name="card-details" variant="primary">View trace</Button>
+              <Button name="card-details" variant="primary">
+                트레이스 보기
+              </Button>
             </CardFooter>
           </Card>
         </div>
@@ -283,63 +288,64 @@ export default function ComponentReferencePage() {
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">AppShell</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> top-level layout shell for SaaS dashboards.{" "}
-          <strong>A11y:</strong> sidebar renders as <code className="rounded bg-neutral-800 px-1">&lt;aside&gt;</code>,{" "}
-          header as <code className="rounded bg-neutral-800 px-1">&lt;header&gt;</code>,{" "}
-          content as <code className="rounded bg-neutral-800 px-1">&lt;main&gt;</code>.{" "}
-          <strong>Do:</strong> compose with Sidebar and NavTabs.{" "}
-          <strong>Don&apos;t:</strong> nest AppShell inside another AppShell.
+          <strong>용도:</strong> SaaS 대시보드 최상위 레이아웃 셸.{" "}
+          <strong>접근성:</strong> 사이드바는 <code className="rounded bg-neutral-800 px-1">&lt;aside&gt;</code>,{" "}
+          헤더는 <code className="rounded bg-neutral-800 px-1">&lt;header&gt;</code>,{" "}
+          본문은 <code className="rounded bg-neutral-800 px-1">&lt;main&gt;</code>.{" "}
+          <strong>권장:</strong> Sidebar·NavTabs와 조합.{" "}
+          <strong>비권장:</strong> AppShell 안에 AppShell 중첩.
         </p>
       </section>
 
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">KPIGrid</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> responsive grid for KPI cards (1-column mobile to 4-column desktop).{" "}
-          <strong>Do:</strong> fill with StatCard or MetricCard.{" "}
-          <strong>Don&apos;t:</strong> mix non-metric content inside.
+          <strong>용도:</strong> KPI 카드용 반응형 그리드(모바일 1열~데스크톱 4열).{" "}
+          <strong>권장:</strong> StatCard 또는 MetricCard로 채움.{" "}
+          <strong>비권장:</strong> 지표가 아닌 콘텐츠 혼입.
         </p>
       </section>
 
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">Separator</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> visual divider between sections.{" "}
-          <strong>A11y:</strong> <code className="rounded bg-neutral-800 px-1">role=&quot;separator&quot;</code> with{" "}
+          <strong>용도:</strong> 섹션 사이 시각적 구분선.{" "}
+          <strong>접근성:</strong> <code className="rounded bg-neutral-800 px-1">role=&quot;separator&quot;</code>와{" "}
           <code className="rounded bg-neutral-800 px-1">aria-orientation</code>.
         </p>
         <div className="mt-4 max-w-xs">
-          <p className="text-sm text-neutral-300">Section A</p>
+          <p className="text-sm text-neutral-300">섹션 A</p>
           <Separator className="my-3" />
-          <p className="text-sm text-neutral-300">Section B</p>
+          <p className="text-sm text-neutral-300">섹션 B</p>
         </div>
       </section>
 
-      {/* ── Navigation ────────────────────────────────────── */}
-      <h2 className="mt-14 border-b border-neutral-800 pb-2 text-2xl font-bold text-white">Navigation</h2>
+      <h2 className="mt-14 border-b border-neutral-800 pb-2 text-2xl font-bold text-white">내비게이션</h2>
 
       <section className="mt-8">
         <h3 className="text-xl font-semibold text-white">Sidebar</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> vertical navigation panel with grouped links.{" "}
-          <strong>A11y:</strong> <code className="rounded bg-neutral-800 px-1">&lt;nav aria-label=&quot;Main&quot;&gt;</code>.{" "}
-          <strong>Do:</strong> use SidebarGroup for logical sections.
+          <strong>용도:</strong> 그룹 링크가 있는 세로 내비 패널.{" "}
+          <strong>접근성:</strong> <code className="rounded bg-neutral-800 px-1">&lt;nav aria-label=&quot;주 메뉴&quot;&gt;</code>.{" "}
+          <strong>권장:</strong> 논리 구역은 SidebarGroup.
         </p>
       </section>
 
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">NavTabs</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> horizontal anchor-based navigation tabs.{" "}
-          <strong>A11y:</strong> <code className="rounded bg-neutral-800 px-1">&lt;nav aria-label=&quot;Sections&quot;&gt;</code>.{" "}
-          <strong>Do:</strong> use for page-level route switching.{" "}
-          <strong>Don&apos;t:</strong> confuse with Tabs (controlled tab panels).
+          <strong>용도:</strong> 앵커 기반 가로 내비 탭.{" "}
+          <strong>접근성:</strong> <code className="rounded bg-neutral-800 px-1">&lt;nav aria-label=&quot;섹션&quot;&gt;</code>.{" "}
+          <strong>권장:</strong> 페이지 수준 라우트 전환.{" "}
+          <strong>비권장:</strong> Tabs(제어 탭 패널)와 혼동.
         </p>
         <div className="mt-4">
           <NavTabs>
-            <NavTabsItem href="#" active>Overview</NavTabsItem>
-            <NavTabsItem href="#">Analytics</NavTabsItem>
-            <NavTabsItem href="#">Settings</NavTabsItem>
+            <NavTabsItem href="#" active>
+              개요
+            </NavTabsItem>
+            <NavTabsItem href="#">분석</NavTabsItem>
+            <NavTabsItem href="#">설정</NavTabsItem>
           </NavTabs>
         </div>
       </section>
@@ -347,30 +353,35 @@ export default function ComponentReferencePage() {
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">Tabs</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> controlled tab panels for in-page content switching.{" "}
-          <strong>A11y:</strong> <code className="rounded bg-neutral-800 px-1">role=&quot;tablist&quot;</code>,{" "}
-          <code className="rounded bg-neutral-800 px-1">role=&quot;tab&quot;</code> with{" "}
-          <code className="rounded bg-neutral-800 px-1">aria-selected</code>;{" "}
-          ArrowLeft/ArrowRight keyboard navigation.{" "}
-          <strong>Don&apos;t:</strong> confuse with NavTabs (route-based).
+          <strong>용도:</strong> 페이지 내 콘텐츠 전환용 제어 탭 패널.{" "}
+          <strong>접근성:</strong> <code className="rounded bg-neutral-800 px-1">role=&quot;tablist&quot;</code>,{" "}
+          <code className="rounded bg-neutral-800 px-1">role=&quot;tab&quot;</code>와{" "}
+          <code className="rounded bg-neutral-800 px-1">aria-selected</code>; 좌우 화살표 키.{" "}
+          <strong>비권장:</strong> NavTabs(라우트 기반)와 혼동.
         </p>
       </section>
 
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">Breadcrumb</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> breadcrumb trail for hierarchical navigation.{" "}
-          <strong>A11y:</strong> <code className="rounded bg-neutral-800 px-1">&lt;nav aria-label=&quot;Breadcrumb&quot;&gt;</code>{" "}
-          with <code className="rounded bg-neutral-800 px-1">&lt;ol&gt;</code>; separators are{" "}
+          <strong>용도:</strong> 계층 내비용 경로.{" "}
+          <strong>접근성:</strong> <code className="rounded bg-neutral-800 px-1">&lt;nav aria-label=&quot;경로&quot;&gt;</code>와{" "}
+          <code className="rounded bg-neutral-800 px-1">&lt;ol&gt;</code>; 구분자는{" "}
           <code className="rounded bg-neutral-800 px-1">aria-hidden</code>.
         </p>
         <div className="mt-4">
           <Breadcrumb>
-            <BreadcrumbItem><span className="text-neutral-400">Home</span></BreadcrumbItem>
+            <BreadcrumbItem>
+              <span className="text-neutral-400">홈</span>
+            </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbItem><span className="text-neutral-400">Projects</span></BreadcrumbItem>
+            <BreadcrumbItem>
+              <span className="text-neutral-400">프로젝트</span>
+            </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbItem><span className="text-white">Analytics API</span></BreadcrumbItem>
+            <BreadcrumbItem>
+              <span className="text-white">Analytics API</span>
+            </BreadcrumbItem>
           </Breadcrumb>
         </div>
       </section>
@@ -378,42 +389,45 @@ export default function ComponentReferencePage() {
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">Pagination</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> Previous/Next pagination with page indicator.{" "}
-          <strong>A11y:</strong> <code className="rounded bg-neutral-800 px-1">&lt;nav aria-label=&quot;Pagination&quot;&gt;</code>;{" "}
-          buttons disable at bounds.{" "}
-          <strong>Do:</strong> pair with DataTable.
+          <strong>용도:</strong> 이전/다음과 페이지 표시.{" "}
+          <strong>접근성:</strong> <code className="rounded bg-neutral-800 px-1">&lt;nav aria-label=&quot;페이지 탐색&quot;&gt;</code>;
+          경계에서 버튼 비활성.{" "}
+          <strong>권장:</strong> DataTable과 짝.
         </p>
       </section>
 
-      {/* ── Feedback ──────────────────────────────────────── */}
-      <h2 className="mt-14 border-b border-neutral-800 pb-2 text-2xl font-bold text-white">Feedback</h2>
+      <h2 className="mt-14 border-b border-neutral-800 pb-2 text-2xl font-bold text-white">피드백</h2>
 
       <section className="mt-8">
         <h3 className="text-xl font-semibold text-white">Alert</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> inline messages, validation summaries, system notices.{" "}
-          <strong>A11y:</strong> <code className="rounded bg-neutral-800 px-1">role=&quot;alert&quot;</code>.
+          <strong>용도:</strong> 인라인 메시지, 검증 요약, 시스템 공지.{" "}
+          <strong>접근성:</strong> <code className="rounded bg-neutral-800 px-1">role=&quot;alert&quot;</code>.
         </p>
         <div className="mt-4 max-w-md space-y-2">
-          <Alert title="Info" variant="info">General information.</Alert>
-          <Alert variant="success">Operation completed.</Alert>
-          <Alert title="Warning" variant="warning">Review before continuing.</Alert>
-          <Alert variant="error">An error occurred.</Alert>
+          <Alert title="안내" variant="info">
+            일반 안내입니다.
+          </Alert>
+          <Alert variant="success">작업이 완료되었습니다.</Alert>
+          <Alert title="경고" variant="warning">
+            계속하기 전에 확인하세요.
+          </Alert>
+          <Alert variant="error">오류가 발생했습니다.</Alert>
         </div>
       </section>
 
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">AlertBanner</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> full-width banner for system-level notices.{" "}
-          <strong>A11y:</strong> <code className="rounded bg-neutral-800 px-1">role=&quot;alert&quot;</code>;{" "}
-          dismiss button has <code className="rounded bg-neutral-800 px-1">aria-label=&quot;Dismiss banner&quot;</code>.{" "}
-          <strong>Do:</strong> place at top of page, outside AppShell.{" "}
-          <strong>Don&apos;t:</strong> stack multiple banners.
+          <strong>용도:</strong> 시스템 수준 공지용 전폭 배너.{" "}
+          <strong>접근성:</strong> <code className="rounded bg-neutral-800 px-1">role=&quot;alert&quot;</code>;
+          닫기 버튼 <code className="rounded bg-neutral-800 px-1">aria-label=&quot;배너 닫기&quot;</code>.{" "}
+          <strong>권장:</strong> 페이지 상단, AppShell 밖.{" "}
+          <strong>비권장:</strong> 배너 여러 개 쌓기.
         </p>
         <div className="mt-4">
-          <AlertBanner variant="warning" title="Maintenance">
-            Platform will be briefly unavailable on Sunday 2:00 AM UTC.
+          <AlertBanner variant="warning" title="점검">
+            일요일 02:00 UTC에 플랫폼이 잠시 중단될 수 있습니다.
           </AlertBanner>
         </div>
       </section>
@@ -421,67 +435,66 @@ export default function ComponentReferencePage() {
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">Dialog</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> modal dialog using native <code className="rounded bg-neutral-800 px-1">&lt;dialog&gt;</code>.{" "}
-          <strong>A11y:</strong> <code className="rounded bg-neutral-800 px-1">aria-labelledby</code> from DialogTitle;{" "}
-          Escape closes via cancel event.{" "}
-          <strong>Do:</strong> always include DialogTitle.{" "}
-          <strong>Don&apos;t:</strong> stack multiple dialogs.
+          <strong>용도:</strong> 네이티브 <code className="rounded bg-neutral-800 px-1">&lt;dialog&gt;</code> 모달.{" "}
+          <strong>접근성:</strong> DialogTitle의 <code className="rounded bg-neutral-800 px-1">aria-labelledby</code>;
+          Escape는 cancel로 닫힘.{" "}
+          <strong>권장:</strong> DialogTitle 항상 포함.{" "}
+          <strong>비권장:</strong> 다이얼로그 중첩.
         </p>
       </section>
 
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">Toast</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> ephemeral notifications via context provider (auto-dismiss 4.5s).{" "}
-          <strong>A11y:</strong> region is <code className="rounded bg-neutral-800 px-1">aria-live=&quot;polite&quot;</code>;{" "}
-          each toast is <code className="rounded bg-neutral-800 px-1">role=&quot;status&quot;</code>.{" "}
-          <strong>Don&apos;t:</strong> use for critical blocking errors — use Dialog or Alert.
+          <strong>용도:</strong> 컨텍스트 프로바이더로 잠깐 뜨는 알림(약 4.5초 후 자동 닫힘).{" "}
+          <strong>접근성:</strong> 영역 <code className="rounded bg-neutral-800 px-1">aria-live=&quot;polite&quot;</code>;
+          토스트마다 <code className="rounded bg-neutral-800 px-1">role=&quot;status&quot;</code>.{" "}
+          <strong>비권장:</strong> 막는 치명 오류 — Dialog나 Alert 사용.
         </p>
       </section>
 
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">Tooltip</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> hover/focus tooltip using Floating UI.{" "}
-          <strong>A11y:</strong> <code className="rounded bg-neutral-800 px-1">role=&quot;tooltip&quot;</code>;{" "}
-          shows on hover (120ms delay) and focus; Escape dismisses.{" "}
-          <strong>Don&apos;t:</strong> put interactive elements inside tooltip content.
+          <strong>용도:</strong> Floating UI 기반 호버/포커스 툴팁.{" "}
+          <strong>접근성:</strong> <code className="rounded bg-neutral-800 px-1">role=&quot;tooltip&quot;</code>;
+          호버(120ms 지연)·포커스 시 표시; Escape로 닫힘.{" "}
+          <strong>비권장:</strong> 툴팁 내에 상호작용 요소.
         </p>
       </section>
 
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">DropdownMenu</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> click-triggered dropdown with <code className="rounded bg-neutral-800 px-1">role=&quot;menu&quot;</code>.{" "}
-          <strong>A11y:</strong> trigger sets <code className="rounded bg-neutral-800 px-1">aria-expanded</code> and{" "}
-          <code className="rounded bg-neutral-800 px-1">aria-haspopup=&quot;menu&quot;</code>;{" "}
-          items are <code className="rounded bg-neutral-800 px-1">role=&quot;menuitem&quot;</code> buttons.{" "}
-          <strong>Don&apos;t:</strong> nest dropdowns.
+          <strong>용도:</strong> 클릭으로 열리는 <code className="rounded bg-neutral-800 px-1">role=&quot;menu&quot;</code> 드롭다운.{" "}
+          <strong>접근성:</strong> 트리거에 <code className="rounded bg-neutral-800 px-1">aria-expanded</code>와{" "}
+          <code className="rounded bg-neutral-800 px-1">aria-haspopup=&quot;menu&quot;</code>;
+          항목은 <code className="rounded bg-neutral-800 px-1">role=&quot;menuitem&quot;</code> 버튼.{" "}
+          <strong>비권장:</strong> 드롭다운 중첩.
         </p>
       </section>
 
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">Command</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> command palette (Dialog + searchable list).{" "}
-          <strong>A11y:</strong> input is <code className="rounded bg-neutral-800 px-1">type=&quot;search&quot;</code>;{" "}
-          items are <code className="rounded bg-neutral-800 px-1">role=&quot;option&quot;</code> inside{" "}
-          <code className="rounded bg-neutral-800 px-1">role=&quot;listbox&quot;</code>.{" "}
-          <strong>Don&apos;t:</strong> use for simple select — use Select or RadioGroup.
+          <strong>용도:</strong> 커맨드 팔레트(Dialog + 검색 목록).{" "}
+          <strong>접근성:</strong> 입력 <code className="rounded bg-neutral-800 px-1">type=&quot;search&quot;</code>;
+          항목은 <code className="rounded bg-neutral-800 px-1">role=&quot;listbox&quot;</code> 안의{" "}
+          <code className="rounded bg-neutral-800 px-1">role=&quot;option&quot;</code>.{" "}
+          <strong>비권장:</strong> 단순 선택 — Select나 RadioGroup.
         </p>
       </section>
 
-      {/* ── Identity ──────────────────────────────────────── */}
-      <h2 className="mt-14 border-b border-neutral-800 pb-2 text-2xl font-bold text-white">Identity</h2>
+      <h2 className="mt-14 border-b border-neutral-800 pb-2 text-2xl font-bold text-white">아이덴티티</h2>
 
       <section className="mt-8">
-        <h3 className="text-xl font-semibold text-white">Avatar &amp; AvatarGroup</h3>
+        <h3 className="text-xl font-semibold text-white">Avatar 및 AvatarGroup</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> user or org identity.{" "}
-          <strong>A11y:</strong> image uses <code className="rounded bg-neutral-800 px-1">alt</code>; fallback uses{" "}
-          <code className="rounded bg-neutral-800 px-1">role=&quot;img&quot;</code> with{" "}
+          <strong>용도:</strong> 사용자·조직 표시.{" "}
+          <strong>접근성:</strong> 이미지는 <code className="rounded bg-neutral-800 px-1">alt</code>; 폴백은{" "}
+          <code className="rounded bg-neutral-800 px-1">role=&quot;img&quot;</code>와{" "}
           <code className="rounded bg-neutral-800 px-1">aria-label</code>.{" "}
-          AvatarGroup overflow chip has <code className="rounded bg-neutral-800 px-1">aria-label=&quot;+N more&quot;</code>.
+          AvatarGroup 넘침 칩은 <code className="rounded bg-neutral-800 px-1">aria-label=&quot;N명 더 있음&quot;</code> 형식.
         </p>
         <div className="mt-4 flex items-center gap-4">
           <Avatar fallback="AB" size="sm" />
@@ -500,37 +513,33 @@ export default function ComponentReferencePage() {
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">LinkCard</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> link tiles to external resources or routes.{" "}
-          <strong>A11y:</strong> single anchor with heading + description. External URLs open in new tab with{" "}
-          <code className="rounded bg-neutral-800 px-1">rel</code> set.
+          <strong>용도:</strong> 외부 리소스·라우트로 가는 링크 타일.{" "}
+          <strong>접근성:</strong> 제목+설명이 하나의 앵커. 외부 URL은 <code className="rounded bg-neutral-800 px-1">rel</code>과 함께 새 탭.
         </p>
         <div className="mt-4 max-w-[280px]">
-          <LinkCard href="https://turborepo.com/docs" title="Documentation">
-            Find in-depth information about Turborepo.
+          <LinkCard href="https://turborepo.com/docs" title="문서">
+            Turborepo에 대한 자세한 정보를 확인하세요.
           </LinkCard>
         </div>
       </section>
 
-      {/* ── Utility ───────────────────────────────────────── */}
-      <h2 className="mt-14 border-b border-neutral-800 pb-2 text-2xl font-bold text-white">Utility</h2>
+      <h2 className="mt-14 border-b border-neutral-800 pb-2 text-2xl font-bold text-white">유틸리티</h2>
 
       <section className="mt-8">
         <h3 className="text-xl font-semibold text-white">VisuallyHidden</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> hides content visually while keeping it accessible to screen readers.{" "}
-          <strong>Do:</strong> use for skip links, icon-only button labels, or extra context.{" "}
-          <strong>Don&apos;t:</strong> use to hide decorative content — use{" "}
-          <code className="rounded bg-neutral-800 px-1">aria-hidden</code> instead.
+          <strong>용도:</strong> 시각적으로는 숨기고 스크린 리더에만 노출.{" "}
+          <strong>권장:</strong> 건너뛰기 링크, 아이콘 전용 버튼 레이블, 추가 맥락.{" "}
+          <strong>비권장:</strong> 장식용 숨김 — <code className="rounded bg-neutral-800 px-1">aria-hidden</code> 사용.
         </p>
       </section>
 
       <section className="mt-10">
         <h3 className="text-xl font-semibold text-white">CommandBar</h3>
         <p className="mt-2 text-sm text-neutral-400">
-          <strong>Usage:</strong> inline search bar container with{" "}
-          <code className="rounded bg-neutral-800 px-1">role=&quot;search&quot;</code>.{" "}
-          <strong>Do:</strong> compose with Input and FilterChip.{" "}
-          <strong>Don&apos;t:</strong> use as form — use a <code className="rounded bg-neutral-800 px-1">&lt;form&gt;</code> element.
+          <strong>용도:</strong> <code className="rounded bg-neutral-800 px-1">role=&quot;search&quot;</code> 인라인 검색 바 컨테이너.{" "}
+          <strong>권장:</strong> Input·FilterChip과 조합.{" "}
+          <strong>비권장:</strong> 폼 대용 — <code className="rounded bg-neutral-800 px-1">&lt;form&gt;</code> 요소 사용.
         </p>
       </section>
     </>

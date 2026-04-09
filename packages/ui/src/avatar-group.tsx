@@ -28,7 +28,7 @@ export function AvatarGroup({ children, className, max = 4 }: AvatarGroupProps) 
         <div
           className="ui:relative ui:z-0 ui:inline-flex ui:h-10 ui:w-10 ui:items-center ui:justify-center ui:rounded-full ui:bg-surface-overlay ui:text-xs ui:font-semibold ui:text-text-on-brand ui:ring-2 ui:ring-surface-canvas"
           role="img"
-          aria-label={`${overflow} more`}
+          aria-label={`${overflow}명 더 있음`}
         >
           +{overflow}
         </div>

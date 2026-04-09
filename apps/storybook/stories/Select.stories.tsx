@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Native `<select>` with semantic tokens and size variants. **A11y:** built on native select—full keyboard and screen reader support by default. **Do:** always provide `name` and `aria-label` or wrapping `Field`. **Don't:** use for more than ~15 options—consider Command palette instead.",
+          "시맨틱 토큰·크기 변형이 있는 네이티브 `<select>`입니다. **접근성:** 네이티브 select 기반이라 키보드·스크린 리더 지원이 기본입니다. **권장:** 항상 `name`과 `aria-label` 또는 감싼 `Field`. **비권장:** 약 15개 이상 옵션 — Command 팔레트 검토.",
       },
     },
   },
@@ -25,14 +25,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: (args) => (
-    <Select {...args} name="region" aria-label="Region" defaultValue="">
+    <Select {...args} name="region" aria-label="리전" defaultValue="">
       <option value="" disabled>
-        Select region...
+        리전 선택…
       </option>
-      <option value="us-east">US East</option>
-      <option value="us-west">US West</option>
-      <option value="eu-west">EU West</option>
-      <option value="ap-southeast">AP Southeast</option>
+      <option value="us-east">미국 동부</option>
+      <option value="us-west">미국 서부</option>
+      <option value="eu-west">유럽 서부</option>
+      <option value="ap-southeast">아시아 태평양 남동</option>
     </Select>
   ),
   args: { size: "md" },
@@ -41,14 +41,14 @@ export const Default: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="ui:flex ui:flex-col ui:gap-3" style={{ width: 240 }}>
-      <Select name="sm" aria-label="Small" size="sm">
-        <option>Small</option>
+      <Select name="sm" aria-label="작게" size="sm">
+        <option>작게</option>
       </Select>
-      <Select name="md" aria-label="Medium" size="md">
-        <option>Medium</option>
+      <Select name="md" aria-label="보통" size="md">
+        <option>보통</option>
       </Select>
-      <Select name="lg" aria-label="Large" size="lg">
-        <option>Large</option>
+      <Select name="lg" aria-label="크게" size="lg">
+        <option>크게</option>
       </Select>
     </div>
   ),

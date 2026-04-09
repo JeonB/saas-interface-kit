@@ -11,7 +11,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Inline search bar container with `role="search"`. **A11y:** wrapping `role="search"` landmark. **Do:** compose with Input and FilterChip. **Don\'t:** use as form—use a `<form>` element instead.',
+          "`role=\"search\"` 인라인 검색 바 컨테이너입니다. **접근성:** `role=\"search\"` 랜드마크로 감쌈. **권장:** Input·FilterChip과 조합. **비권장:** 폼 대용 — `<form>` 요소 사용.",
       },
     },
   },
@@ -26,13 +26,13 @@ export const Default: Story = {
     <CommandBar>
       <Input
         name="search"
-        placeholder="Search resources..."
-        aria-label="Search"
+        placeholder="리소스 검색…"
+        aria-label="검색"
         size="sm"
       />
-      <FilterChip active>All</FilterChip>
-      <FilterChip>Active</FilterChip>
-      <FilterChip>Archived</FilterChip>
+      <FilterChip active>전체</FilterChip>
+      <FilterChip>활성</FilterChip>
+      <FilterChip>보관됨</FilterChip>
     </CommandBar>
   ),
 };

@@ -8,7 +8,7 @@ export type BreadcrumbProps = {
 
 export function Breadcrumb({ children, className }: BreadcrumbProps) {
   return (
-    <nav aria-label="Breadcrumb" className={className}>
+    <nav aria-label="경로" className={className}>
       <ol className="ui:m-0 ui:flex ui:list-none ui:flex-wrap ui:items-center ui:gap-2 ui:p-0 ui:text-sm">
         {children}
       </ol>
