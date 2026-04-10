@@ -4,8 +4,8 @@ import { describe, expect, it, vi } from "vitest";
 import { Command, CommandContent } from "./command";
 import { CommandInput, CommandList, CommandItem } from "./command";
 
-describe("CommandInput", () => {
-  it("renders a search input", () => {
+describe("명령 입력", () => {
+  it("검색 입력 렌더", () => {
     render(
       <Command open onOpenChange={() => {}}>
         <CommandContent>
@@ -19,8 +19,8 @@ describe("CommandInput", () => {
   });
 });
 
-describe("CommandItem", () => {
-  it("calls onSelect when clicked", async () => {
+describe("명령 항목", () => {
+  it("클릭 시 onSelect 호출", async () => {
     const onSelect = vi.fn();
     render(
       <Command open onOpenChange={() => {}}>

@@ -14,8 +14,8 @@ function ControlledRadio() {
   );
 }
 
-describe("RadioGroup", () => {
-  it("selects item and updates group value", async () => {
+describe("라디오 그룹", () => {
+  it("항목 선택 및 그룹 값 갱신", async () => {
     const user = userEvent.setup();
     render(<ControlledRadio />);
     expect(screen.getByRole("radio", { name: "A" })).toBeChecked();

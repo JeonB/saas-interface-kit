@@ -1,28 +1,28 @@
-## Getting Started
+## 시작하기
 
-First, run the development server:
+개발 서버를 실행합니다:
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 확인합니다.
 
-You can start editing the page by modifying `src/app/page.tsx`. The page auto-updates as you edit the file.
+`src/app/page.tsx`를 수정하면 페이지가 자동으로 갱신됩니다.
 
-To create [API routes](https://nextjs.org/docs/app/building-your-application/routing/router-handlers) add an `api/` directory to the `app/` directory with a `route.ts` file. For individual endpoints, create a subfolder in the `api` directory, like `api/hello/route.ts` would map to [http://localhost:3000/api/hello](http://localhost:3000/api/hello).
+[API 라우트](https://nextjs.org/docs/app/building-your-application/routing/router-handlers)를 추가하려면 `app/` 아래에 `api/` 디렉터리와 `route.ts`를 둡니다. 예: `api/hello/route.ts` → [http://localhost:3000/api/hello](http://localhost:3000/api/hello).
 
-## Learn More
+## 더 알아보기
 
-To learn more about Next.js, take a look at the following resources:
+Next.js 관련 자료:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn/foundations/about-nextjs) - an interactive Next.js tutorial.
+- [Next.js 문서](https://nextjs.org/docs) — 기능과 API
+- [Learn Next.js](https://nextjs.org/learn/foundations/about-nextjs) — 대화형 튜토리얼
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+[Next.js GitHub 저장소](https://github.com/vercel/next.js/)에서 피드백과 기여를 환영합니다.
 
-## Deploy on Vercel
+## Vercel에 배포
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_source=github.com&utm_medium=referral&utm_campaign=turborepo-readme) from the creators of Next.js.
+Next.js 앱 배포는 [Vercel](https://vercel.com/new?utm_source=github.com&utm_medium=referral&utm_campaign=turborepo-readme)이 가장 간단합니다.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+자세한 내용은 [Next.js 배포 문서](https://nextjs.org/docs/deployment)를 참고하세요.

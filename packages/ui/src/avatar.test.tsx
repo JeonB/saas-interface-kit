@@ -2,26 +2,26 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Avatar } from "./avatar";
 
-describe("Avatar", () => {
-  it("renders image with alt when src is provided", () => {
+describe("아바타", () => {
+  it("src가 있을 때 alt와 함께 이미지 렌더", () => {
     render(<Avatar src="https://example.com/a.png" alt="User" />);
     const img = screen.getByRole("img", { name: "User" });
     expect(img).toHaveAttribute("src", "https://example.com/a.png");
     expect(img).toHaveAttribute("referrerpolicy", "no-referrer");
   });
 
-  it("renders fallback in a span with role img and aria-label", () => {
+  it("span role=img·aria-label로 대체 렌더", () => {
     render(<Avatar fallback="AB" alt="Team member" />);
     const fallback = screen.getByRole("img", { name: "Team member" });
     expect(fallback).toHaveTextContent("AB");
   });
 
-  it("uses fallback text in aria-label when alt is empty", () => {
+  it("alt가 비었을 때 대체 텍스트를 aria-label에 사용", () => {
     render(<Avatar fallback="XY" />);
     expect(screen.getByRole("img", { name: "XY" })).toBeInTheDocument();
   });
 
-  it("applies className to image branch", () => {
+  it("이미지 분기에 className 적용", () => {
     render(
       <Avatar
         className="ui:border ui:border-white"

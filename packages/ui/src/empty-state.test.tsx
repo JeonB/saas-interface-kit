@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest";
 import { Button } from "./button";
 import { EmptyState } from "./empty-state";
 
-describe("EmptyState", () => {
-  it("renders title and description", () => {
+describe("빈 상태", () => {
+  it("제목과 설명 렌더", () => {
     render(
       <EmptyState
         description="Create a project to see data here."
@@ -16,7 +16,7 @@ describe("EmptyState", () => {
     expect(screen.getByText("Create a project to see data here.")).toBeInTheDocument();
   });
 
-  it("renders optional action", () => {
+  it("선택 동작 렌더", () => {
     render(
       <EmptyState
         action={<Button name="create">Create project</Button>}
@@ -28,7 +28,7 @@ describe("EmptyState", () => {
     expect(screen.getByRole("button", { name: "Create project" })).toBeInTheDocument();
   });
 
-  it("renders ReactNode description", () => {
+  it("ReactNode 설명 렌더", () => {
     render(
       <EmptyState
         description={

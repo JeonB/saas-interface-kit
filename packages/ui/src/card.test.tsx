@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest";
 import { Button } from "./button";
 import { Card, CardBody, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
 
-describe("Card", () => {
-  it("renders compound structure with heading and body", () => {
+describe("카드", () => {
+  it("제목·본문 복합 구조 렌더", () => {
     render(
       <Card>
         <CardHeader>
@@ -28,7 +28,7 @@ describe("Card", () => {
     expect(screen.getByRole("button", { name: "OK" })).toBeInTheDocument();
   });
 
-  it("merges className on root", () => {
+  it("루트에 className 병합", () => {
     const { container } = render(
       <Card className="ui:max-w-sm">
         <CardBody>X</CardBody>

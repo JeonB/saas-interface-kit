@@ -20,8 +20,8 @@ function ToastDemo() {
   );
 }
 
-describe("ToastProvider", () => {
-  it("shows a toast when triggered", async () => {
+describe("토스트 제공자", () => {
+  it("트리거 시 토스트 표시", async () => {
     const user = userEvent.setup();
     render(
       <ToastProvider>

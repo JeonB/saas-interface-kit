@@ -32,12 +32,12 @@ async function expectNoA11yViolations(ui: ReactElement) {
   expect(results).toHaveNoViolations();
 }
 
-describe("Accessibility (axe-core)", () => {
-  it("Button has no violations", async () => {
+describe("접근성 (axe-core)", () => {
+  it("버튼 위반 없음", async () => {
     await expectNoA11yViolations(<Button name="test">Click me</Button>);
   });
 
-  it("Input with label has no violations", async () => {
+  it("레이블 있는 입력 위반 없음", async () => {
     await expectNoA11yViolations(
       <Field id="a11y-input" label="Name">
         <Input name="name" />
@@ -45,7 +45,7 @@ describe("Accessibility (axe-core)", () => {
     );
   });
 
-  it("Textarea with label has no violations", async () => {
+  it("레이블 있는 텍스트 영역 위반 없음", async () => {
     await expectNoA11yViolations(
       <Field id="a11y-textarea" label="Notes">
         <Textarea name="notes" />
@@ -53,11 +53,11 @@ describe("Accessibility (axe-core)", () => {
     );
   });
 
-  it("Checkbox has no violations", async () => {
+  it("체크박스 위반 없음", async () => {
     await expectNoA11yViolations(<Checkbox id="a11y-check" label="Agree" name="agree" />);
   });
 
-  it("RadioGroup has no violations", async () => {
+  it("라디오 그룹 위반 없음", async () => {
     await expectNoA11yViolations(
       <RadioGroup value="a" onValueChange={() => {}}>
         <RadioItem id="a" label="Option A" value="a" />
@@ -66,7 +66,7 @@ describe("Accessibility (axe-core)", () => {
     );
   });
 
-  it("Select has no violations", async () => {
+  it("선택 위반 없음", async () => {
     await expectNoA11yViolations(
       <Select name="region" aria-label="Region">
         <option value="us">US</option>
@@ -74,31 +74,31 @@ describe("Accessibility (axe-core)", () => {
     );
   });
 
-  it("Switch has no violations", async () => {
+  it("스위치 위반 없음", async () => {
     await expectNoA11yViolations(
       <Switch checked={false} onCheckedChange={() => {}} aria-label="Toggle" />,
     );
   });
 
-  it("Alert has no violations", async () => {
+  it("알림 위반 없음", async () => {
     await expectNoA11yViolations(<Alert variant="info">Info message</Alert>);
   });
 
-  it("AlertBanner has no violations", async () => {
+  it("알림 배너 위반 없음", async () => {
     await expectNoA11yViolations(
       <AlertBanner variant="warning">Warning message</AlertBanner>,
     );
   });
 
-  it("Badge has no violations", async () => {
+  it("배지 위반 없음", async () => {
     await expectNoA11yViolations(<Badge variant="success">Active</Badge>);
   });
 
-  it("Avatar fallback has no violations", async () => {
+  it("아바타 대체 위반 없음", async () => {
     await expectNoA11yViolations(<Avatar fallback="AB" size="md" />);
   });
 
-  it("Card has no violations", async () => {
+  it("카드 위반 없음", async () => {
     await expectNoA11yViolations(
       <Card>
         <CardHeader><CardTitle>Title</CardTitle></CardHeader>
@@ -107,25 +107,25 @@ describe("Accessibility (axe-core)", () => {
     );
   });
 
-  it("EmptyState has no violations", async () => {
+  it("빈 상태 위반 없음", async () => {
     await expectNoA11yViolations(
       <EmptyState title="No data" description="Nothing here." />,
     );
   });
 
-  it("StatCard has no violations", async () => {
+  it("통계 카드 위반 없음", async () => {
     await expectNoA11yViolations(
       <StatCard label="MRR" value="$50k" delta="+5%" trend="up" />,
     );
   });
 
-  it("StatusIndicator has no violations", async () => {
+  it("상태 표시 위반 없음", async () => {
     await expectNoA11yViolations(
       <StatusIndicator state="online" label="Operational" />,
     );
   });
 
-  it("Breadcrumb has no violations", async () => {
+  it("브레드크럼 위반 없음", async () => {
     await expectNoA11yViolations(
       <Breadcrumb>
         <BreadcrumbItem><a href="#">Home</a></BreadcrumbItem>
@@ -135,17 +135,17 @@ describe("Accessibility (axe-core)", () => {
     );
   });
 
-  it("Pagination has no violations", async () => {
+  it("페이지네이션 위반 없음", async () => {
     await expectNoA11yViolations(
       <Pagination page={1} pageCount={5} onPageChange={() => {}} />,
     );
   });
 
-  it("Separator has no violations", async () => {
+  it("구분선 위반 없음", async () => {
     await expectNoA11yViolations(<Separator />);
   });
 
-  it("FilterBar has no violations", async () => {
+  it("필터 바 위반 없음", async () => {
     await expectNoA11yViolations(
       <FilterBar>
         <FilterChip active>All</FilterChip>
@@ -154,11 +154,11 @@ describe("Accessibility (axe-core)", () => {
     );
   });
 
-  it("Skeleton has no violations", async () => {
+  it("스켈레톤 위반 없음", async () => {
     await expectNoA11yViolations(<Skeleton width="100px" height="20px" />);
   });
 
-  it("Spinner has no violations", async () => {
+  it("스피너 위반 없음", async () => {
     await expectNoA11yViolations(<Spinner />);
   });
 });

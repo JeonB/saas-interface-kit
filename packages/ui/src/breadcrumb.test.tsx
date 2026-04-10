@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbSeparator } from "./breadcrumb";
 
-describe("Breadcrumb", () => {
-  it("renders nav with aria-label", () => {
+describe("브레드크럼", () => {
+  it("aria-label이 있는 nav로 렌더", () => {
     render(
       <Breadcrumb>
         <BreadcrumbItem>홈</BreadcrumbItem>
@@ -13,7 +13,7 @@ describe("Breadcrumb", () => {
     expect(screen.getByRole("navigation", { name: "경로" })).toBeInTheDocument();
   });
 
-  it("renders items as list items", () => {
+  it("항목을 리스트 아이템으로 렌더", () => {
     render(
       <Breadcrumb>
         <BreadcrumbItem>홈</BreadcrumbItem>
@@ -24,7 +24,7 @@ describe("Breadcrumb", () => {
     expect(screen.getAllByRole("listitem")).toHaveLength(2);
   });
 
-  it("hides separator from assistive tech", () => {
+  it("보조 기술에서 구분선 숨김", () => {
     const { container } = render(
       <Breadcrumb>
         <BreadcrumbItem>A</BreadcrumbItem>

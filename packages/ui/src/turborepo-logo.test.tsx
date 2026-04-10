@@ -1,8 +1,8 @@
 import { render } from "@testing-library/react";
 import { TurborepoLogo } from "./turborepo-logo";
 
-describe("TurborepoLogo", () => {
-  it("renders an SVG element", () => {
+describe("Turborepo 로고", () => {
+  it("SVG 요소 렌더", () => {
     const { container } = render(<TurborepoLogo />);
     expect(container.querySelector("svg")).toBeInTheDocument();
   });
