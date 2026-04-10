@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { Sidebar, SidebarGroup, SidebarItem } from "./sidebar";
 
-describe("Sidebar", () => {
-  it("renders as nav with aria-label", () => {
+describe("사이드바", () => {
+  it("aria-label이 있는 nav로 렌더", () => {
     render(
       <Sidebar>
         <SidebarGroup label="메인">
@@ -15,7 +15,7 @@ describe("Sidebar", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders group label and items", () => {
+  it("그룹 레이블과 항목을 렌더", () => {
     render(
       <Sidebar>
         <SidebarGroup label="플랫폼">

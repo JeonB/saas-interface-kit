@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react";
 import { AvatarGroup } from "./avatar-group";
 import { Avatar } from "./avatar";
 
-describe("AvatarGroup", () => {
-  it("renders up to max avatars", () => {
+describe("아바타 그룹", () => {
+  it("최대 개수까지 아바타 렌더", () => {
     render(
       <AvatarGroup max={2}>
         <Avatar fallback="A" size="md" />
@@ -16,7 +16,7 @@ describe("AvatarGroup", () => {
     expect(screen.queryByText("C")).not.toBeInTheDocument();
   });
 
-  it("shows overflow count with aria-label", () => {
+  it("aria-label로 초과 개수 표시", () => {
     render(
       <AvatarGroup max={2}>
         <Avatar fallback="A" size="md" />
@@ -29,7 +29,7 @@ describe("AvatarGroup", () => {
     expect(overflow).toHaveTextContent("+2");
   });
 
-  it("renders all when under max", () => {
+  it("max 미만이면 모두 렌더", () => {
     render(
       <AvatarGroup max={5}>
         <Avatar fallback="X" size="md" />

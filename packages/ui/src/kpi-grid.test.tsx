@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { KPIGrid } from "./kpi-grid";
 
-describe("KPIGrid", () => {
-  it("renders children in a grid", () => {
+describe("KPI 그리드", () => {
+  it("그리드에 자식 렌더", () => {
     render(
       <KPIGrid>
         <div>Card 1</div>

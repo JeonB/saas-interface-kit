@@ -9,8 +9,8 @@ function ControlledSwitch() {
   return <Switch aria-label="Alerts" checked={on} onCheckedChange={setOn} />;
 }
 
-describe("Switch", () => {
-  it("toggles aria-checked when clicked", async () => {
+describe("스위치", () => {
+  it("클릭 시 aria-checked 토글", async () => {
     const user = userEvent.setup();
     render(<ControlledSwitch />);
     const sw = screen.getByRole("switch", { name: "Alerts" });
@@ -19,7 +19,7 @@ describe("Switch", () => {
     expect(sw).toHaveAttribute("aria-checked", "true");
   });
 
-  it("toggles with Space key", async () => {
+  it("Space 키로 토글", async () => {
     const user = userEvent.setup();
     render(<ControlledSwitch />);
     const sw = screen.getByRole("switch", { name: "Alerts" });

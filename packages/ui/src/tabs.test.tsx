@@ -18,8 +18,8 @@ function TabsDemo() {
   );
 }
 
-describe("Tabs", () => {
-  it("switches panels when tab is activated", async () => {
+describe("탭", () => {
+  it("탭 활성화 시 패널 전환", async () => {
     const user = userEvent.setup();
     render(<TabsDemo />);
     expect(screen.getByRole("tabpanel")).toHaveTextContent("Panel A");
@@ -27,7 +27,7 @@ describe("Tabs", () => {
     expect(screen.getByRole("tabpanel")).toHaveTextContent("Panel B");
   });
 
-  it("moves focus between tabs with ArrowRight", async () => {
+  it("ArrowRight로 탭 간 포커스 이동", async () => {
     const user = userEvent.setup();
     render(<TabsDemo />);
     const tabA = screen.getByRole("tab", { name: "A" });

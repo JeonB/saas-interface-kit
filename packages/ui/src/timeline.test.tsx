@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { Timeline, TimelineItem } from "./timeline";
 
-describe("Timeline", () => {
-  it("renders items as list", () => {
+describe("타임라인", () => {
+  it("항목을 리스트로 렌더", () => {
     render(
       <Timeline>
         <TimelineItem time="2 min ago">Deploy completed.</TimelineItem>

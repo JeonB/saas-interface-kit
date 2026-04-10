@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { AppShell, AppShellSidebar, AppShellMain, AppShellHeader, AppShellContent } from "./app-shell";
 
-describe("AppShell", () => {
-  it("renders semantic landmarks", () => {
+describe("앱 셸", () => {
+  it("시맨틱 랜드마크 렌더", () => {
     render(
       <AppShell>
         <AppShellSidebar aria-label="Sidebar">Sidebar</AppShellSidebar>
@@ -17,7 +17,7 @@ describe("AppShell", () => {
     expect(screen.getByRole("main")).toBeInTheDocument();
   });
 
-  it("renders children content", () => {
+  it("자식 콘텐츠 렌더", () => {
     render(
       <AppShell>
         <AppShellSidebar>Nav</AppShellSidebar>

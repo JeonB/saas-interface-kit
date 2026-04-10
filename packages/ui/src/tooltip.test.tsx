@@ -3,8 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { Tooltip } from "./tooltip";
 
-describe("Tooltip", () => {
-  it("shows tooltip on hover", async () => {
+describe("툴팁", () => {
+  it("호버 시 툴팁 표시", async () => {
     const user = userEvent.setup();
     render(
       <Tooltip content="Extra detail">

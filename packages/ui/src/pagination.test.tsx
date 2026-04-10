@@ -3,8 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { Pagination } from "./pagination";
 
-describe("Pagination", () => {
-  it("invokes onPageChange for next and previous", async () => {
+describe("페이지네이션", () => {
+  it("다음·이전에 onPageChange 호출", async () => {
     const user = userEvent.setup();
     const onPageChange = vi.fn();
     render(<Pagination page={2} pageCount={3} onPageChange={onPageChange} />);

@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { NavTabs, NavTabsItem } from "./nav-tabs";
 
-describe("NavTabs", () => {
-  it("renders as nav with aria-label", () => {
+describe("내비 탭", () => {
+  it("aria-label이 있는 nav로 렌더", () => {
     render(
       <NavTabs>
         <NavTabsItem href="#" active>개요</NavTabsItem>
@@ -12,7 +12,7 @@ describe("NavTabs", () => {
     expect(screen.getByRole("navigation", { name: "섹션" })).toBeInTheDocument();
   });
 
-  it("renders anchor elements", () => {
+  it("앵커 요소 렌더", () => {
     render(
       <NavTabs>
         <NavTabsItem href="/overview" active>개요</NavTabsItem>
