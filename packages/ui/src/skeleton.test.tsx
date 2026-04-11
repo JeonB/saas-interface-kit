@@ -10,4 +10,19 @@ describe("스켈레톤", () => {
     expect(el.style.height).toBe("24px");
     expect(el).toHaveAttribute("aria-hidden", "true");
   });
+
+  it.each([
+    ["none", ""],
+    ["sm", "ui:rounded-ui-sm"],
+    ["lg", "ui:rounded-ui-lg"],
+    ["full", "ui:rounded-full"],
+  ] as const)("rounded %s 맵", (rounded, cls) => {
+    const { container } = render(<Skeleton rounded={rounded} />);
+    const el = container.firstChild as HTMLElement;
+    if (cls) {
+      expect(el).toHaveClass(cls);
+    } else {
+      expect(el.className).not.toContain("rounded-ui");
+    }
+  });
 });

@@ -31,4 +31,20 @@ describe("배지", () => {
     expect(span).toHaveClass("ui:ml-2");
     expect(span).toHaveClass("ui:bg-semantic-warning");
   });
+
+  it("danger variant 및 showDot 분기", () => {
+    const { container } = render(
+      <Badge showDot size="lg" variant="danger">
+        Risk
+      </Badge>,
+    );
+    const outer = container.querySelector("span");
+    expect(outer).toHaveClass("ui:bg-semantic-danger");
+    expect(outer?.querySelector('[aria-hidden="true"]')).toBeTruthy();
+  });
+
+  it("size sm 분기", () => {
+    const { container } = render(<Badge size="sm">Tiny</Badge>);
+    expect(container.querySelector("span")).toHaveClass("ui:text-xs");
+  });
 });

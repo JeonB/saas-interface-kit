@@ -12,4 +12,13 @@ describe("선택", () => {
     );
     expect(screen.getByRole("combobox", { name: "Region" })).toHaveAttribute("name", "region");
   });
+
+  it.each(["sm", "lg"] as const)("size %s 분기", (size) => {
+    render(
+      <Select aria-label={`S${size}`} name="n" size={size}>
+        <option value="x">X</option>
+      </Select>,
+    );
+    expect(screen.getByRole("combobox", { name: `S${size}` })).toBeInTheDocument();
+  });
 });

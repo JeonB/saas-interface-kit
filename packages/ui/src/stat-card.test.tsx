@@ -15,4 +15,12 @@ describe("통계 카드", () => {
 
     expect(screen.getByText("+8.2% vs last month")).toBeInTheDocument();
   });
+
+  it.each([
+    ["down", "-2%", "ui:text-semantic-danger"],
+    ["neutral", "0%", "ui:text-text-secondary"],
+  ] as const)("trend %s 델타 스타일", (trend, delta, cls) => {
+    render(<StatCard delta={delta} label="Q" trend={trend} value="1" />);
+    expect(screen.getByText(delta)).toHaveClass(cls);
+  });
 });

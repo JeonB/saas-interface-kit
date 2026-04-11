@@ -8,4 +8,9 @@ describe("텍스트 영역", () => {
 
     expect(screen.getByRole("textbox", { name: "Notes" })).toHaveAttribute("name", "notes");
   });
+
+  it.each(["sm", "lg"] as const)("size %s 분기", (size) => {
+    render(<Textarea aria-label={`Area ${size}`} name="a" size={size} />);
+    expect(screen.getByRole("textbox", { name: `Area ${size}` })).toBeInTheDocument();
+  });
 });

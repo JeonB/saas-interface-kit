@@ -14,4 +14,13 @@ describe("상태 표시", () => {
     const dot = container.querySelector("[aria-hidden]");
     expect(dot).toBeInTheDocument();
   });
+
+  it.each([
+    ["offline", "ui:bg-semantic-danger"],
+    ["maintenance", "ui:bg-text-muted"],
+  ] as const)("state %s 점 색상 클래스", (state, dotClass) => {
+    const { container } = render(<StatusIndicator label="S" state={state} />);
+    const dot = container.querySelector("span[aria-hidden]");
+    expect(dot).toHaveClass(dotClass);
+  });
 });

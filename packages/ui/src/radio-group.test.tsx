@@ -23,4 +23,13 @@ describe("라디오 그룹", () => {
     expect(screen.getByRole("radio", { name: "B" })).toBeChecked();
     expect(screen.getByRole("radio", { name: "A" })).not.toBeChecked();
   });
+
+  it("명시적 name 속성 전달", () => {
+    render(
+      <RadioGroup name="plan" onValueChange={() => {}} value="a">
+        <RadioItem id="p1" label="A" value="a" />
+      </RadioGroup>,
+    );
+    expect(screen.getByRole("radio", { name: "A" })).toHaveAttribute("name", "plan");
+  });
 });
