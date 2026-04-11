@@ -13,7 +13,7 @@ function isExternalDocsHref(href: string): boolean {
   return href.startsWith("http://") || href.startsWith("https://");
 }
 
-export default function Page() {
+export function DashboardOverview() {
   const cursorHelpHref = `${DOCS_BASE}/docs/cursor-help`;
   const cursorHelpExternal = isExternalDocsHref(cursorHelpHref);
 

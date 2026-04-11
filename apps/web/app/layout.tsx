@@ -2,14 +2,15 @@ import "@repo/ui/styles.css";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
-import { Footer } from "../components/Footer";
-import { Header } from "../components/Header";
 
 const geist = Geist({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Northline 콘솔 — 사용량 개요",
-  description: "@repo/ui와 Turborepo로 구성한 B2B SaaS 대시보드 예시입니다.",
+  title: {
+    default: "Northline",
+    template: "%s · Northline",
+  },
+  description: "@repo/ui와 Turborepo로 구성한 B2B SaaS 콘솔 템플릿입니다.",
 };
 
 export default function RootLayout({
@@ -26,11 +27,7 @@ export default function RootLayout({
         >
           본문으로 건너뛰기
         </a>
-        <Header />
-        <main id="main-content" className="min-h-[calc(100vh-7rem)]">
-          {children}
-        </main>
-        <Footer />
+        {children}
       </body>
     </html>
   );
