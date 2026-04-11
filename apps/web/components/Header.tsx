@@ -5,7 +5,8 @@ import { DOCS_BASE } from "../lib/config";
 import { ThemeToggle } from "./ThemeToggle";
 
 const NAV_LINKS = [
-  { label: "개요", href: "/" },
+  { label: "홈", href: "/" },
+  { label: "콘솔", href: "/app" },
   { label: "문서", href: `${DOCS_BASE}/docs` },
 ];
 
