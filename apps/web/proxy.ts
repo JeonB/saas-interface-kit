@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { SESSION_COOKIE_NAME } from "./lib/session-constants";
 
-export function middleware(request: NextRequest) {
+/** Next.js 16 app convention: `proxy.ts` / `export function proxy` replace deprecated `middleware`. */
+export function proxy(request: NextRequest) {
   const session = request.cookies.get(SESSION_COOKIE_NAME);
   if (!session?.value) {
     const url = request.nextUrl.clone();

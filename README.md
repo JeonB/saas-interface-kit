@@ -87,6 +87,12 @@ pnpm test
 
 여러 Cursor 에이전트로 테스트 작업을 나눌 때 스타일 드리프트를 줄이려면 `packages/ui/PARALLEL_AGENTS_TEST_BRIEF.md`의 브리프를 공유하세요. 파일 이름 규칙, Testing Library 규칙, 복사해 쓸 프롬프트 템플릿이 정의되어 있습니다. 에이전트 결과를 머지한 뒤 `pnpm test`를 한 번 실행하세요.
 
+## Cursor·Slack·Cloud Agent로 개발하기
+
+**Slack과 Cursor를 연동**해 두면 채널·스레드에 맥락(요구사항, 링크, 스크린샷)을 남기면서 에이전트 기반 개발을 이어가기 좋습니다. 워크스페이스 알림·명령 흐름을 Slack 쪽에서 정리해 두면 원격·비동기 협업 시에도 같은 저장소 규칙(`AGENTS.md`, 품질 게이트)을 반복해서 강조하기 쉽습니다. 연결·권한 설정은 [Cursor 문서](https://cursor.com/docs)에서 **Slack** 연동 항목을 참고하세요.
+
+이 저장소는 **Cursor Cloud Agent**(클라우드에서 돌아가는 에이전트)로 개발하는 경우도 있습니다. 에이전트가 만든 변경은 로컬 작업과 동일하게 `pnpm lint`, `pnpm check-types`, `pnpm test`로 검증한 뒤 PR로 합치면 됩니다. Cloud Agent 전용 안내는 저장소 루트의 [`AGENTS.md`](AGENTS.md)를 함께 두면 에이전트가 프로젝트 맥락(포트, 빌드 순서, 주의사항)을 빠르게 읽을 수 있습니다.
+
 ## 디자인 시스템 운영 방식
 
 - **API 계약**: 컴포넌트는 안정적인 `variant`, `size`, `className` 패턴을 노출합니다.
