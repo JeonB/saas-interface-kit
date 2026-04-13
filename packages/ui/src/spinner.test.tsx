@@ -19,4 +19,9 @@ describe("스피너", () => {
     expect(container.querySelector('[aria-hidden="true"]')).toBeTruthy();
     expect(screen.queryByRole("status")).toBeNull();
   });
+
+  it("size lg 분기", () => {
+    const { container } = render(<Spinner size="lg" />);
+    expect(container.firstChild).toHaveClass("ui:h-6");
+  });
 });

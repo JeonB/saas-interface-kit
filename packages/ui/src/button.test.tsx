@@ -38,4 +38,54 @@ describe("버튼", () => {
     fireEvent.click(screen.getByRole("button", { name: "Click me" }));
     expect(count).toBe(1);
   });
+
+  it("danger variant 스타일", () => {
+    const { container } = render(<Button variant="danger">Delete</Button>);
+    expect(container.querySelector("button")).toHaveClass("ui:bg-semantic-danger");
+  });
+
+  it("loading 시 aria-busy·비활성", () => {
+    render(<Button loading>Submit</Button>);
+    const btn = screen.getByRole("button", { name: "Submit" });
+    expect(btn).toBeDisabled();
+    expect(btn).toHaveAttribute("aria-busy", "true");
+  });
+
+  it("asChild일 때 Slot으로 자식에 클래스 전달", () => {
+    render(
+      <Button asChild variant="primary">
+        <a href="https://example.com">Link</a>
+      </Button>,
+    );
+    const link = screen.getByRole("link", { name: "Link" });
+    expect(link).toHaveClass("ui:inline-flex");
+  });
+
+  it("leftIcon 렌더", () => {
+    render(
+      <Button leftIcon={<span data-testid="ico">+</span>} variant="default">
+        Add
+      </Button>,
+    );
+    expect(screen.getByTestId("ico")).toBeInTheDocument();
+  });
+
+  it("rightIcon 및 size lg 분기", () => {
+    render(
+      <Button rightIcon={<span data-testid="ri">→</span>} size="lg" variant="primary">
+        Next
+      </Button>,
+    );
+    expect(screen.getByTestId("ri")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Next→" })).toHaveClass("ui:h-11");
+  });
+
+  it("loading일 때 lg 스피너 크기", () => {
+    render(
+      <Button loading size="lg" variant="primary">
+        Wait
+      </Button>,
+    );
+    expect(screen.getByRole("button", { name: "Wait" })).toBeDisabled();
+  });
 });

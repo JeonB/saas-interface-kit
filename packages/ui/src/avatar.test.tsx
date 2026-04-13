@@ -32,4 +32,14 @@ describe("아바타", () => {
     const img = screen.getByRole("img", { name: "X" });
     expect(img).toHaveClass("ui:border");
   });
+
+  it.each(["sm", "lg"] as const)("size %s 분기", (size) => {
+    render(<Avatar fallback="U" size={size} />);
+    expect(screen.getByRole("img", { name: "U" })).toBeInTheDocument();
+  });
+
+  it("alt·fallback 없을 때 기본 레이블과 물음표", () => {
+    render(<Avatar />);
+    expect(screen.getByRole("img", { name: "아바타" })).toHaveTextContent("?");
+  });
 });

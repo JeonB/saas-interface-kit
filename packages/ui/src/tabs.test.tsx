@@ -35,4 +35,32 @@ describe("탭", () => {
     await user.keyboard("{ArrowRight}");
     expect(screen.getByRole("tab", { name: "B" })).toHaveFocus();
   });
+
+  it("ArrowLeft로 이전 탭 포커스", async () => {
+    const user = userEvent.setup();
+    render(<TabsDemo />);
+    const tabB = screen.getByRole("tab", { name: "B" });
+    tabB.focus();
+    await user.keyboard("{ArrowLeft}");
+    expect(screen.getByRole("tab", { name: "A" })).toHaveFocus();
+  });
+
+  it("화살표가 아닌 키는 탭 포커스 유지", async () => {
+    const user = userEvent.setup();
+    render(<TabsDemo />);
+    const tabA = screen.getByRole("tab", { name: "A" });
+    tabA.focus();
+    await user.keyboard("{Home}");
+    expect(tabA).toHaveFocus();
+  });
+
+  it("탭에 포커스 없을 때 화살표 키 무반응", async () => {
+    const user = userEvent.setup();
+    render(<TabsDemo />);
+    const list = screen.getByRole("tablist");
+    list.focus();
+    await user.keyboard("{ArrowRight}");
+    expect(screen.getByRole("tab", { name: "A" })).not.toHaveFocus();
+    expect(screen.getByRole("tab", { name: "B" })).not.toHaveFocus();
+  });
 });
