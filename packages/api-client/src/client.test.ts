@@ -1,5 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ConsoleApiTimeoutError, createConsoleApiClient, DEFAULT_REQUEST_TIMEOUT_MS } from "./client";
+import {
+  ConsoleApiError,
+  ConsoleApiTimeoutError,
+  createConsoleApiClient,
+  DEFAULT_REQUEST_TIMEOUT_MS,
+} from "./client";
 
 /** Mimics real fetch: rejects when `init.signal` aborts (tests use a custom `fetchImpl`). */
 function createHangingFetch(): typeof fetch {
@@ -72,6 +77,83 @@ describe("createConsoleApiClient", () => {
     const assertion = expect(pending).rejects.toThrow(ConsoleApiTimeoutError);
     await vi.advanceTimersByTimeAsync(DEFAULT_REQUEST_TIMEOUT_MS);
     await assertion;
+  });
+
+  it("retries on 503 then succeeds", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response("unavailable", { status: 503, headers: { "Content-Type": "text/plain" } }),
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+      );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+      maxRetries: 2,
+      retryDelayMs: 0,
+    });
+
+    await expect(client.healthCheck()).resolves.toEqual({ status: "ok" });
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+
+  it("does not retry on 500", async () => {
+    const fetchImpl = vi.fn(
+      async (): Promise<Response> =>
+        new Response("err", { status: 500, headers: { "Content-Type": "text/plain" } }),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+      maxRetries: 2,
+      retryDelayMs: 0,
+    });
+
+    await expect(client.healthCheck()).rejects.toThrow(ConsoleApiError);
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not retry when the attempt times out", async () => {
+    const fetchImpl = vi.fn(createHangingFetch());
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 30,
+      maxRetries: 3,
+      retryDelayMs: 0,
+    });
+
+    await expect(client.healthCheck()).rejects.toThrow(ConsoleApiTimeoutError);
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it("retries on fetch TypeError then succeeds", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockRejectedValueOnce(new TypeError("Failed to fetch"))
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+      );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+      maxRetries: 2,
+      retryDelayMs: 0,
+    });
+
+    await expect(client.healthCheck()).resolves.toEqual({ status: "ok" });
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
   });
 
   it("returns JSON on success", async () => {
