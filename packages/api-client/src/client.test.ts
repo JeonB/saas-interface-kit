@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
+  ConsoleApiError,
   ConsoleApiNetworkError,
   ConsoleApiTimeoutError,
   createConsoleApiClient,
@@ -79,7 +80,7 @@ describe("createConsoleApiClient", () => {
     await assertion;
   });
 
-  it("wraps fetch TypeError as ConsoleApiNetworkError", async () => {
+  it("wraps fetch TypeError as ConsoleApiNetworkError when retries are disabled", async () => {
     const fetchImpl = vi.fn(async (): Promise<Response> => {
       throw new TypeError("Failed to fetch");
     });
@@ -90,6 +91,113 @@ describe("createConsoleApiClient", () => {
     });
 
     await expect(client.healthCheck()).rejects.toThrow(ConsoleApiNetworkError);
+  });
+
+  it("sends X-Request-Id and reuses it across retries", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response("unavailable", { status: 503, headers: { "Content-Type": "text/plain" } }),
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+      );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+      maxRetries: 2,
+      retryDelayMs: 0,
+    });
+
+    await expect(client.healthCheck()).resolves.toEqual({ status: "ok" });
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+    const h0 = fetchImpl.mock.calls[0]?.[1] as RequestInit | undefined;
+    const h1 = fetchImpl.mock.calls[1]?.[1] as RequestInit | undefined;
+    const id0 = new Headers(h0?.headers).get("X-Request-Id");
+    const id1 = new Headers(h1?.headers).get("X-Request-Id");
+    expect(id0).toBeTruthy();
+    expect(id0).toBe(id1);
+  });
+
+  it("retries on 503 then succeeds", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response("unavailable", { status: 503, headers: { "Content-Type": "text/plain" } }),
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+      );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+      maxRetries: 2,
+      retryDelayMs: 0,
+    });
+
+    await expect(client.healthCheck()).resolves.toEqual({ status: "ok" });
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+
+  it("does not retry on 500", async () => {
+    const fetchImpl = vi.fn(
+      async (): Promise<Response> =>
+        new Response("err", { status: 500, headers: { "Content-Type": "text/plain" } }),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+      maxRetries: 2,
+      retryDelayMs: 0,
+    });
+
+    await expect(client.healthCheck()).rejects.toThrow(ConsoleApiError);
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not retry when the attempt times out", async () => {
+    const fetchImpl = vi.fn(createHangingFetch());
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 30,
+      maxRetries: 3,
+      retryDelayMs: 0,
+    });
+
+    await expect(client.healthCheck()).rejects.toThrow(ConsoleApiTimeoutError);
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it("retries on fetch TypeError then succeeds", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockRejectedValueOnce(new TypeError("Failed to fetch"))
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+      );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+      maxRetries: 2,
+      retryDelayMs: 0,
+    });
+
+    await expect(client.healthCheck()).resolves.toEqual({ status: "ok" });
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
   });
 
   it("returns JSON on success", async () => {
