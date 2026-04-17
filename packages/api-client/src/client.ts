@@ -11,10 +11,23 @@ export const DEFAULT_RETRY_DELAY_MS = 250;
 
 export const DEFAULT_RETRY_BACKOFF_FACTOR = 2;
 
+function generateRequestId(): string {
+  const c = globalThis.crypto;
+  if (c && typeof c.randomUUID === "function") {
+    return c.randomUUID();
+  }
+  return `req_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 12)}`;
+}
+
 export type ConsoleApiClientConfig = {
   baseUrl: string;
   fetchImpl?: typeof fetch;
   getAccessToken?: () => string | Promise<string | undefined>;
+  /**
+   * Correlation id for `X-Request-Id`; when omitted, a new id is generated once per logical request
+   * (including retries of the same `healthCheck` / `getUsageSummary` call).
+   */
+  getRequestId?: () => string;
   /** When set, aborts the request after this many milliseconds (combined with `init.signal` when provided). */
   requestTimeoutMs?: number;
   /**
@@ -148,10 +161,12 @@ export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleA
   async function request<T>(path: string, init?: RequestInit): Promise<T> {
     const outerSignal = init?.signal;
     let lastError: unknown;
+    const requestId = config.getRequestId?.() ?? generateRequestId();
 
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
       const headers = new Headers(init?.headers);
       headers.set("Accept", "application/json");
+      headers.set("X-Request-Id", requestId);
       const token = await config.getAccessToken?.();
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
