@@ -1,5 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ConsoleApiTimeoutError, createConsoleApiClient, DEFAULT_REQUEST_TIMEOUT_MS } from "./client";
+import {
+  ConsoleApiNetworkError,
+  ConsoleApiTimeoutError,
+  createConsoleApiClient,
+  DEFAULT_REQUEST_TIMEOUT_MS,
+} from "./client";
 
 /** Mimics real fetch: rejects when `init.signal` aborts (tests use a custom `fetchImpl`). */
 function createHangingFetch(): typeof fetch {
@@ -72,6 +77,19 @@ describe("createConsoleApiClient", () => {
     const assertion = expect(pending).rejects.toThrow(ConsoleApiTimeoutError);
     await vi.advanceTimersByTimeAsync(DEFAULT_REQUEST_TIMEOUT_MS);
     await assertion;
+  });
+
+  it("wraps fetch TypeError as ConsoleApiNetworkError", async () => {
+    const fetchImpl = vi.fn(async (): Promise<Response> => {
+      throw new TypeError("Failed to fetch");
+    });
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+    });
+
+    await expect(client.healthCheck()).rejects.toThrow(ConsoleApiNetworkError);
   });
 
   it("returns JSON on success", async () => {
