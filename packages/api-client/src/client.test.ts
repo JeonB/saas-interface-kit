@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   ConsoleApiError,
+  ConsoleApiNetworkError,
   ConsoleApiTimeoutError,
   createConsoleApiClient,
   DEFAULT_REQUEST_TIMEOUT_MS,
@@ -77,6 +78,19 @@ describe("createConsoleApiClient", () => {
     const assertion = expect(pending).rejects.toThrow(ConsoleApiTimeoutError);
     await vi.advanceTimersByTimeAsync(DEFAULT_REQUEST_TIMEOUT_MS);
     await assertion;
+  });
+
+  it("wraps fetch TypeError as ConsoleApiNetworkError when retries are disabled", async () => {
+    const fetchImpl = vi.fn(async (): Promise<Response> => {
+      throw new TypeError("Failed to fetch");
+    });
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+    });
+
+    await expect(client.healthCheck()).rejects.toThrow(ConsoleApiNetworkError);
   });
 
   it("sends X-Request-Id and reuses it across retries", async () => {

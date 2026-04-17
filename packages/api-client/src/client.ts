@@ -63,6 +63,24 @@ export class ConsoleApiTimeoutError extends Error {
   }
 }
 
+/** Thrown when the transport layer fails before an HTTP response (DNS, TLS, offline, CORS preflight, etc.). */
+export class ConsoleApiNetworkError extends Error {
+  constructor(message?: string, options?: { cause?: unknown }) {
+    super(message ?? "Console API request failed due to a network error", options);
+    this.name = "ConsoleApiNetworkError";
+  }
+}
+
+function isLikelyNetworkFailure(e: unknown): boolean {
+  if (e instanceof TypeError) {
+    return true;
+  }
+  if (e instanceof DOMException && e.name === "NetworkError") {
+    return true;
+  }
+  return false;
+}
+
 function createTimeoutAbort(ms: number): { signal: AbortSignal; clear: () => void } {
   const controller = new AbortController();
   const id = setTimeout(() => {
@@ -201,6 +219,9 @@ export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleA
         }
         if (timedOut && !userAborted) {
           throw new ConsoleApiTimeoutError(timeoutMs);
+        }
+        if (!userAborted && isLikelyNetworkFailure(e)) {
+          throw new ConsoleApiNetworkError(undefined, { cause: e });
         }
         throw e;
       } finally {

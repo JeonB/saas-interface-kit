@@ -1,5 +1,6 @@
 export {
   ConsoleApiError,
+  ConsoleApiNetworkError,
   ConsoleApiTimeoutError,
   createConsoleApiClient,
   DEFAULT_MAX_RETRIES,

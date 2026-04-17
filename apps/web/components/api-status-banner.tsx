@@ -1,4 +1,4 @@
-import { ConsoleApiTimeoutError } from "@repo/api-client";
+import { ConsoleApiNetworkError, ConsoleApiTimeoutError } from "@repo/api-client";
 import { Alert } from "@repo/ui/alert";
 import { getConsoleApiClient } from "../lib/console-api";
 
@@ -18,12 +18,14 @@ export async function ApiStatusBanner() {
 
   let healthOk = false;
   let timedOut = false;
+  let networkFailed = false;
   try {
     await client.healthCheck();
     healthOk = true;
   } catch (e) {
     healthOk = false;
     timedOut = e instanceof ConsoleApiTimeoutError;
+    networkFailed = e instanceof ConsoleApiNetworkError;
   }
 
   if (healthOk) {
@@ -41,7 +43,9 @@ export async function ApiStatusBanner() {
       <Alert title="API" variant="warning">
         {timedOut
           ? "health 확인 요청이 시간 초과되었습니다. API가 느리거나 응답하지 않을 수 있으니 서버 상태와 네트워크를 확인하세요."
-          : "API URL은 설정됐지만 health 엔드포인트 호출에 실패했습니다. CORS·네트워크·경로를 확인하세요."}
+          : networkFailed
+            ? "health 호출 전에 네트워크에서 실패했습니다. DNS·TLS·방화벽·오프라인·CORS를 점검하세요."
+            : "API URL은 설정됐지만 health 엔드포인트 호출에 실패했습니다. CORS·네트워크·경로를 확인하세요."}
       </Alert>
     </div>
   );
