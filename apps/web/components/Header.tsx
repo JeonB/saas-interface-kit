@@ -6,7 +6,7 @@ import { ThemeToggle } from "./ThemeToggle";
 
 const NAV_LINKS = [
   { label: "홈", href: "/" },
-  { label: "콘솔", href: "/app" },
+  { label: "콘솔", href: "/console" },
   { label: "문서", href: `${DOCS_BASE}/docs` },
 ];
 

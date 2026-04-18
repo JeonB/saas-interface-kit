@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default async function AppGroupLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession();
   if (!session) {
-    redirect("/login?from=/app");
+    redirect("/login?from=/console");
   }
 
   return (

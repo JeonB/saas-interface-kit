@@ -15,7 +15,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const { from: fromParam, error } = await searchParams;
   const from = typeof fromParam === "string" && fromParam.startsWith("/") && !fromParam.startsWith("//")
     ? fromParam
-    : "/app";
+    : "/console";
 
   return (
     <div className="w-full max-w-md" id="main-content">

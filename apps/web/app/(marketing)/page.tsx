@@ -25,7 +25,7 @@ export default function MarketingHomePage() {
               <Link href="/login">로그인</Link>
             </Button>
             <Button asChild name="ctaConsole" variant="default">
-              <Link href="/app">콘솔 열기</Link>
+              <Link href="/console">콘솔 열기</Link>
             </Button>
           </div>
         </div>
@@ -33,7 +33,7 @@ export default function MarketingHomePage() {
       <section className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6">
         <p className="text-sm text-neutral-500">
           콘솔은 세션이 필요합니다. 데모 로그인에서 이메일과 역할을 선택하면{" "}
-          <code className="rounded bg-neutral-900 px-1 text-neutral-300">/app</code> 아래 라우트가 열립니다.
+          <code className="rounded bg-neutral-900 px-1 text-neutral-300">/console</code> 아래 라우트가 열립니다.
         </p>
       </section>
     </div>

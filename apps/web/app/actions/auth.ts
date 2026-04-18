@@ -27,8 +27,8 @@ export async function loginAction(formData: FormData): Promise<void> {
   const fromRaw = formData.get("from");
 
   const email = typeof emailRaw === "string" ? emailRaw.trim() : "";
-  const from = typeof fromRaw === "string" ? fromRaw : "/app";
-  const safeFrom = from.startsWith("/") && !from.startsWith("//") ? from : "/app";
+  const from = typeof fromRaw === "string" ? fromRaw : "/console";
+  const safeFrom = from.startsWith("/") && !from.startsWith("//") ? from : "/console";
 
   if (!email || !email.includes("@")) {
     redirect(`/login?error=invalid&from=${encodeURIComponent(safeFrom)}`);
