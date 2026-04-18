@@ -19,20 +19,20 @@ export function AppSidebar() {
   return (
     <Sidebar className="ui:lg:min-h-screen">
       <SidebarGroup label="제품">
-        <Link className={linkClass(pathname === "/app")} href="/app">
+        <Link className={linkClass(pathname === "/console")} href="/console">
           개요
         </Link>
-        <Link className={linkClass(pathname === "/app/members")} href="/app/members">
+        <Link className={linkClass(pathname === "/console/members")} href="/console/members">
           멤버
         </Link>
       </SidebarGroup>
       <SidebarGroup label="설정">
-        <Link className={linkClass(pathname === "/app/settings")} href="/app/settings">
+        <Link className={linkClass(pathname === "/console/settings")} href="/console/settings">
           조직
         </Link>
         <Link
-          className={linkClass(pathname === "/app/settings/billing")}
-          href="/app/settings/billing"
+          className={linkClass(pathname === "/console/settings/billing")}
+          href="/console/settings/billing"
         >
           청구
         </Link>
