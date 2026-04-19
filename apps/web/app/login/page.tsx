@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Alert } from "@repo/ui/alert";
 import { Button } from "@repo/ui/button";
 import { Card, CardBody, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
@@ -18,7 +17,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     : "/console";
 
   return (
-    <div className="w-full max-w-md" id="main-content">
+    <div className="w-full max-w-md">
       <Card className="border-neutral-800 bg-neutral-900/60">
         <CardHeader>
           <CardTitle>데모 로그인</CardTitle>
@@ -55,11 +54,6 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               계속
             </Button>
           </form>
-          <p className="text-center text-sm text-neutral-500">
-            <Link className="text-neutral-300 underline underline-offset-2 hover:text-white" href="/">
-              마케팅 홈
-            </Link>
-          </p>
         </CardBody>
       </Card>
     </div>
