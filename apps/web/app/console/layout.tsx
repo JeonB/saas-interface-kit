@@ -30,7 +30,9 @@ export default async function AppGroupLayout({ children }: { children: React.Rea
         <AppShellHeader className="border-neutral-800 bg-neutral-950">
           <AppProductHeader />
         </AppShellHeader>
-        <AppShellContent className="bg-neutral-950 p-0">{children}</AppShellContent>
+        <AppShellContent className="bg-neutral-950 p-0" id="main-content">
+          {children}
+        </AppShellContent>
       </AppShellMain>
     </AppShell>
   );
