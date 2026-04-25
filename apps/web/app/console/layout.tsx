@@ -10,6 +10,7 @@ import { redirect } from "next/navigation";
 import { getSession } from "../../lib/session";
 import { AppProductHeader } from "../../components/app-product-header";
 import { AppSidebar } from "../../components/app-sidebar";
+import { ConsoleCommandPalette } from "../../components/console-command-palette";
 
 export const metadata: Metadata = {
   title: "콘솔",
@@ -31,6 +32,7 @@ export default async function AppGroupLayout({ children }: { children: React.Rea
           <AppProductHeader />
         </AppShellHeader>
         <AppShellContent className="bg-neutral-950 p-0" id="main-content">
+          <ConsoleCommandPalette />
           {children}
         </AppShellContent>
       </AppShellMain>
