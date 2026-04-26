@@ -1,4 +1,5 @@
-import type { UsageSummaryDto } from "./types";
+import { AuditEventsPageSchema } from "./schemas";
+import type { AuditEventAction, AuditEventsPage, UsageSummaryDto } from "./types";
 
 /** Default ceiling for outbound requests so SSR and UI do not hang on a stalled API. */
 export const DEFAULT_REQUEST_TIMEOUT_MS = 10_000;
@@ -164,9 +165,20 @@ export type ConsoleApiRequestOptions = {
   signal?: AbortSignal;
 };
 
+export type GetAuditEventsParams = {
+  actor?: string;
+  action?: AuditEventAction;
+  from?: string;
+  to?: string;
+  page?: number;
+  size?: number;
+  signal?: AbortSignal;
+};
+
 export type ConsoleApiClient = {
   healthCheck: (options?: ConsoleApiRequestOptions) => Promise<{ status: string }>;
   getUsageSummary: (options?: ConsoleApiRequestOptions) => Promise<UsageSummaryDto>;
+  getAuditEvents: (params?: GetAuditEventsParams) => Promise<AuditEventsPage>;
 };
 
 export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleApiClient {
@@ -176,7 +188,11 @@ export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleA
   const retryDelayMs = config.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS;
   const retryBackoffFactor = config.retryBackoffFactor ?? DEFAULT_RETRY_BACKOFF_FACTOR;
 
-  async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  async function request<T>(
+    path: string,
+    init?: RequestInit,
+    parser?: (raw: unknown) => T,
+  ): Promise<T> {
     const outerSignal = init?.signal;
     let lastError: unknown;
     const requestId = config.getRequestId?.() ?? generateRequestId();
@@ -244,7 +260,16 @@ export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleA
         throw err;
       }
 
-      return res.json() as Promise<T>;
+      const payload = (await res.json()) as unknown;
+      if (!parser) {
+        return payload as T;
+      }
+      try {
+        return parser(payload);
+      } catch (e) {
+        const message = e instanceof Error ? e.message : "unknown parser error";
+        throw new ConsoleApiError(200, `invalid_response: ${message}`);
+      }
     }
 
     throw lastError instanceof Error ? lastError : new Error("Console API request failed");
@@ -255,5 +280,29 @@ export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleA
       request<{ status: string }>("/health", { signal: options?.signal }),
     getUsageSummary: (options) =>
       request<UsageSummaryDto>("/v1/usage/summary", { signal: options?.signal }),
+    getAuditEvents: (params) => {
+      const search = new URLSearchParams();
+      const page = params?.page ?? 1;
+      const size = params?.size ?? 20;
+      if (params?.actor) {
+        search.set("actor", params.actor);
+      }
+      if (params?.action) {
+        search.set("action", params.action);
+      }
+      if (params?.from) {
+        search.set("from", params.from);
+      }
+      if (params?.to) {
+        search.set("to", params.to);
+      }
+      search.set("page", String(page));
+      search.set("size", String(size));
+      return request<AuditEventsPage>(
+        `/v1/audit/events?${search.toString()}`,
+        { signal: params?.signal },
+        (raw) => AuditEventsPageSchema.parse(raw),
+      );
+    },
   };
 }

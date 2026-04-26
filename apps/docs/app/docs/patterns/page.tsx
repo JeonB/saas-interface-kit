@@ -198,6 +198,42 @@ export default function PatternsPage() {
       </section>
 
       <section className="mt-12 space-y-3">
+        <h2 className="text-xl font-semibold text-white">5. URL 상태 + Zod API 경계 패턴</h2>
+        <p className="text-sm text-neutral-400">
+          <strong>대상:</strong> <code className="rounded bg-neutral-800 px-1">/console/audit</code> 감사 로그 화면
+        </p>
+        <div className="rounded-lg border border-neutral-800 bg-neutral-900/40 p-4">
+          <h3 className="text-sm font-semibold text-white">레시피</h3>
+          <ol className="mt-2 list-decimal space-y-2 pl-5 text-sm text-neutral-300">
+            <li>
+              필터 상태를 로컬 state만 쓰지 말고 URL로 올립니다 (
+              <code className="rounded bg-neutral-800 px-1">actor</code>,{" "}
+              <code className="rounded bg-neutral-800 px-1">action</code>,{" "}
+              <code className="rounded bg-neutral-800 px-1">from</code>,{" "}
+              <code className="rounded bg-neutral-800 px-1">to</code>,{" "}
+              <code className="rounded bg-neutral-800 px-1">page</code>,{" "}
+              <code className="rounded bg-neutral-800 px-1">size</code>).
+            </li>
+            <li>
+              서버 컴포넌트가 <code className="rounded bg-neutral-800 px-1">searchParams</code>를 기준으로 데이터를
+              가져오면, 새로고침/공유 링크/뒤로 가기가 자연스럽게 동작합니다.
+            </li>
+            <li>
+              API 클라이언트에서는 <code className="rounded bg-neutral-800 px-1">zod.parse()</code>로 응답을 좁혀
+              백엔드 스펙 드리프트를 조기에 감지합니다.
+            </li>
+            <li>
+              API URL이 비어 있으면 목 데이터로 폴백해 개발 환경에서도 흐름이 끊기지 않게 합니다.
+            </li>
+          </ol>
+        </div>
+        <pre className="overflow-x-auto rounded-lg bg-neutral-900 p-4 text-sm text-neutral-300">
+{`const result = await client.getAuditEvents({ action, actor, page, size });
+const parsed = AuditEventsPageSchema.parse(result);`}
+        </pre>
+      </section>
+
+      <section className="mt-12 space-y-3">
         <h2 className="text-xl font-semibold text-white">더 많은 패턴</h2>
         <p className="text-sm text-neutral-400">
           개별 컴포넌트 문서는{" "}

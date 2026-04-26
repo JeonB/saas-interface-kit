@@ -222,4 +222,85 @@ describe("createConsoleApiClient", () => {
       }),
     );
   });
+
+  it("parses audit events response with zod schema", async () => {
+    const fetchImpl = vi.fn(
+      async (): Promise<Response> =>
+        new Response(
+          JSON.stringify({
+            items: [
+              {
+                id: "evt_1",
+                occurredAt: "2026-01-10T00:00:00.000Z",
+                actor: { id: "usr_1", email: "owner@example.com", name: "Owner" },
+                action: "member.invited",
+                target: { type: "member", id: "usr_2", label: "member@example.com" },
+                ip: "10.0.0.1",
+              },
+            ],
+            total: 1,
+            page: 2,
+            size: 10,
+          }),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          },
+        ),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+    });
+
+    await expect(
+      client.getAuditEvents({ actor: "owner", action: "member.invited", page: 2, size: 10 }),
+    ).resolves.toEqual({
+      items: [
+        {
+          id: "evt_1",
+          occurredAt: "2026-01-10T00:00:00.000Z",
+          actor: { id: "usr_1", email: "owner@example.com", name: "Owner" },
+          action: "member.invited",
+          target: { type: "member", id: "usr_2", label: "member@example.com" },
+          ip: "10.0.0.1",
+        },
+      ],
+      total: 1,
+      page: 2,
+      size: 10,
+    });
+    expect(fetchImpl).toHaveBeenCalledWith(
+      "https://api.example/v1/audit/events?actor=owner&action=member.invited&page=2&size=10",
+      expect.objectContaining({
+        signal: expect.any(AbortSignal),
+      }),
+    );
+  });
+
+  it("throws ConsoleApiError when audit response shape is invalid", async () => {
+    const fetchImpl = vi.fn(
+      async (): Promise<Response> =>
+        new Response(
+          JSON.stringify({
+            items: [{ id: "evt_1", action: "member.invited" }],
+            total: 1,
+            page: 1,
+            size: 20,
+          }),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          },
+        ),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+    });
+
+    await expect(client.getAuditEvents()).rejects.toThrow(ConsoleApiError);
+  });
 });

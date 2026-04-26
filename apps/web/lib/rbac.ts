@@ -5,11 +5,26 @@ export type Permission =
   | "billing:manage"
   | "members:read"
   | "members:manage"
-  | "org:settings";
+  | "org:settings"
+  | "audit:read";
 
 const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
-  owner: ["billing:read", "billing:manage", "members:read", "members:manage", "org:settings"],
-  admin: ["billing:read", "billing:manage", "members:read", "members:manage", "org:settings"],
+  owner: [
+    "billing:read",
+    "billing:manage",
+    "members:read",
+    "members:manage",
+    "org:settings",
+    "audit:read",
+  ],
+  admin: [
+    "billing:read",
+    "billing:manage",
+    "members:read",
+    "members:manage",
+    "org:settings",
+    "audit:read",
+  ],
   member: ["billing:read", "members:read", "org:settings"],
   viewer: ["billing:read", "members:read"],
 };
