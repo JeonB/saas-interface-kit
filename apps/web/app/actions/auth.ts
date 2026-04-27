@@ -9,6 +9,10 @@ import { isRole, type Role } from "../../lib/rbac";
 const DEMO_ORG_ID = "org_demo";
 const DEMO_ORG_NAME = "Northline (데모)";
 
+export type LoginActionState = {
+  error?: string;
+};
+
 function buildSessionUser(email: string, name: string, role: Role): SessionUser {
   const id = `usr_${Buffer.from(email).toString("base64url").slice(0, 12)}`;
   return {
@@ -21,7 +25,10 @@ function buildSessionUser(email: string, name: string, role: Role): SessionUser 
   };
 }
 
-export async function loginAction(formData: FormData): Promise<void> {
+export async function loginAction(
+  _prev: LoginActionState,
+  formData: FormData,
+): Promise<LoginActionState> {
   const emailRaw = formData.get("email");
   const roleRaw = formData.get("role");
   const fromRaw = formData.get("from");
@@ -31,12 +38,12 @@ export async function loginAction(formData: FormData): Promise<void> {
   const safeFrom = from.startsWith("/") && !from.startsWith("//") ? from : "/console";
 
   if (!email || !email.includes("@")) {
-    redirect(`/login?error=invalid&from=${encodeURIComponent(safeFrom)}`);
+    return { error: "이메일 형식을 확인하세요." };
   }
 
   const roleStr = typeof roleRaw === "string" ? roleRaw : "member";
   if (!isRole(roleStr)) {
-    redirect(`/login?error=invalid&from=${encodeURIComponent(safeFrom)}`);
+    return { error: "역할을 다시 선택하세요." };
   }
 
   const local = email.split("@")[0] ?? "user";

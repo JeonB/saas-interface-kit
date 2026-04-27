@@ -25,6 +25,9 @@ export function AppSidebar() {
         <Link className={linkClass(pathname === "/console/members")} href="/console/members">
           멤버
         </Link>
+        <Link className={linkClass(pathname === "/console/audit")} href="/console/audit">
+          감사 로그
+        </Link>
       </SidebarGroup>
       <SidebarGroup label="설정">
         <Link className={linkClass(pathname === "/console/settings")} href="/console/settings">

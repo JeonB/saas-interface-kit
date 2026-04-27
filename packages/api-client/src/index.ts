@@ -12,8 +12,14 @@ export type {
   ConsoleApiClient,
   ConsoleApiClientConfig,
   ConsoleApiRequestOptions,
+  GetAuditEventsParams,
 } from "./client";
 export type {
+  AuditEventAction,
+  AuditEventDto,
+  AuditEventsPage,
+  AuditTarget,
+  AuditActor,
   MemberSummary,
   OrganizationSummary,
   OrgRole,

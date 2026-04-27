@@ -1,17 +1,15 @@
+import Link from "next/link";
 import { Alert } from "@repo/ui/alert";
 import { Button } from "@repo/ui/button";
 import { Card, CardBody, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
-import { Field } from "@repo/ui/field";
-import { Input } from "@repo/ui/input";
-import { Select } from "@repo/ui/select";
-import { loginAction } from "../actions/auth";
+import { LoginForm } from "./login-form";
 
 type LoginPageProps = {
-  searchParams: Promise<{ from?: string; error?: string }>;
+  searchParams: Promise<{ from?: string }>;
 };
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
-  const { from: fromParam, error } = await searchParams;
+  const { from: fromParam } = await searchParams;
   const from = typeof fromParam === "string" && fromParam.startsWith("/") && !fromParam.startsWith("//")
     ? fromParam
     : "/console";
@@ -26,6 +24,12 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           </CardDescription>
         </CardHeader>
         <CardBody className="space-y-6">
+          <LoginForm from={from} />
+          <p className="text-center text-sm text-neutral-500">
+            <Link className="text-neutral-300 underline underline-offset-2 hover:text-white" href="/">
+              마케팅 홈
+            </Link>
+          </p>
           {error === "invalid" ? (
             <Alert title="입력 오류" variant="warning">
               이메일 형식을 확인하거나 역할을 다시 선택하세요.
