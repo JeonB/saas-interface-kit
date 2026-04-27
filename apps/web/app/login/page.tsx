@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Alert } from "@repo/ui/alert";
+import { Button } from "@repo/ui/button";
 import { Card, CardBody, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
 import { LoginForm } from "./login-form";
 
@@ -13,7 +15,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     : "/console";
 
   return (
-    <div className="w-full max-w-md" id="main-content">
+    <div className="w-full max-w-md">
       <Card className="border-neutral-800 bg-neutral-900/60">
         <CardHeader>
           <CardTitle>데모 로그인</CardTitle>
@@ -28,6 +30,34 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               마케팅 홈
             </Link>
           </p>
+          {error === "invalid" ? (
+            <Alert title="입력 오류" variant="warning">
+              이메일 형식을 확인하거나 역할을 다시 선택하세요.
+            </Alert>
+          ) : null}
+          <form action={loginAction} className="space-y-4">
+            <input name="from" type="hidden" value={from} />
+            <Field id="login-email" label="이메일">
+              <Input
+                autoComplete="email"
+                name="email"
+                placeholder="you@company.com"
+                required
+                type="email"
+              />
+            </Field>
+            <Field id="login-role" label="역할 (RBAC 데모)">
+              <Select defaultValue="member" name="role" required>
+                <option value="owner">owner</option>
+                <option value="admin">admin</option>
+                <option value="member">member</option>
+                <option value="viewer">viewer</option>
+              </Select>
+            </Field>
+            <Button className="w-full" name="signIn" type="submit" variant="primary">
+              계속
+            </Button>
+          </form>
         </CardBody>
       </Card>
     </div>
