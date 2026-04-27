@@ -1,5 +1,16 @@
 import { z } from "zod";
 
+export const HealthCheckSchema = z.object({
+  status: z.string().min(1),
+});
+
+export const UsageSummaryDtoSchema = z.object({
+  mrrUsd: z.number(),
+  activeSeats: z.number().int().nonnegative(),
+  churnRate: z.number(),
+  nps: z.number(),
+});
+
 export const AuditEventActionSchema = z.enum([
   "member.invited",
   "member.removed",

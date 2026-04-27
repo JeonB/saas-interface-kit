@@ -15,12 +15,25 @@ export type SessionUser = {
   orgName: string;
 };
 
+const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7;
+
+type SignedSessionPayload = SessionUser & {
+  exp: number;
+  iat: number;
+};
+
 function sessionSecret(): string {
   return process.env.SESSION_SECRET ?? "development-only-set-session-secret";
 }
 
 export function signSession(user: SessionUser): string {
-  const payload = Buffer.from(JSON.stringify(user), "utf8").toString("base64url");
+  const now = Math.floor(Date.now() / 1000);
+  const payloadBody: SignedSessionPayload = {
+    ...user,
+    iat: now,
+    exp: now + SESSION_TTL_SECONDS,
+  };
+  const payload = Buffer.from(JSON.stringify(payloadBody), "utf8").toString("base64url");
   const sig = createHmac("sha256", sessionSecret()).update(payload).digest("base64url");
   return `${payload}.${sig}`;
 }
@@ -41,16 +54,27 @@ export function verifySignedSession(token: string): SessionUser | null {
   try {
     const json = Buffer.from(payload, "base64url").toString("utf8");
     const parsed: unknown = JSON.parse(json);
-    if (!isSessionUser(parsed)) {
+    if (!isSignedSessionPayload(parsed)) {
       return null;
     }
-    return parsed;
+    const now = Math.floor(Date.now() / 1000);
+    if (parsed.exp <= now) {
+      return null;
+    }
+    return {
+      id: parsed.id,
+      email: parsed.email,
+      name: parsed.name,
+      role: parsed.role,
+      orgId: parsed.orgId,
+      orgName: parsed.orgName,
+    };
   } catch {
     return null;
   }
 }
 
-function isSessionUser(value: unknown): value is SessionUser {
+function isSignedSessionPayload(value: unknown): value is SignedSessionPayload {
   if (typeof value !== "object" || value === null) {
     return false;
   }
@@ -62,7 +86,11 @@ function isSessionUser(value: unknown): value is SessionUser {
     typeof o.orgId === "string" &&
     typeof o.orgName === "string" &&
     typeof o.role === "string" &&
-    isRole(o.role)
+    isRole(o.role) &&
+    typeof o.iat === "number" &&
+    Number.isFinite(o.iat) &&
+    typeof o.exp === "number" &&
+    Number.isFinite(o.exp)
   );
 }
 

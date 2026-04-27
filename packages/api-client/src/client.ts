@@ -1,4 +1,4 @@
-import { AuditEventsPageSchema } from "./schemas";
+import { AuditEventsPageSchema, HealthCheckSchema, UsageSummaryDtoSchema } from "./schemas";
 import type { AuditEventAction, AuditEventsPage, UsageSummaryDto } from "./types";
 
 /** Default ceiling for outbound requests so SSR and UI do not hang on a stalled API. */
@@ -277,9 +277,13 @@ export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleA
 
   return {
     healthCheck: (options) =>
-      request<{ status: string }>("/health", { signal: options?.signal }),
+      request<{ status: string }>("/health", { signal: options?.signal }, (raw) =>
+        HealthCheckSchema.parse(raw),
+      ),
     getUsageSummary: (options) =>
-      request<UsageSummaryDto>("/v1/usage/summary", { signal: options?.signal }),
+      request<UsageSummaryDto>("/v1/usage/summary", { signal: options?.signal }, (raw) =>
+        UsageSummaryDtoSchema.parse(raw),
+      ),
     getAuditEvents: (params) => {
       const search = new URLSearchParams();
       const page = params?.page ?? 1;
