@@ -6,16 +6,20 @@ import { Badge } from "@repo/ui/badge";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbSeparator } from "@repo/ui/breadcrumb";
 import { Button } from "@repo/ui/button";
 import { Card, CardBody, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/card";
+import { ConnectorCard } from "@repo/ui/connector-card";
 import { EmptyState } from "@repo/ui/empty-state";
 import { Field } from "@repo/ui/field";
 import { FilterBar, FilterChip } from "@repo/ui/filter-bar";
+import { FlowCanvas } from "@repo/ui/flow-canvas";
 import { Input } from "@repo/ui/input";
 import { LinkCard } from "@repo/ui/link-card";
 import { NavTabs, NavTabsItem } from "@repo/ui/nav-tabs";
+import { RunStatusBadge } from "@repo/ui/run-status-badge";
 import { Separator } from "@repo/ui/separator";
 import { Skeleton } from "@repo/ui/skeleton";
 import { Spinner } from "@repo/ui/spinner";
 import { StatCard } from "@repo/ui/stat-card";
+import { StepLogPanel } from "@repo/ui/step-log-panel";
 import { StatusIndicator } from "@repo/ui/status-indicator";
 import { Textarea } from "@repo/ui/textarea";
 
@@ -239,6 +243,62 @@ export default function ComponentReferencePage() {
           <strong>접근성:</strong> 시맨틱 <code className="rounded bg-neutral-800 px-1">&lt;ul&gt;/&lt;li&gt;</code>.{" "}
           <strong>권장:</strong> 타임스탬프는 <code className="rounded bg-neutral-800 px-1">time</code> prop.
         </p>
+      </section>
+
+      <section className="mt-10">
+        <h3 className="text-xl font-semibold text-white">iPaaS 모듈 (ConnectorCard / RunStatusBadge / StepLogPanel / FlowCanvas)</h3>
+        <p className="mt-2 text-sm text-neutral-400">
+          <strong>용도:</strong> 통합 연결 상태, 워크플로 실행 상태, 스텝 로그, DAG 캔버스를 조합해 iPaaS 콘솔 화면을 빠르게 구성합니다.
+          <strong> 접근성:</strong> 상태 텍스트는 배지로 노출되고, 캔버스는 읽기 전용 <code className="rounded bg-neutral-800 px-1">aria-label</code>을 제공합니다.
+        </p>
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          <ConnectorCard
+            description="워크플로 실패/성공 알림을 지정 채널로 전송합니다."
+            lastSyncAt="2026-04-28 20:20"
+            name="Slack Alerts"
+            status="connected"
+            vendor="Slack"
+          />
+          <div className="rounded-lg border border-neutral-800 bg-neutral-900/40 p-4">
+            <p className="mb-3 text-sm text-neutral-300">
+              마지막 실행 상태 <RunStatusBadge status="running" />
+            </p>
+            <StepLogPanel
+              steps={[
+                {
+                  id: "step-1",
+                  level: "info",
+                  message: "입력 payload 파싱 완료",
+                  startedAt: "20:20:01",
+                  title: "Parse Payload",
+                },
+                {
+                  id: "step-2",
+                  level: "warning",
+                  message: "중복 레코드를 병합 처리",
+                  startedAt: "20:20:03",
+                  title: "Upsert Contact",
+                },
+              ]}
+              title="샘플 실행 로그"
+            />
+          </div>
+        </div>
+        <div className="mt-4 rounded-lg border border-neutral-800 bg-neutral-900/40 p-4">
+          <FlowCanvas
+            ariaLabel="문서용 워크플로 그래프"
+            edges={[
+              { id: "edge-1", source: "trigger", target: "transform" },
+              { id: "edge-2", source: "transform", target: "notify" },
+            ]}
+            nodes={[
+              { id: "trigger", position: { x: 0, y: 0 }, data: { label: "Trigger" }, type: "input" },
+              { id: "transform", position: { x: 220, y: 0 }, data: { label: "Transform" } },
+              { id: "notify", position: { x: 440, y: 0 }, data: { label: "Notify" }, type: "output" },
+            ]}
+            readOnly
+          />
+        </div>
       </section>
 
       <section className="mt-10">

@@ -66,6 +66,8 @@ export type {
 export { CommandBar } from "./command-bar";
 export type { CommandBarProps } from "./command-bar";
 export { cn } from "./cn";
+export { ConnectorCard } from "./connector-card";
+export type { ConnectorCardProps, ConnectorStatus } from "./connector-card";
 export type {
   BaseComponentProps,
   ComponentOrientation,
@@ -115,6 +117,8 @@ export { Field } from "./field";
 export type { FieldProps } from "./field";
 export { FilterBar, FilterChip } from "./filter-bar";
 export type { FilterBarProps, FilterChipProps } from "./filter-bar";
+export { FlowCanvas } from "./flow-canvas";
+export type { FlowCanvasEdge, FlowCanvasNode, FlowCanvasProps } from "./flow-canvas";
 export { Gradient } from "./gradient";
 export { iconSizeFromComponentSize } from "./icon-size";
 export { Input } from "./input";
@@ -130,6 +134,8 @@ export { Pagination } from "./pagination";
 export type { PaginationProps } from "./pagination";
 export { RadioGroup, RadioItem } from "./radio-group";
 export type { RadioGroupProps, RadioItemProps } from "./radio-group";
+export { RunStatusBadge } from "./run-status-badge";
+export type { RunStatus, RunStatusBadgeProps } from "./run-status-badge";
 export { Select } from "./select";
 export type { SelectProps } from "./select";
 export { Separator } from "./separator";
@@ -142,6 +148,8 @@ export { Spinner } from "./spinner";
 export type { SpinnerProps } from "./spinner";
 export { StatCard } from "./stat-card";
 export type { StatCardProps, StatCardTrend } from "./stat-card";
+export { StepLogPanel } from "./step-log-panel";
+export type { RunStep, RunStepLogLevel, StepLogPanelProps } from "./step-log-panel";
 export { StatusIndicator } from "./status-indicator";
 export type { StatusIndicatorProps, StatusIndicatorState } from "./status-indicator";
 export { Switch } from "./switch";

@@ -47,3 +47,46 @@ export const AuditEventsPageSchema = z.object({
   page: z.number().int().positive(),
   size: z.number().int().positive(),
 });
+
+export const IntegrationStatusSchema = z.enum(["connected", "disconnected", "error"]);
+
+export const IntegrationSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  vendor: z.string().min(1),
+  description: z.string().min(1).optional(),
+  status: IntegrationStatusSchema,
+  lastSyncAt: z.string().datetime({ offset: true }).optional(),
+});
+
+export const WorkflowStatusSchema = z.enum(["active", "paused", "draft"]);
+export const RunStatusSchema = z.enum(["queued", "running", "succeeded", "failed", "cancelled"]);
+
+export const WorkflowSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  trigger: z.string().min(1),
+  status: WorkflowStatusSchema,
+  lastRunId: z.string().min(1).optional(),
+  lastRunStatus: RunStatusSchema.optional(),
+  updatedAt: z.string().datetime({ offset: true }),
+});
+
+export const RunStepLogLevelSchema = z.enum(["info", "warning", "error"]);
+
+export const RunStepSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  message: z.string().min(1),
+  level: RunStepLogLevelSchema,
+  startedAt: z.string().datetime({ offset: true }),
+});
+
+export const RunSchema = z.object({
+  id: z.string().min(1),
+  workflowId: z.string().min(1),
+  status: RunStatusSchema,
+  startedAt: z.string().datetime({ offset: true }),
+  finishedAt: z.string().datetime({ offset: true }).optional(),
+  steps: z.array(RunStepSchema),
+});

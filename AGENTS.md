@@ -6,6 +6,8 @@
 
 Turborepo monorepo (pnpm workspaces) with a shared React UI library (`@repo/ui`) and three consumer apps: `web` (Next.js, port 3001), `docs` (Next.js, port 3000), and `storybook` (Storybook, port 6006). Fully frontend — no databases, backend APIs, or Docker services.
 
+Recent module focus: iPaaS-friendly UI primitives and pages (`/console/integrations`, `/console/workflows`, `/console/runs/[id]`) are available as frontend demos backed by mock data or optional API wiring.
+
 ### Key commands
 
 All standard commands are in the root `package.json` and documented in `README.md`:

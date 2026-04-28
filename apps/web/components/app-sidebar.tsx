@@ -22,11 +22,20 @@ export function AppSidebar() {
         <Link className={linkClass(pathname === "/console")} href="/console">
           개요
         </Link>
+        <Link className={linkClass(pathname === "/console/integrations")} href="/console/integrations">
+          통합
+        </Link>
+        <Link className={linkClass(pathname === "/console/workflows")} href="/console/workflows">
+          워크플로
+        </Link>
         <Link className={linkClass(pathname === "/console/members")} href="/console/members">
           멤버
         </Link>
         <Link className={linkClass(pathname === "/console/audit")} href="/console/audit">
           감사 로그
+        </Link>
+        <Link className={linkClass(pathname.startsWith("/console/runs/"))} href="/console/runs/run_1001">
+          실행 기록
         </Link>
       </SidebarGroup>
       <SidebarGroup label="설정">

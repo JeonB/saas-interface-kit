@@ -24,10 +24,12 @@
     "test": "vitest run"
   },
   "peerDependencies": {
+    "@xyflow/react": "^12.9.3",
     "lucide-react": "^0.544.0",
     "react": "^19"
   },
   "dependencies": {
+    "@xyflow/react": "^12.9.3",
     "@floating-ui/react": "^0.27.16",
     "@radix-ui/react-slot": "^1.2.4",
     "@tanstack/react-table": "^8.21.3",

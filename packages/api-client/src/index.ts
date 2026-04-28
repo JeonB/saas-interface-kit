@@ -16,12 +16,20 @@ export type {
 } from "./client";
 export type {
   AuditEventAction,
+  AuditActor,
   AuditEventDto,
   AuditEventsPage,
   AuditTarget,
-  AuditActor,
+  Integration,
+  IntegrationStatus,
   MemberSummary,
   OrganizationSummary,
   OrgRole,
+  Run,
+  RunStatus,
+  RunStep,
+  RunStepLogLevel,
   UsageSummaryDto,
+  Workflow,
+  WorkflowStatus,
 } from "./types";

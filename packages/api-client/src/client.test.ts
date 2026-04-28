@@ -303,4 +303,84 @@ describe("createConsoleApiClient", () => {
 
     await expect(client.getAuditEvents()).rejects.toThrow(ConsoleApiError);
   });
+
+  it("parses integrations list", async () => {
+    const fetchImpl = vi.fn(
+      async (): Promise<Response> =>
+        new Response(
+          JSON.stringify([
+            {
+              id: "int_1",
+              name: "Slack",
+              vendor: "Slack",
+              status: "connected",
+              lastSyncAt: "2026-04-28T11:00:00.000Z",
+            },
+          ]),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          },
+        ),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+    });
+
+    await expect(client.getIntegrations()).resolves.toEqual([
+      {
+        id: "int_1",
+        name: "Slack",
+        vendor: "Slack",
+        status: "connected",
+        lastSyncAt: "2026-04-28T11:00:00.000Z",
+      },
+    ]);
+  });
+
+  it("parses run detail response", async () => {
+    const fetchImpl = vi.fn(
+      async (): Promise<Response> =>
+        new Response(
+          JSON.stringify({
+            id: "run_1",
+            workflowId: "wf_1",
+            status: "running",
+            startedAt: "2026-04-28T11:00:00.000Z",
+            steps: [
+              {
+                id: "step_1",
+                title: "Parse Payload",
+                message: "Webhook payload parsed",
+                level: "info",
+                startedAt: "2026-04-28T11:00:01.000Z",
+              },
+            ],
+          }),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          },
+        ),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+    });
+
+    await expect(client.getRun("run_1")).resolves.toMatchObject({
+      id: "run_1",
+      workflowId: "wf_1",
+      status: "running",
+    });
+    expect(fetchImpl).toHaveBeenCalledWith(
+      "https://api.example/v1/runs/run_1",
+      expect.objectContaining({
+        signal: expect.any(AbortSignal),
+      }),
+    );
+  });
 });

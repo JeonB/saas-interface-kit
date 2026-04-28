@@ -1,6 +1,11 @@
 export type Role = "owner" | "admin" | "member" | "viewer";
 
 export type Permission =
+  | "integrations:read"
+  | "integrations:manage"
+  | "workflows:read"
+  | "workflows:manage"
+  | "runs:read"
   | "billing:read"
   | "billing:manage"
   | "members:read"
@@ -10,6 +15,11 @@ export type Permission =
 
 const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
   owner: [
+    "integrations:read",
+    "integrations:manage",
+    "workflows:read",
+    "workflows:manage",
+    "runs:read",
     "billing:read",
     "billing:manage",
     "members:read",
@@ -18,6 +28,11 @@ const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "audit:read",
   ],
   admin: [
+    "integrations:read",
+    "integrations:manage",
+    "workflows:read",
+    "workflows:manage",
+    "runs:read",
     "billing:read",
     "billing:manage",
     "members:read",
@@ -25,8 +40,8 @@ const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     "org:settings",
     "audit:read",
   ],
-  member: ["billing:read", "members:read", "org:settings"],
-  viewer: ["billing:read", "members:read"],
+  member: ["integrations:read", "workflows:read", "runs:read", "billing:read", "members:read", "org:settings"],
+  viewer: ["integrations:read", "workflows:read", "runs:read", "billing:read", "members:read"],
 };
 
 export function hasPermission(role: Role, permission: Permission): boolean {

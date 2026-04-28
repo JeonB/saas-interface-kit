@@ -56,3 +56,47 @@ export type AuditEventsPage = {
   page: number;
   size: number;
 };
+
+export type IntegrationStatus = "connected" | "disconnected" | "error";
+
+export type Integration = {
+  id: string;
+  name: string;
+  vendor: string;
+  description?: string;
+  status: IntegrationStatus;
+  lastSyncAt?: string;
+};
+
+export type WorkflowStatus = "active" | "paused" | "draft";
+
+export type RunStatus = "queued" | "running" | "succeeded" | "failed" | "cancelled";
+
+export type Workflow = {
+  id: string;
+  name: string;
+  trigger: string;
+  status: WorkflowStatus;
+  lastRunId?: string;
+  lastRunStatus?: RunStatus;
+  updatedAt: string;
+};
+
+export type RunStepLogLevel = "info" | "warning" | "error";
+
+export type RunStep = {
+  id: string;
+  title: string;
+  message: string;
+  level: RunStepLogLevel;
+  startedAt: string;
+};
+
+export type Run = {
+  id: string;
+  workflowId: string;
+  status: RunStatus;
+  startedAt: string;
+  finishedAt?: string;
+  steps: RunStep[];
+};

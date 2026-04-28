@@ -15,6 +15,7 @@
 ### 패키지
 
 - **@repo/ui** — 공유 React 컴포넌트와 스타일(Tailwind, `ui:` 접두사). web·docs에서 사용.
+- **@repo/ui iPaaS 모듈** — `ConnectorCard`, `RunStatusBadge`, `StepLogPanel`, `FlowCanvas`로 통합/워크플로/실행 로그 UI를 조합.
 - **@repo/tailwind-config** — 공유 Tailwind 테마(시맨틱 토큰 + 팔레트).
 - **@repo/typescript-config** — 공유 `tsconfig` 프리셋.
 - **@repo/eslint-config** — 공유 ESLint 설정.
@@ -60,6 +61,7 @@ import { Button, Card, LinkCard } from "@repo/ui"; // 배럴 import
 import { Button } from "@repo/ui/button";
 import { Card } from "@repo/ui/card";
 import { LinkCard } from "@repo/ui/link-card";
+import { ConnectorCard, RunStatusBadge, StepLogPanel, FlowCanvas } from "@repo/ui";
 ```
 
 `@repo/ui`는 **`lucide-react`**를 피어 의존성으로 둡니다(`Alert` 등 아이콘). 앱에서 호환 버전을 설치해야 합니다(각 앱 `package.json` 참고).

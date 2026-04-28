@@ -1,5 +1,19 @@
-import { AuditEventsPageSchema, HealthCheckSchema, UsageSummaryDtoSchema } from "./schemas";
-import type { AuditEventAction, AuditEventsPage, UsageSummaryDto } from "./types";
+import {
+  AuditEventsPageSchema,
+  HealthCheckSchema,
+  IntegrationSchema,
+  RunSchema,
+  UsageSummaryDtoSchema,
+  WorkflowSchema,
+} from "./schemas";
+import type {
+  AuditEventAction,
+  AuditEventsPage,
+  Integration,
+  Run,
+  UsageSummaryDto,
+  Workflow,
+} from "./types";
 
 /** Default ceiling for outbound requests so SSR and UI do not hang on a stalled API. */
 export const DEFAULT_REQUEST_TIMEOUT_MS = 10_000;
@@ -179,6 +193,9 @@ export type ConsoleApiClient = {
   healthCheck: (options?: ConsoleApiRequestOptions) => Promise<{ status: string }>;
   getUsageSummary: (options?: ConsoleApiRequestOptions) => Promise<UsageSummaryDto>;
   getAuditEvents: (params?: GetAuditEventsParams) => Promise<AuditEventsPage>;
+  getIntegrations: (options?: ConsoleApiRequestOptions) => Promise<Integration[]>;
+  getRun: (runId: string, options?: ConsoleApiRequestOptions) => Promise<Run>;
+  getWorkflows: (options?: ConsoleApiRequestOptions) => Promise<Workflow[]>;
 };
 
 export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleApiClient {
@@ -308,5 +325,17 @@ export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleA
         (raw) => AuditEventsPageSchema.parse(raw),
       );
     },
+    getIntegrations: (options) =>
+      request<Integration[]>("/v1/integrations", { signal: options?.signal }, (raw) =>
+        IntegrationSchema.array().parse(raw),
+      ),
+    getWorkflows: (options) =>
+      request<Workflow[]>("/v1/workflows", { signal: options?.signal }, (raw) =>
+        WorkflowSchema.array().parse(raw),
+      ),
+    getRun: (runId, options) =>
+      request<Run>(`/v1/runs/${encodeURIComponent(runId)}`, { signal: options?.signal }, (raw) =>
+        RunSchema.parse(raw),
+      ),
   };
 }
