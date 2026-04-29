@@ -8,6 +8,7 @@ import { Gradient } from "@repo/ui/gradient";
 import { Input } from "@repo/ui/input";
 import { StatCard } from "@repo/ui/stat-card";
 import { DOCS_BASE } from "../lib/config";
+import { OnboardingChecklist } from "./onboarding-checklist";
 
 function isExternalDocsHref(href: string): boolean {
   return href.startsWith("http://") || href.startsWith("https://");
@@ -38,6 +39,7 @@ export function DashboardOverview() {
               체험이 9일 후 종료됩니다. 서비스 중단을 피하려면 결제 수단을 등록하세요.
             </Alert>
           </div>
+          <OnboardingChecklist />
         </div>
       </section>
 
