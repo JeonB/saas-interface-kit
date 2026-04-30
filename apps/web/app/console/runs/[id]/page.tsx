@@ -43,7 +43,7 @@ export default async function RunDetailPage({ params }: RunDetailPageProps) {
       <PermissionGate
         fallback={
           <Alert title="권한" variant="info">
-            실행 로그 조회는 owner 또는 admin 역할이 필요합니다.
+            실행 로그 조회는 owner, admin, member, viewer 역할에서 가능합니다.
           </Alert>
         }
         permission="runs:read"

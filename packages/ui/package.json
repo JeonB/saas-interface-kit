@@ -21,7 +21,8 @@
     "dev:components": "tsc -p tsconfig.build.json --watch",
     "lint": "eslint src --max-warnings 0",
     "size": "size-limit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "peerDependencies": {
     "@xyflow/react": "^12.9.3",
@@ -29,10 +30,10 @@
     "react": "^19"
   },
   "dependencies": {
-    "@xyflow/react": "^12.9.3",
     "@floating-ui/react": "^0.27.16",
     "@radix-ui/react-slot": "^1.2.4",
     "@tanstack/react-table": "^8.21.3",
+    "@xyflow/react": "^12.9.3",
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.4.0"
   },
@@ -46,6 +47,7 @@
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.2.14",
+    "@vitest/coverage-v8": "4.1.4",
     "@vitest/expect": "4.1.2",
     "axe-core": "^4.11.2",
     "eslint": "^9.39.4",

@@ -383,4 +383,226 @@ describe("createConsoleApiClient", () => {
       }),
     );
   });
+
+  it("uses access token and custom request id when provided", async () => {
+    const fetchImpl = vi.fn(
+      async (): Promise<Response> =>
+        new Response(JSON.stringify({ status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example/",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+      getAccessToken: () => "token-123",
+      getRequestId: () => "req-fixed",
+    });
+
+    await expect(client.healthCheck()).resolves.toEqual({ status: "ok" });
+    const init = fetchImpl.mock.calls[0]?.[1] as RequestInit | undefined;
+    const headers = new Headers(init?.headers);
+    expect(headers.get("Authorization")).toBe("Bearer token-123");
+    expect(headers.get("X-Request-Id")).toBe("req-fixed");
+  });
+
+  it("uses default pagination params for audit events", async () => {
+    const fetchImpl = vi.fn(
+      async (): Promise<Response> =>
+        new Response(JSON.stringify({ items: [], total: 0, page: 1, size: 20 }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+    });
+
+    await expect(client.getAuditEvents()).resolves.toEqual({ items: [], total: 0, page: 1, size: 20 });
+    expect(fetchImpl).toHaveBeenCalledWith(
+      "https://api.example/v1/audit/events?page=1&size=20",
+      expect.objectContaining({
+        signal: expect.any(AbortSignal),
+      }),
+    );
+  });
+
+  it("supports audit date range filters", async () => {
+    const fetchImpl = vi.fn(
+      async (): Promise<Response> =>
+        new Response(JSON.stringify({ items: [], total: 0, page: 1, size: 20 }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+    });
+
+    await client.getAuditEvents({ from: "2026-04-01", to: "2026-04-30" });
+    expect(fetchImpl).toHaveBeenCalledWith(
+      "https://api.example/v1/audit/events?from=2026-04-01&to=2026-04-30&page=1&size=20",
+      expect.objectContaining({
+        signal: expect.any(AbortSignal),
+      }),
+    );
+  });
+
+  it("parses usage summary and workflows response", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            mrrUsd: 9999,
+            activeSeats: 28,
+            churnRate: 0.04,
+            nps: 52,
+          }),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          },
+        ),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify([
+            {
+              id: "wf_1",
+              name: "Lead Sync",
+              trigger: "webhook",
+              status: "active",
+              updatedAt: "2026-04-28T11:00:00.000Z",
+            },
+          ]),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          },
+        ),
+      );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+    });
+
+    await expect(client.getUsageSummary()).resolves.toMatchObject({ activeSeats: 28 });
+    await expect(client.getWorkflows()).resolves.toHaveLength(1);
+  });
+
+  it("throws ConsoleApiNetworkError for DOMException NetworkError", async () => {
+    const fetchImpl = vi.fn(async (): Promise<Response> => {
+      throw new DOMException("network down", "NetworkError");
+    });
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+    });
+
+    await expect(client.healthCheck()).rejects.toThrow(ConsoleApiNetworkError);
+  });
+
+  it("retries with exponential backoff for retriable statuses", async () => {
+    vi.useFakeTimers();
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response("gateway", { status: 502, headers: { "Content-Type": "text/plain" } }),
+      )
+      .mockResolvedValueOnce(
+        new Response("gateway", { status: 503, headers: { "Content-Type": "text/plain" } }),
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+      );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+      maxRetries: 3,
+      retryDelayMs: 100,
+      retryBackoffFactor: 2,
+    });
+
+    const pending = client.healthCheck();
+    await vi.advanceTimersByTimeAsync(100);
+    await vi.advanceTimersByTimeAsync(200);
+    await expect(pending).resolves.toEqual({ status: "ok" });
+    expect(fetchImpl).toHaveBeenCalledTimes(3);
+  });
+
+  it("throws ConsoleApiError when health response schema is invalid", async () => {
+    const fetchImpl = vi.fn(
+      async (): Promise<Response> =>
+        new Response(JSON.stringify({ bad: "shape" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+    });
+
+    await expect(client.healthCheck()).rejects.toThrow(ConsoleApiError);
+  });
+
+  it("does not retry on network errors when caller signal is already aborted", async () => {
+    const fetchImpl = vi.fn(async (): Promise<Response> => {
+      throw new TypeError("Failed to fetch");
+    });
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      maxRetries: 2,
+      retryDelayMs: 0,
+    });
+    const ac = new AbortController();
+    ac.abort();
+
+    await expect(client.healthCheck({ signal: ac.signal })).rejects.toBeInstanceOf(TypeError);
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it("URL-encodes run id in getRun request path", async () => {
+    const fetchImpl = vi.fn(
+      async (): Promise<Response> =>
+        new Response(
+          JSON.stringify({
+            id: "run/with space",
+            workflowId: "wf_1",
+            status: "queued",
+            startedAt: "2026-04-28T11:00:00.000Z",
+            steps: [],
+          }),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          },
+        ),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+    });
+
+    await client.getRun("run/with space");
+    expect(fetchImpl).toHaveBeenCalledWith(
+      "https://api.example/v1/runs/run%2Fwith%20space",
+      expect.objectContaining({
+        signal: expect.any(AbortSignal),
+      }),
+    );
+  });
 });

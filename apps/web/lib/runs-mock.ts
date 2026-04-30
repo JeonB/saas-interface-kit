@@ -49,6 +49,10 @@ const MOCK_RUNS: Run[] = [
   },
 ];
 
+export async function getRunsData(): Promise<Run[]> {
+  return [...MOCK_RUNS].sort((a, b) => b.startedAt.localeCompare(a.startedAt));
+}
+
 export async function getRunData(runId: string): Promise<Run | null> {
   const client = getConsoleApiClient();
   if (client) {

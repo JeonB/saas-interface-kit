@@ -16,6 +16,7 @@
 
 - **@repo/ui** — 공유 React 컴포넌트와 스타일(Tailwind, `ui:` 접두사). web·docs에서 사용.
 - **@repo/ui iPaaS 모듈** — `ConnectorCard`, `RunStatusBadge`, `StepLogPanel`, `FlowCanvas`로 통합/워크플로/실행 로그 UI를 조합.
+- **@repo/api-client** — `createConsoleApiClient` 기반의 타입 안전 API 클라이언트(Zod 스키마 파싱, 타임아웃/재시도/요청 ID 지원).
 - **@repo/tailwind-config** — 공유 Tailwind 테마(시맨틱 토큰 + 팔레트).
 - **@repo/typescript-config** — 공유 `tsconfig` 프리셋.
 - **@repo/eslint-config** — 공유 ESLint 설정.
@@ -49,6 +50,11 @@ NEXT_PUBLIC_DOCS_URL=https://docs.example.com   # 또는 동일 출처 /docs는 
 ```
 
 템플릿은 [.env.example](.env.example)를 참고하세요.
+
+추가 환경 변수:
+
+- `SESSION_SECRET` — `apps/web` 데모 세션 쿠키 서명 키(프로덕션에서는 긴 랜덤 문자열 권장)
+- `NEXT_PUBLIC_API_URL` — 선택 항목. 설정 시 `@repo/api-client`를 통해 콘솔 API(예: `/health`, `/v1/*`)를 호출하고, 미설정 시 mock 데이터로 동작
 
 ## @repo/ui 사용하기
 
@@ -88,6 +94,28 @@ pnpm test
 ## 테스트 병렬 에이전트
 
 여러 Cursor 에이전트로 테스트 작업을 나눌 때 스타일 드리프트를 줄이려면 `packages/ui/PARALLEL_AGENTS_TEST_BRIEF.md`의 브리프를 공유하세요. 파일 이름 규칙, Testing Library 규칙, 복사해 쓸 프롬프트 템플릿이 정의되어 있습니다. 에이전트 결과를 머지한 뒤 `pnpm test`를 한 번 실행하세요.
+
+## 커버리지 게이트
+
+`@repo/ui`와 `@repo/api-client`는 Vitest 커버리지 리포트를 생성합니다.
+
+```sh
+pnpm test:coverage
+```
+
+- 현재 게이트 기준: `@repo/ui` 라인/구문/함수 90%+, 브랜치 85%+
+- `@repo/api-client`는 스키마 검증 레이어를 중심으로 커버리지를 집계합니다.
+
+## 콘솔 라우트 요약
+
+- `/console` — 개요 대시보드
+- `/console/integrations` — 통합 목록
+- `/console/workflows` — 워크플로 목록
+- `/console/runs` — 실행 기록 목록(필터 + 상세 이동)
+- `/console/runs/[id]` — 실행 상세(그래프/스텝 로그)
+- `/console/members` — 멤버 목록
+- `/console/audit` — 감사 로그
+- `/console/settings` / `/console/settings/billing` — 조직 설정/청구
 
 ## Cursor·Slack·Cloud Agent로 개발하기
 

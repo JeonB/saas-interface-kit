@@ -34,7 +34,7 @@ export function AppSidebar() {
         <Link className={linkClass(pathname === "/console/audit")} href="/console/audit">
           감사 로그
         </Link>
-        <Link className={linkClass(pathname.startsWith("/console/runs/"))} href="/console/runs/run_1001">
+        <Link className={linkClass(pathname.startsWith("/console/runs"))} href="/console/runs">
           실행 기록
         </Link>
       </SidebarGroup>
