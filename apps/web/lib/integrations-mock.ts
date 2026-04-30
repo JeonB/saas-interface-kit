@@ -25,6 +25,22 @@ const MOCK_INTEGRATIONS: Integration[] = [
     description: "신규 티켓을 Notion 데이터베이스에 적재합니다.",
     status: "disconnected",
   },
+  {
+    id: "int_salesforce",
+    name: "Salesforce Sync",
+    vendor: "Salesforce",
+    description: "리드와 계정 정보를 CRM과 양방향으로 동기화합니다.",
+    status: "connected",
+    lastSyncAt: "2026-04-28T13:05:00.000Z",
+  },
+  {
+    id: "int_jira",
+    name: "Jira Issues",
+    vendor: "Jira",
+    description: "워크플로 실패 시 Jira 이슈를 자동 생성합니다.",
+    status: "error",
+    lastSyncAt: "2026-04-28T09:12:00.000Z",
+  },
 ];
 
 export async function getIntegrationsData(): Promise<Integration[]> {

@@ -39,6 +39,8 @@ export {
 } from "./card";
 export { Checkbox } from "./checkbox";
 export type { CheckboxProps } from "./checkbox";
+export { Checklist, ChecklistItem } from "./checklist";
+export type { ChecklistItemData, ChecklistItemProps, ChecklistItemStatus, ChecklistProps } from "./checklist";
 export {
   Command,
   CommandClose,
