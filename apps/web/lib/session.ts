@@ -17,13 +17,16 @@ export type SessionUser = {
 
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7;
 
+/** Development-only session signing fallback. */
+export const FALLBACK_DEV_SESSION_SECRET = "development-only-set-session-secret" as const;
+
 type SignedSessionPayload = SessionUser & {
   exp: number;
   iat: number;
 };
 
 function sessionSecret(): string {
-  return process.env.SESSION_SECRET ?? "development-only-set-session-secret";
+  return process.env.SESSION_SECRET ?? FALLBACK_DEV_SESSION_SECRET;
 }
 
 export function signSession(user: SessionUser): string {
