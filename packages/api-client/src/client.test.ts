@@ -386,7 +386,7 @@ describe("createConsoleApiClient", () => {
 
   it("uses access token and custom request id when provided", async () => {
     const fetchImpl = vi.fn(
-      async (): Promise<Response> =>
+      async (_input: RequestInfo | URL, _init?: RequestInit): Promise<Response> =>
         new Response(JSON.stringify({ status: "ok" }), {
           status: 200,
           headers: { "Content-Type": "application/json" },
