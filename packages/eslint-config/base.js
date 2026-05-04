@@ -14,6 +14,19 @@ export const config = [
   eslintConfigPrettier,
   ...tseslint.configs.recommended,
   {
+    files: ["**/*.{ts,mts,cts,tsx}"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
+    },
+  },
+  {
     plugins: {
       turbo: turboPlugin,
     },

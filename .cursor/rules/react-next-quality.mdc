@@ -1,0 +1,14 @@
+---
+description: TypeScript, React 19, and Tailwind conventions for apps and packages
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# React / Next / UI quality
+
+- **Types**: Do not use `any`. Use `import type` for type-only imports.
+- **Logging**: Avoid `console.log` in code meant for production; use `console.error` / `console.warn` sparingly or a shared logger if the project adds one.
+- **React 19**: Prefer ref as a normal prop where applicable; avoid deprecated patterns called out in project docs (e.g. legacy ref APIs the codebase has migrated away from).
+- **Styling**: Tailwind utilities and `cn()` (tailwind-merge) for class composition; avoid inline styles and CSS modules unless an existing file already uses them.
+- **Forms**: Give controls `name` (or `id`) where applicable to satisfy a11y and browser defaults.
+- **Scope**: Keep components presentation-focused; put domain rules in hooks, server modules, or libraries — not buried in leaf UI when avoidable.

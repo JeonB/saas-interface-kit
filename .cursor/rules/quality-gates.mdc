@@ -1,0 +1,14 @@
+---
+description: Run lint and typecheck before finishing substantive changes
+alwaysApply: true
+---
+
+# Quality gates
+
+- Before treating work as complete after editing TypeScript, TSX, ESLint config, or shared `packages/*`, run from the repo root:
+  - `pnpm lint`
+  - `pnpm check-types` when types or imports across packages may be affected
+  - `pnpm test` when behavior, mocks, or tests in `@repo/ui` / `@repo/api-client` changed
+- Several packages run ESLint with `--max-warnings 0`: warnings fail CI the same as errors. Fix warnings, not only errors.
+- For Vitest `vi.fn` mocks of `fetch`, if tests read `mock.calls[0][1]` (request `init`), keep the full `(input, init?) => …` signature and name unused parameters with a leading underscore (e.g. `_input`, `_init`) so TypeScript infers the call tuple and ESLint ignores them via `^_` patterns on `@typescript-eslint/no-unused-vars`.
+- If the mock body truly needs no parameters and nothing inspects call arguments, a zero-parameter async arrow is fine.

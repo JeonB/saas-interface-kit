@@ -1,0 +1,13 @@
+---
+description: Monorepo layout, env vars, and web vs API health for saas-interface-kit
+alwaysApply: true
+---
+
+# saas-interface-kit conventions
+
+- **Package manager**: pnpm only (`pnpm install`, `pnpm --filter <pkg> <script>`). See root `package.json` and `README.md`.
+- **`@repo/ui` and apps**: Apps import `@repo/ui` from built `dist/`. After a fresh clone or UI source changes that affect consumers, run `pnpm --filter @repo/ui build` or `pnpm build` before `pnpm dev` / `pnpm check-types` if resolution errors appear.
+- **`NEXT_PUBLIC_API_URL`**: When unset, the web console uses mock data; `@repo/api-client` still provides typed calls when a real base URL is set.
+- **`SESSION_SECRET`**: Required for signing the demo session cookie. Production must use a strong random value; weak or missing values fail server startup in `apps/web/instrumentation.ts`. See `.env.example`.
+- **Health checks**: `GET /api/health` on the `web` app is the app liveness probe (`Cache-Control: no-store`). Backend health is separate: `GET {NEXT_PUBLIC_API_URL}/health` via `@repo/api-client` when configured.
+- **CI**: `.github/workflows/ci.yml` runs `pnpm lint`, `pnpm check-types`, `pnpm test`, then UI and Storybook builds — match that locally before pushing when practical.
