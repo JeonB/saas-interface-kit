@@ -22,6 +22,9 @@ export function AppSidebar() {
         <Link className={linkClass(pathname === "/console")} href="/console">
           개요
         </Link>
+        <Link className={linkClass(pathname === "/console/notifications")} href="/console/notifications">
+          알림
+        </Link>
         <Link className={linkClass(pathname === "/console/integrations")} href="/console/integrations">
           통합
         </Link>

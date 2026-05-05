@@ -3,9 +3,7 @@ import { Badge } from "@repo/ui/badge";
 import { Button } from "@repo/ui/button";
 import { LinkCard } from "@repo/ui/link-card";
 import { EmptyState } from "@repo/ui/empty-state";
-import { Field } from "@repo/ui/field";
 import { Gradient } from "@repo/ui/gradient";
-import { Input } from "@repo/ui/input";
 import { StatCard } from "@repo/ui/stat-card";
 import { DOCS_BASE } from "../lib/config";
 import { OnboardingChecklist } from "./onboarding-checklist";
@@ -29,9 +27,9 @@ export function DashboardOverview() {
           <Badge className="mb-4" variant="default">
             워크스페이스 · 운영
           </Badge>
-          <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">사용량 개요</h1>
-          <p className="mt-3 max-w-2xl text-neutral-400">
-            <code className="rounded bg-neutral-900 px-1">@repo/ui</code> 프리미티브만으로 구성한 B2B SaaS 대시보드 예시입니다.
+          <h1 className="ui:text-3xl ui:font-bold ui:tracking-tight ui:text-text-primary sm:ui:text-4xl">사용량 개요</h1>
+          <p className="mt-3 max-w-2xl ui:text-text-secondary">
+            <code className="ui:rounded ui:bg-surface-muted ui:px-1">@repo/ui</code> 프리미티브만으로 구성한 B2B SaaS 대시보드 예시입니다.
             지표, 필터, 알림, 빈 상태가 하나의 디자인 언어를 공유합니다.
           </p>
           <div className="mt-8 max-w-xl">
@@ -44,19 +42,11 @@ export function DashboardOverview() {
       </section>
 
       <section className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 className="text-lg font-semibold text-white">지표</h2>
-            <p className="text-sm text-neutral-400">최근 30일 · 전체 리전</p>
-          </div>
-          <form className="flex w-full max-w-md flex-col gap-3 sm:flex-row sm:items-end" noValidate>
-            <Field className="sm:flex-1" id="dashboard-search" label="이벤트 필터">
-              <Input name="eventFilter" placeholder="사용자 또는 이벤트로 검색…" type="search" />
-            </Field>
-            <Button name="applyFilter" type="submit" variant="primary">
-              적용
-            </Button>
-          </form>
+        <div className="flex flex-col gap-2">
+          <h2 className="ui:text-lg ui:font-semibold ui:text-text-primary">지표</h2>
+          <p className="ui:text-sm ui:text-text-secondary">
+            최근 30일 · 전체 리전 · 상세 필터는 실행 기록·감사 로그 화면에서 URL 상태로 조회할 수 있습니다.
+          </p>
         </div>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard delta="전기 대비 +6.1%" label="MRR" trend="up" value="$48.2k" />
@@ -67,8 +57,8 @@ export function DashboardOverview() {
       </section>
 
       <section className="mx-auto w-full max-w-5xl px-4 pb-12 sm:px-6 lg:px-8">
-        <h2 className="text-lg font-semibold text-white">연동 및 리소스</h2>
-        <p className="mt-1 text-sm text-neutral-400">
+        <h2 className="ui:text-lg ui:font-semibold ui:text-text-primary">연동 및 리소스</h2>
+        <p className="mt-1 ui:text-sm ui:text-text-secondary">
           링크 카드도 동일한 UI 키트를 사용하며, 외부 링크는 새 탭에서 열립니다.
         </p>
         <div className="mt-6 grid gap-6 lg:grid-cols-3">
@@ -93,7 +83,7 @@ export function DashboardOverview() {
                 사용량이 급증하거나 한도에 가까워지면 채널에서 알림을 받으세요. Cursor가 연결된 경우 Cloud Agent 팁은{" "}
                 <code className="rounded bg-neutral-800 px-1 text-xs">@Cursor help</code>를 사용하고, 자세한 내용은{" "}
                 <a
-                  className="text-white underline underline-offset-2 hover:text-neutral-200"
+                  className="ui:text-text-primary ui:underline ui:underline-offset-2 hover:ui:opacity-90"
                   href={cursorHelpHref}
                   {...(cursorHelpExternal && { rel: "noopener noreferrer", target: "_blank" })}
                 >

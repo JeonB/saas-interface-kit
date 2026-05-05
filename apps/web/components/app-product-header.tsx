@@ -1,8 +1,9 @@
 import { Avatar } from "@repo/ui/avatar";
 import { Badge } from "@repo/ui/badge";
 import { Button } from "@repo/ui/button";
-import { getSession } from "../lib/session";
 import { logoutAction } from "../app/actions/auth";
+import { getSession } from "../lib/session";
+import { NotificationsBellData } from "./notifications-bell-data";
 import { ThemeToggle } from "./ThemeToggle";
 
 export async function AppProductHeader() {
@@ -20,6 +21,7 @@ export async function AppProductHeader() {
         </p>
       </div>
       <div className="ui:flex ui:items-center ui:gap-2">
+        <NotificationsBellData />
         <ThemeToggle />
         <Badge variant="success">세션</Badge>
         <Avatar fallback={session.name.slice(0, 2).toUpperCase()} size="sm" />

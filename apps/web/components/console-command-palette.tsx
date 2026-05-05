@@ -26,6 +26,12 @@ type NavItem = {
 
 const NAV_ITEMS: NavItem[] = [
   { id: "overview", label: "개요", keywords: "대시보드 홈", href: "/console" },
+  {
+    id: "notifications",
+    label: "알림",
+    keywords: "알림센터 알림 목록",
+    href: "/console/notifications",
+  },
   { id: "members", label: "멤버", keywords: "팀 사용자", href: "/console/members" },
   { id: "settings", label: "조직 설정", keywords: "설정 조직", href: "/console/settings" },
   { id: "billing", label: "청구", keywords: "결제 구독", href: "/console/settings/billing" },

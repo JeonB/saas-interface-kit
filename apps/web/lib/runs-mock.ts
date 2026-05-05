@@ -47,9 +47,30 @@ const MOCK_RUNS: Run[] = [
       },
     ],
   },
+  {
+    id: "run_1003",
+    workflowId: "wf_trial_nurture",
+    status: "cancelled",
+    startedAt: "2026-04-28T10:20:00.000Z",
+    finishedAt: "2026-04-28T10:20:02.000Z",
+    steps: [
+      {
+        id: "s_1",
+        title: "Send Trial Email",
+        message: "체험 안내 메일 발송 전 사용자가 구독을 취소함",
+        level: "info",
+        startedAt: "2026-04-28T10:20:00.000Z",
+      },
+    ],
+  },
 ];
 
 export async function getRunsData(): Promise<Run[]> {
+  const client = getConsoleApiClient();
+  if (client) {
+    void client;
+    // @repo/api-client exposes getRun(id) but not a runs list yet; keep mock until getRuns exists.
+  }
   return [...MOCK_RUNS].sort((a, b) => b.startedAt.localeCompare(a.startedAt));
 }
 

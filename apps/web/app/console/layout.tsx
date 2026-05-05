@@ -5,6 +5,7 @@ import {
   AppShellMain,
   AppShellSidebar,
 } from "@repo/ui/app-shell";
+import { ToastProvider } from "@repo/ui/toast";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getSession } from "../../lib/session";
@@ -32,8 +33,10 @@ export default async function AppGroupLayout({ children }: { children: React.Rea
           <AppProductHeader />
         </AppShellHeader>
         <AppShellContent className="bg-neutral-950 p-0" id="main-content">
-          <ConsoleCommandPalette />
-          {children}
+          <ToastProvider>
+            <ConsoleCommandPalette />
+            {children}
+          </ToastProvider>
         </AppShellContent>
       </AppShellMain>
     </AppShell>

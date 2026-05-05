@@ -109,6 +109,7 @@ pnpm test:coverage
 ## 콘솔 라우트 요약
 
 - `/console` — 개요 대시보드
+- `/console/notifications` — 알림 센터(URL 필터 + 로컬 읽음 상태)
 - `/console/integrations` — 통합 목록
 - `/console/workflows` — 워크플로 목록
 - `/console/runs` — 실행 기록 목록(필터 + 상세 이동)

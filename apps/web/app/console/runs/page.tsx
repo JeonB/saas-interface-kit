@@ -1,10 +1,55 @@
+import type { Run } from "@repo/api-client";
 import { Alert } from "@repo/ui/alert";
 import { PermissionGate } from "../../../components/permission-gate";
 import { getRunsData } from "../../../lib/runs-mock";
+import { RunsFilters, type RunsFilterStatus } from "./runs-filters";
 import { RunsTable } from "./runs-table";
 
-export default async function RunsPage() {
+type RunsPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+function parseString(raw: string | string[] | undefined): string | undefined {
+  if (typeof raw !== "string") {
+    return undefined;
+  }
+  const normalized = raw.trim();
+  return normalized.length > 0 ? normalized : undefined;
+}
+
+function parseStatus(raw: string | undefined): RunsFilterStatus {
+  switch (raw) {
+    case "queued":
+    case "running":
+    case "succeeded":
+    case "failed":
+    case "cancelled":
+      return raw;
+    default:
+      return "all";
+  }
+}
+
+function applyRunsFilters(runs: Run[], q: string, status: RunsFilterStatus): Run[] {
+  const lowered = q.toLowerCase();
+  return runs.filter((run) => {
+    const okStatus = status === "all" || run.status === status;
+    if (!okStatus) {
+      return false;
+    }
+    if (lowered.length === 0) {
+      return true;
+    }
+    return run.id.toLowerCase().includes(lowered) || run.workflowId.toLowerCase().includes(lowered);
+  });
+}
+
+export default async function RunsPage({ searchParams }: RunsPageProps) {
+  const params = await searchParams;
+  const query = parseString(params.q) ?? "";
+  const status = parseStatus(parseString(params.status));
   const runs = await getRunsData();
+  const filtered = applyRunsFilters(runs, query, status);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 text-white sm:px-6 lg:px-8">
@@ -21,8 +66,11 @@ export default async function RunsPage() {
         }
         permission="runs:read"
       >
-        <div className="mt-8 overflow-x-auto rounded-lg border border-neutral-800 bg-neutral-900/40 p-4">
-          <RunsTable runs={runs} />
+        <div className="mt-8 space-y-6">
+          <RunsFilters query={query} status={status} />
+          <div className="overflow-x-auto rounded-lg border border-neutral-800 bg-neutral-900/40 p-4">
+            <RunsTable runs={filtered} />
+          </div>
         </div>
       </PermissionGate>
     </div>

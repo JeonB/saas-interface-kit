@@ -14,6 +14,7 @@ const SECTIONS = [
   { title: "디자인 시스템", href: "/docs/design-system", description: "컴포넌트 API 계약과 운영 원칙." },
   { title: "컴포넌트 참고", href: "/docs/components", description: "@repo/ui 컴포넌트별 API와 예시." },
   { title: "품질 게이트", href: "/docs/quality-gates", description: "타입, 린트, 접근성, 테스트로 UI 변경을 안정적으로." },
+  { title: "패턴", href: "/docs/patterns", description: "폼, 대시보드, 커맨드 팔레트, URL 상태 등 조합 레시피." },
   { title: "앱", href: "/docs/apps", description: "Web, Docs, Storybook 앱." },
 ];
 

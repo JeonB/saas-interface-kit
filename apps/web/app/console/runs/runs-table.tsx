@@ -2,12 +2,9 @@
 
 import type { Run, RunStatus } from "@repo/api-client";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { DataTable, type DataTableColumn } from "@repo/ui/data-table";
-import { Field } from "@repo/ui/field";
-import { Input } from "@repo/ui/input";
 import { RunStatusBadge } from "@repo/ui/run-status-badge";
-import { Select } from "@repo/ui/select";
 
 type RunsTableProps = {
   runs: Run[];
@@ -16,15 +13,6 @@ type RunsTableProps = {
 type RunRow = Run & {
   stepCount: number;
 };
-
-const STATUS_OPTIONS: Array<{ value: "all" | RunStatus; label: string }> = [
-  { value: "all", label: "전체" },
-  { value: "queued", label: "대기" },
-  { value: "running", label: "실행 중" },
-  { value: "succeeded", label: "성공" },
-  { value: "failed", label: "실패" },
-  { value: "cancelled", label: "취소" },
-];
 
 function toRows(runs: Run[]): RunRow[] {
   return runs.map((run) => ({
@@ -77,59 +65,8 @@ function createColumns(): DataTableColumn<RunRow>[] {
 }
 
 export function RunsTable({ runs }: RunsTableProps) {
-  const [query, setQuery] = useState("");
-  const [status, setStatus] = useState<"all" | RunStatus>("all");
-
   const rows = useMemo(() => toRows(runs), [runs]);
-  const filteredRows = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
-    return rows.filter((row) => {
-      const matchesStatus = status === "all" || row.status === status;
-      if (!matchesStatus) {
-        return false;
-      }
-      if (normalizedQuery.length === 0) {
-        return true;
-      }
-      return (
-        row.id.toLowerCase().includes(normalizedQuery) ||
-        row.workflowId.toLowerCase().includes(normalizedQuery)
-      );
-    });
-  }, [query, rows, status]);
   const columns = useMemo(() => createColumns(), []);
 
-  return (
-    <div className="space-y-4">
-      <div className="grid gap-3 md:grid-cols-2">
-        <Field id="runs-query" label="검색">
-          <Input
-            name="runsQuery"
-            onChange={(event) => {
-              setQuery(event.target.value);
-            }}
-            placeholder="run ID 또는 workflow ID"
-            type="search"
-            value={query}
-          />
-        </Field>
-        <Field id="runs-status" label="상태">
-          <Select
-            name="runsStatus"
-            onChange={(event) => {
-              setStatus(event.target.value as "all" | RunStatus);
-            }}
-            value={status}
-          >
-            {STATUS_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </Select>
-        </Field>
-      </div>
-      <DataTable columns={columns} data={filteredRows} />
-    </div>
-  );
+  return <DataTable columns={columns} data={rows} />;
 }

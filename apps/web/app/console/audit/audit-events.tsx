@@ -1,4 +1,4 @@
-import type { AuditEventAction } from "@repo/api-client";
+import type { AuditEventAction, AuditEventsPage } from "@repo/api-client";
 import { Alert } from "@repo/ui/alert";
 import { getAuditEventsData } from "../../../lib/audit-mock";
 import { AuditEventsClient } from "./audit-events-client";
@@ -17,14 +17,7 @@ type AuditEventsProps = {
 };
 
 export async function AuditEvents({ query }: AuditEventsProps) {
-  let result:
-    | {
-        items: Awaited<ReturnType<typeof getAuditEventsData>>["items"];
-        page: number;
-        size: number;
-        total: number;
-      }
-    | null = null;
+  let result: AuditEventsPage | null = null;
   let errorMessage: string | null = null;
 
   try {

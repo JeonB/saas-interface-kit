@@ -32,7 +32,7 @@ export default function GettingStartedPage() {
           {`pnpm dev`}
         </pre>
         <Alert variant="success" className="mt-4">
-          Web은 포트 3001, Docs는 3002(또는 설정된 포트), Storybook은 6006에서 실행됩니다.
+          Web은 포트 3001, Docs는 3000, Storybook은 6006에서 실행됩니다.
         </Alert>
       </section>
 
