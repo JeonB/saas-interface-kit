@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useSyncExternalStore } from "react";
 import { Button } from "@repo/ui/button";
 import {
   ChecklistItem,
@@ -16,6 +16,7 @@ type ChecklistKey =
   | "setup-billing";
 
 const STORAGE_KEY = "northline-onboarding-v1";
+const STORE_EVENT = "northline-onboarding-change";
 
 const BASE_ITEMS: Array<ChecklistItemData & { id: ChecklistKey }> = [
   {
@@ -60,6 +61,95 @@ const BASE_ITEMS: Array<ChecklistItemData & { id: ChecklistKey }> = [
   },
 ];
 
+const CHECKLIST_KEYS = BASE_ITEMS.map((item) => item.id) as readonly ChecklistKey[];
+
+type ChecklistState = {
+  statusById: Record<ChecklistKey, ChecklistItemStatus>;
+  collapsed: boolean;
+};
+
+const SERVER_DEFAULT_STATE: ChecklistState = {
+  statusById: {
+    "org-settings": "todo",
+    "connect-integration": "todo",
+    "invite-members": "todo",
+    "activate-workflow": "todo",
+    "setup-billing": "todo",
+  },
+  collapsed: false,
+};
+
+function isChecklistKey(value: string): value is ChecklistKey {
+  return (CHECKLIST_KEYS as readonly string[]).includes(value);
+}
+
+function isChecklistStatus(value: unknown): value is ChecklistItemStatus {
+  return value === "todo" || value === "done" || value === "skipped";
+}
+
+function parseStored(raw: string | null): ChecklistState {
+  if (!raw) {
+    return SERVER_DEFAULT_STATE;
+  }
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (typeof parsed !== "object" || parsed === null) {
+      return SERVER_DEFAULT_STATE;
+    }
+    const candidate = parsed as { statusById?: unknown; collapsed?: unknown };
+    const statusById = { ...SERVER_DEFAULT_STATE.statusById };
+    if (typeof candidate.statusById === "object" && candidate.statusById !== null) {
+      for (const [key, value] of Object.entries(candidate.statusById)) {
+        if (isChecklistKey(key) && isChecklistStatus(value)) {
+          statusById[key] = value;
+        }
+      }
+    }
+    const collapsed = typeof candidate.collapsed === "boolean" ? candidate.collapsed : false;
+    return { statusById, collapsed };
+  } catch {
+    return SERVER_DEFAULT_STATE;
+  }
+}
+
+function readRawFromStorage(): string {
+  if (typeof window === "undefined") {
+    return "";
+  }
+  return localStorage.getItem(STORAGE_KEY) ?? "";
+}
+
+function persist(state: ChecklistState): void {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  window.dispatchEvent(new Event(STORE_EVENT));
+}
+
+function subscribe(onStoreChange: () => void): () => void {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+  const onCustom = () => onStoreChange();
+  const onStorage = (e: StorageEvent) => {
+    if (e.key === STORAGE_KEY || e.key === null) {
+      onStoreChange();
+    }
+  };
+  window.addEventListener(STORE_EVENT, onCustom);
+  window.addEventListener("storage", onStorage);
+  return () => {
+    window.removeEventListener(STORE_EVENT, onCustom);
+    window.removeEventListener("storage", onStorage);
+  };
+}
+
+function getSnapshot(): string {
+  return readRawFromStorage();
+}
+
+function getServerSnapshot(): string {
+  return "";
+}
+
 function getNextStatus(status: ChecklistItemStatus): ChecklistItemStatus {
   switch (status) {
     case "todo":
@@ -72,57 +162,22 @@ function getNextStatus(status: ChecklistItemStatus): ChecklistItemStatus {
 }
 
 export function OnboardingChecklist() {
-  const [statusById, setStatusById] = useState<Record<ChecklistKey, ChecklistItemStatus>>(() => {
-    const initial: Record<ChecklistKey, ChecklistItemStatus> = {
-      "org-settings": "todo",
-      "connect-integration": "todo",
-      "invite-members": "todo",
-      "activate-workflow": "todo",
-      "setup-billing": "todo",
-    };
-    if (typeof window === "undefined") {
-      return initial;
-    }
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      return initial;
-    }
-    try {
-      const parsed = JSON.parse(raw) as {
-        statusById?: Partial<Record<ChecklistKey, ChecklistItemStatus>>;
-      };
-      return parsed.statusById ? { ...initial, ...parsed.statusById } : initial;
-    } catch {
-      localStorage.removeItem(STORAGE_KEY);
-      return initial;
-    }
-  });
-  const [collapsed, setCollapsed] = useState(() => {
-    if (typeof window === "undefined") {
-      return false;
-    }
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      return false;
-    }
-    try {
-      const parsed = JSON.parse(raw) as { collapsed?: boolean };
-      return Boolean(parsed.collapsed);
-    } catch {
-      localStorage.removeItem(STORAGE_KEY);
-      return false;
-    }
-  });
+  const raw = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const state = useMemo(() => parseStored(raw), [raw]);
+  const { statusById, collapsed } = state;
 
-  useEffect(() => {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({
-        statusById,
-        collapsed,
-      }),
-    );
-  }, [collapsed, statusById]);
+  const updateStatus = useCallback((id: ChecklistKey) => {
+    const current = parseStored(readRawFromStorage());
+    persist({
+      ...current,
+      statusById: { ...current.statusById, [id]: getNextStatus(current.statusById[id]) },
+    });
+  }, []);
+
+  const showAgain = useCallback(() => {
+    const current = parseStored(readRawFromStorage());
+    persist({ ...current, collapsed: false });
+  }, []);
 
   const completedCount = useMemo(
     () => Object.values(statusById).filter((status) => status === "done").length,
@@ -142,7 +197,7 @@ export function OnboardingChecklist() {
             {completedCount}/{totalCount} 완료
           </span>
           {effectiveCollapsed ? (
-            <Button name="showChecklist" onClick={() => setCollapsed(false)} size="sm" type="button" variant="default">
+            <Button name="showChecklist" onClick={showAgain} size="sm" type="button" variant="default">
               다시 보기
             </Button>
           ) : null}
@@ -168,12 +223,7 @@ export function OnboardingChecklist() {
                 />
                 <Button
                   name={`toggleChecklist-${item.id}`}
-                  onClick={() =>
-                    setStatusById((prev) => ({
-                      ...prev,
-                      [item.id]: getNextStatus(prev[item.id]),
-                    }))
-                  }
+                  onClick={() => updateStatus(item.id)}
                   size="sm"
                   type="button"
                   variant="default"

@@ -1,33 +1,73 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 
 type Theme = "dark" | "light";
 
 const STORAGE_KEY = "northline-theme";
+const STORE_EVENT = "northline-theme-change";
+const SERVER_DEFAULT: Theme = "dark";
 
-function getStoredTheme(): Theme {
-  if (typeof window === "undefined") return "dark";
-  return (localStorage.getItem(STORAGE_KEY) as Theme) ?? "dark";
+function isTheme(value: string | null): value is Theme {
+  return value === "dark" || value === "light";
+}
+
+function readTheme(): Theme {
+  if (typeof window === "undefined") {
+    return SERVER_DEFAULT;
+  }
+  const raw = localStorage.getItem(STORAGE_KEY);
+  return isTheme(raw) ? raw : SERVER_DEFAULT;
+}
+
+function writeTheme(theme: Theme): void {
+  localStorage.setItem(STORAGE_KEY, theme);
+  window.dispatchEvent(new Event(STORE_EVENT));
+}
+
+function subscribe(onStoreChange: () => void): () => void {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+  const onCustom = () => onStoreChange();
+  const onStorage = (e: StorageEvent) => {
+    if (e.key === STORAGE_KEY || e.key === null) {
+      onStoreChange();
+    }
+  };
+  window.addEventListener(STORE_EVENT, onCustom);
+  window.addEventListener("storage", onStorage);
+  return () => {
+    window.removeEventListener(STORE_EVENT, onCustom);
+    window.removeEventListener("storage", onStorage);
+  };
+}
+
+function getServerSnapshot(): Theme {
+  return SERVER_DEFAULT;
+}
+
+function applyThemeToDocument(theme: Theme): void {
+  const root = document.documentElement;
+  if (theme === "light") {
+    root.classList.add("light");
+    root.setAttribute("data-theme", "light");
+  } else {
+    root.classList.remove("light");
+    root.removeAttribute("data-theme");
+  }
 }
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>(() => getStoredTheme());
+  const theme = useSyncExternalStore(subscribe, readTheme, getServerSnapshot);
 
   useEffect(() => {
-    const root = document.documentElement;
-    if (theme === "light") {
-      root.classList.add("light");
-      root.setAttribute("data-theme", "light");
-    } else {
-      root.classList.remove("light");
-      root.removeAttribute("data-theme");
-    }
-    localStorage.setItem(STORAGE_KEY, theme);
+    applyThemeToDocument(theme);
   }, [theme]);
 
   const toggle = useCallback(() => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+    const next: Theme = readTheme() === "dark" ? "light" : "dark";
+    writeTheme(next);
   }, []);
 
   return (
