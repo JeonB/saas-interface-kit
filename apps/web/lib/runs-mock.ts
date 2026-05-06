@@ -65,12 +65,9 @@ const MOCK_RUNS: Run[] = [
   },
 ];
 
+// `@repo/api-client` exposes `getRun(id)` but not a runs list endpoint yet;
+// swap to `client.getRuns(...)` when it lands.
 export async function getRunsData(): Promise<Run[]> {
-  const client = getConsoleApiClient();
-  if (client) {
-    void client;
-    // @repo/api-client exposes getRun(id) but not a runs list yet; keep mock until getRuns exists.
-  }
   return [...MOCK_RUNS].sort((a, b) => b.startedAt.localeCompare(a.startedAt));
 }
 

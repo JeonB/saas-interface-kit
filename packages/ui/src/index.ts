@@ -74,10 +74,8 @@ export type {
   BaseComponentProps,
   ComponentOrientation,
   ComponentSize,
-  ComponentStatus,
   ComponentVariant,
   FeedbackVariant,
-  PolymorphicRef,
 } from "./contracts";
 export { DataTable } from "./data-table";
 export type { DataTableColumn, DataTableProps } from "./data-table";

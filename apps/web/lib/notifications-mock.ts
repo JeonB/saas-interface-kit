@@ -1,4 +1,3 @@
-import { getConsoleApiClient } from "./console-api";
 import type { Notification, NotificationCategory, NotificationFilter, NotificationSeverity } from "./notifications.types";
 
 /** Demo notifications aligned with runs / integrations mock timestamps. */
@@ -97,15 +96,10 @@ function applyServerFilter(items: Notification[], filter: NotificationFilter): N
 }
 
 /**
- * Returns notifications for the console. When `NEXT_PUBLIC_API_URL` is set, a future
- * `client.getNotifications()` can replace this; until then both paths use mock data.
+ * Returns notifications for the console. Swap to `client.getNotifications(filter)`
+ * once `@repo/api-client` ships that endpoint; until then both code paths use mock data.
  */
 export async function getNotificationsData(filter: NotificationFilter = {}): Promise<Notification[]> {
-  const client = getConsoleApiClient();
-  if (client) {
-    // Future: return client.getNotifications(filter);
-  }
-
   const sorted = [...MOCK_NOTIFICATIONS].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   return applyServerFilter(sorted, filter);
 }

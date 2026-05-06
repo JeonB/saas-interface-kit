@@ -111,5 +111,5 @@ export function useReadStore() {
     [readIds],
   );
 
-  return { readIds, markRead, markAllRead, isRead, unreadCount };
+  return { markRead, markAllRead, isRead, unreadCount };
 }
