@@ -1,3 +1,4 @@
+import { assertNever } from "./internal/assert-never";
 import { Timeline, TimelineItem } from "./timeline";
 
 export type RunStepLogLevel = "info" | "warning" | "error";
@@ -16,10 +17,6 @@ export type StepLogPanelProps = {
   title?: string;
 };
 
-function assertNever(value: never): never {
-  throw new Error(`Unexpected run step log level: ${String(value)}`);
-}
-
 function levelLabel(level: RunStepLogLevel): string {
   switch (level) {
     case "info":
@@ -29,7 +26,7 @@ function levelLabel(level: RunStepLogLevel): string {
     case "error":
       return "ERROR";
     default:
-      return assertNever(level);
+      return assertNever(level, "run step log level");
   }
 }
 
@@ -42,7 +39,7 @@ function levelClass(level: RunStepLogLevel): string {
     case "error":
       return "ui:text-semantic-danger";
     default:
-      return assertNever(level);
+      return assertNever(level, "run step log level");
   }
 }
 

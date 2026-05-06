@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "./cn";
+import { trendClass } from "./internal/trend-class";
 import type { StatCardTrend } from "./stat-card";
 
 export type MetricCardProps = {
@@ -11,18 +12,6 @@ export type MetricCardProps = {
   trend?: StatCardTrend;
   value: string;
 };
-
-function trendClass(trend: StatCardTrend | undefined): string {
-  switch (trend) {
-    case "up":
-      return "ui:text-semantic-success";
-    case "down":
-      return "ui:text-semantic-danger";
-    case "neutral":
-    default:
-      return "ui:text-text-secondary";
-  }
-}
 
 export function MetricCard({
   chart,

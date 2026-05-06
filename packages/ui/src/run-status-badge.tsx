@@ -1,14 +1,11 @@
 import { Badge } from "./badge";
+import { assertNever } from "./internal/assert-never";
 
 export type RunStatus = "queued" | "running" | "succeeded" | "failed" | "cancelled";
 
 export type RunStatusBadgeProps = {
   status: RunStatus;
 };
-
-function assertNever(value: never): never {
-  throw new Error(`Unexpected run status: ${String(value)}`);
-}
 
 function getLabel(status: RunStatus): string {
   switch (status) {
@@ -23,7 +20,7 @@ function getLabel(status: RunStatus): string {
     case "cancelled":
       return "취소";
     default:
-      return assertNever(status);
+      return assertNever(status, "run status");
   }
 }
 
@@ -40,7 +37,7 @@ function getVariant(status: RunStatus): "default" | "success" | "warning" | "dan
     case "cancelled":
       return "default";
     default:
-      return assertNever(status);
+      return assertNever(status, "run status");
   }
 }
 

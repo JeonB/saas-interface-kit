@@ -23,4 +23,16 @@ describe("내비 탭", () => {
     expect(links).toHaveLength(2);
     expect(links[0]).toHaveTextContent("개요");
   });
+
+  it("active 항목에 aria-current=page 부여", () => {
+    render(
+      <NavTabs>
+        <NavTabsItem href="/overview" active>개요</NavTabsItem>
+        <NavTabsItem href="/settings">설정</NavTabsItem>
+      </NavTabs>,
+    );
+    const [active, inactive] = screen.getAllByRole("link");
+    expect(active).toHaveAttribute("aria-current", "page");
+    expect(inactive).not.toHaveAttribute("aria-current");
+  });
 });

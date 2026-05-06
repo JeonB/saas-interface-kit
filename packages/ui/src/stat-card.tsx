@@ -1,4 +1,5 @@
 import { cn } from "./cn";
+import { trendClass } from "./internal/trend-class";
 
 export type StatCardTrend = "up" | "down" | "neutral";
 
@@ -9,18 +10,6 @@ export type StatCardProps = {
   trend?: StatCardTrend;
   className?: string;
 };
-
-function trendClass(trend: StatCardTrend | undefined): string {
-  switch (trend) {
-    case "up":
-      return "ui:text-semantic-success";
-    case "down":
-      return "ui:text-semantic-danger";
-    case "neutral":
-    default:
-      return "ui:text-text-secondary";
-  }
-}
 
 export function StatCard({ label, value, delta, trend = "neutral", className }: StatCardProps) {
   return (

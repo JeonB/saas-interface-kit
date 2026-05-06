@@ -30,6 +30,7 @@ export function NavTabsItem({
 }: NavTabsItemProps) {
   return (
     <a
+      aria-current={active ? "page" : undefined}
       className={cn(
         "ui:-mb-px ui:inline-flex ui:border-b-2 ui:px-1 ui:pb-2 ui:text-sm ui:font-medium ui:transition-colors focus-visible:ui:outline-none focus-visible:ui:ring-2 focus-visible:ui:ring-semantic-brand/40",
         active
