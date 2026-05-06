@@ -7,8 +7,10 @@ import { FilterBar, FilterChip } from "@repo/ui/filter-bar";
 import { Input } from "@repo/ui/input";
 import { Pagination } from "@repo/ui/pagination";
 import { Select } from "@repo/ui/select";
-import { usePathname, useRouter } from "next/navigation";
 import { type FormEvent } from "react";
+import { AUDIT_ACTIONS } from "../../../lib/audit-actions";
+import { setOrDelete } from "../../../lib/search-params";
+import { useUrlSearchNavigate } from "../../../lib/use-url-search-navigate";
 
 type AuditFiltersProps = {
   action?: AuditEventAction;
@@ -20,34 +22,8 @@ type AuditFiltersProps = {
   to?: string;
 };
 
-const ACTION_OPTIONS: AuditEventAction[] = [
-  "member.invited",
-  "member.removed",
-  "role.changed",
-  "billing.payment_method_added",
-  "api_key.created",
-  "api_key.revoked",
-];
-
-function updateQuery(params: URLSearchParams, key: string, value: string): void {
-  const next = value.trim();
-  if (next.length > 0) {
-    params.set(key, next);
-    return;
-  }
-  params.delete(key);
-}
-
 export function AuditFilters({ actor, action, from, to, page, size, pageCount }: AuditFiltersProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const navigate = (mutate: (params: URLSearchParams) => void) => {
-    const params = new URLSearchParams(window.location.search);
-    mutate(params);
-    const query = params.toString();
-    router.push(query.length > 0 ? `${pathname}?${query}` : pathname);
-  };
+  const { navigate } = useUrlSearchNavigate("push");
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -57,10 +33,10 @@ export function AuditFilters({ actor, action, from, to, page, size, pageCount }:
     const fromInput = String(formData.get("from") ?? "");
     const toInput = String(formData.get("to") ?? "");
     navigate((params) => {
-      updateQuery(params, "actor", actorInput);
-      updateQuery(params, "action", actionInput);
-      updateQuery(params, "from", fromInput);
-      updateQuery(params, "to", toInput);
+      setOrDelete(params, "actor", actorInput);
+      setOrDelete(params, "action", actionInput);
+      setOrDelete(params, "from", fromInput);
+      setOrDelete(params, "to", toInput);
       params.set("page", "1");
       params.set("size", String(size));
     });
@@ -76,7 +52,7 @@ export function AuditFilters({ actor, action, from, to, page, size, pageCount }:
           <Field id="audit-action" label="이벤트">
             <Select defaultValue={action ?? ""} name="action">
               <option value="">전체</option>
-              {ACTION_OPTIONS.map((option) => (
+              {AUDIT_ACTIONS.map((option) => (
                 <option key={option} value={option}>
                   {option}
                 </option>
@@ -106,7 +82,7 @@ export function AuditFilters({ actor, action, from, to, page, size, pageCount }:
         >
           전체
         </FilterChip>
-        {ACTION_OPTIONS.map((option) => (
+        {AUDIT_ACTIONS.map((option) => (
           <FilterChip
             active={action === option}
             key={option}

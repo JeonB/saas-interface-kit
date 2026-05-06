@@ -1,22 +1,11 @@
 import { getNotificationsData, isCategory, isSeverity } from "../../../lib/notifications-mock";
 import type { NotificationCategory, NotificationSeverity } from "../../../lib/notifications.types";
+import { parseBooleanFlag, parseString } from "../../../lib/search-params";
 import { NotificationsList } from "./notifications-list";
 
 type NotificationsPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
-
-function parseString(raw: string | string[] | undefined): string | undefined {
-  if (typeof raw !== "string") {
-    return undefined;
-  }
-  const normalized = raw.trim();
-  return normalized.length > 0 ? normalized : undefined;
-}
-
-function parseUnread(raw: string | undefined): boolean {
-  return raw === "1" || raw === "true";
-}
 
 export default async function NotificationsPage({ searchParams }: NotificationsPageProps) {
   const params = await searchParams;
@@ -26,7 +15,7 @@ export default async function NotificationsPage({ searchParams }: NotificationsP
     categoryRaw && isCategory(categoryRaw) ? categoryRaw : undefined;
   const severity: NotificationSeverity | undefined =
     severityRaw && isSeverity(severityRaw) ? severityRaw : undefined;
-  const unreadOnly = parseUnread(parseString(params.unread));
+  const unreadOnly = parseBooleanFlag(params.unread);
   const items = await getNotificationsData({ category, severity });
 
   return (

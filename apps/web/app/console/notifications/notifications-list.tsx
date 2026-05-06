@@ -2,20 +2,22 @@
 
 import { AlertTriangle, CheckCircle2, Info, XCircle } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useMemo, useTransition } from "react";
+import { useCallback, useMemo } from "react";
 import { Badge } from "@repo/ui/badge";
 import { Button } from "@repo/ui/button";
 import { EmptyState } from "@repo/ui/empty-state";
 import { FilterBar, FilterChip } from "@repo/ui/filter-bar";
 import { Timeline, TimelineItem } from "@repo/ui/timeline";
 import { useToast } from "@repo/ui/toast";
+import { formatConsoleDateTime } from "../../../lib/datetime";
 import type {
   Notification,
   NotificationCategory,
   NotificationSeverity,
 } from "../../../lib/notifications.types";
 import { useReadStore } from "../../../lib/notifications-read-store";
+import { setOrDelete } from "../../../lib/search-params";
+import { useUrlSearchNavigate } from "../../../lib/use-url-search-navigate";
 
 export type NotificationsQueryState = {
   category?: NotificationCategory;
@@ -44,25 +46,6 @@ const SEVERITY_OPTIONS: Array<{ label: string; value?: NotificationSeverity }> =
   { label: "경고", value: "warning" },
   { label: "오류", value: "error" },
 ];
-
-function updateQueryParam(params: URLSearchParams, key: string, value: string): void {
-  const next = value.trim();
-  if (next.length > 0) {
-    params.set(key, next);
-    return;
-  }
-  params.delete(key);
-}
-
-function formatDateTime(iso: string): string {
-  return new Date(iso).toLocaleString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
 
 function severityIcon(severity: NotificationSeverity) {
   switch (severity) {
@@ -93,23 +76,9 @@ function severityVariant(severity: NotificationSeverity): "default" | "success" 
 }
 
 export function NotificationsList({ items, query }: NotificationsListProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const [, startTransition] = useTransition();
+  const { navigate } = useUrlSearchNavigate();
   const { toast } = useToast();
   const { isRead, markRead, markAllRead } = useReadStore();
-
-  const navigate = useCallback(
-    (mutate: (params: URLSearchParams) => void) => {
-      const params = new URLSearchParams(window.location.search);
-      mutate(params);
-      const nextQuery = params.toString();
-      startTransition(() => {
-        router.replace(nextQuery.length > 0 ? `${pathname}?${nextQuery}` : pathname);
-      });
-    },
-    [pathname, router],
-  );
 
   const visible = useMemo(() => {
     if (!query.unreadOnly) {
@@ -151,11 +120,7 @@ export function NotificationsList({ items, query }: NotificationsListProps) {
               key={opt.label}
               onClick={() => {
                 navigate((params) => {
-                  if (opt.value) {
-                    updateQueryParam(params, "category", opt.value);
-                  } else {
-                    params.delete("category");
-                  }
+                  setOrDelete(params, "category", opt.value);
                 });
               }}
             >
@@ -174,11 +139,7 @@ export function NotificationsList({ items, query }: NotificationsListProps) {
               key={opt.label}
               onClick={() => {
                 navigate((params) => {
-                  if (opt.value) {
-                    updateQueryParam(params, "severity", opt.value);
-                  } else {
-                    params.delete("severity");
-                  }
+                  setOrDelete(params, "severity", opt.value);
                 });
               }}
             >
@@ -223,7 +184,7 @@ export function NotificationsList({ items, query }: NotificationsListProps) {
         <div className="rounded-lg border border-neutral-800 bg-neutral-900/40 p-4">
           <Timeline>
             {visible.map((n) => (
-              <TimelineItem key={n.id} icon={severityIcon(n.severity)} time={formatDateTime(n.createdAt)}>
+              <TimelineItem key={n.id} icon={severityIcon(n.severity)} time={formatConsoleDateTime(n.createdAt)}>
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                   <div className="min-w-0 flex-1 space-y-1">
                     <div className="flex flex-wrap items-center gap-2">

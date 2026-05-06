@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { DataTable, type DataTableColumn } from "@repo/ui/data-table";
 import { RunStatusBadge } from "@repo/ui/run-status-badge";
+import { formatConsoleDateTime } from "../../../lib/datetime";
 
 type RunsTableProps = {
   runs: Run[];
@@ -19,16 +20,6 @@ function toRows(runs: Run[]): RunRow[] {
     ...run,
     stepCount: run.steps.length,
   }));
-}
-
-function formatDateTime(value: string): string {
-  return new Date(value).toLocaleString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
 }
 
 function createColumns(): DataTableColumn<RunRow>[] {
@@ -54,7 +45,7 @@ function createColumns(): DataTableColumn<RunRow>[] {
     {
       accessorKey: "startedAt",
       header: "시작 시각",
-      cell: (ctx) => <span className="text-neutral-300">{formatDateTime(String(ctx.getValue()))}</span>,
+      cell: (ctx) => <span className="text-neutral-300">{formatConsoleDateTime(String(ctx.getValue()))}</span>,
     },
     {
       accessorKey: "stepCount",

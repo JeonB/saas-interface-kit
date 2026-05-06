@@ -4,29 +4,17 @@ import { ConnectorCard } from "@repo/ui/connector-card";
 import { EmptyState } from "@repo/ui/empty-state";
 import { PermissionGate } from "../../../components/permission-gate";
 import { getIntegrationsData } from "../../../lib/integrations-mock";
+import { parseString, parseStringOneOf } from "../../../lib/search-params";
 import { IntegrationsFilters, type IntegrationFilterStatus } from "./integrations-filters";
 
 type IntegrationsPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-function parseString(raw: string | string[] | undefined): string | undefined {
-  if (typeof raw !== "string") {
-    return undefined;
-  }
-  const normalized = raw.trim();
-  return normalized.length > 0 ? normalized : undefined;
-}
+const INTEGRATION_STATUS_VALUES = ["connected", "error", "disconnected"] as const;
 
-function parseStatus(raw: string | undefined): IntegrationFilterStatus {
-  switch (raw) {
-    case "connected":
-    case "error":
-    case "disconnected":
-      return raw;
-    default:
-      return "all";
-  }
+function parseStatus(raw: string | string[] | undefined): IntegrationFilterStatus {
+  return parseStringOneOf(raw, INTEGRATION_STATUS_VALUES) ?? "all";
 }
 
 function applyFilters(
@@ -50,7 +38,7 @@ function applyFilters(
 
 export default async function IntegrationsPage({ searchParams }: IntegrationsPageProps) {
   const params = await searchParams;
-  const status = parseStatus(parseString(params.status));
+  const status = parseStatus(params.status);
   const query = parseString(params.q) ?? "";
   const integrations = await getIntegrationsData();
   const filtered = applyFilters(integrations, status, query);
