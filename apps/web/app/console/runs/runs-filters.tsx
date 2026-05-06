@@ -4,8 +4,9 @@ import type { RunStatus } from "@repo/api-client";
 import { Field } from "@repo/ui/field";
 import { FilterBar, FilterChip } from "@repo/ui/filter-bar";
 import { Input } from "@repo/ui/input";
-import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
+import { setOrDelete } from "../../../lib/search-params";
+import { useUrlSearchNavigate } from "../../../lib/use-url-search-navigate";
 
 export type RunsFilterStatus = "all" | RunStatus;
 
@@ -14,37 +15,14 @@ type RunsFiltersProps = {
   status: RunsFilterStatus;
 };
 
-function updateQuery(params: URLSearchParams, key: string, value: string): void {
-  const next = value.trim();
-  if (next.length > 0) {
-    params.set(key, next);
-    return;
-  }
-  params.delete(key);
-}
-
 export function RunsFilters({ query, status }: RunsFiltersProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const [isPending, startTransition] = useTransition();
+  const { navigate, isPending } = useUrlSearchNavigate();
   const [searchInput, setSearchInput] = useState(query);
-
-  const navigate = useCallback(
-    (mutate: (params: URLSearchParams) => void) => {
-      const params = new URLSearchParams(window.location.search);
-      mutate(params);
-      const nextQuery = params.toString();
-      startTransition(() => {
-        router.replace(nextQuery.length > 0 ? `${pathname}?${nextQuery}` : pathname);
-      });
-    },
-    [pathname, router],
-  );
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
       navigate((params) => {
-        updateQuery(params, "q", searchInput);
+        setOrDelete(params, "q", searchInput);
         params.set("status", status);
       });
     }, 200);

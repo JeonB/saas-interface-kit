@@ -4,6 +4,7 @@ import { Badge } from "@repo/ui/badge";
 import { DataTable, type DataTableColumn } from "@repo/ui/data-table";
 import { EmptyState } from "@repo/ui/empty-state";
 import type { AuditEventAction, AuditEventDto } from "@repo/api-client";
+import { formatConsoleDateTime } from "../../../lib/datetime";
 import { AuditFilters } from "./audit-filters";
 
 type AuditEventsClientProps = {
@@ -17,16 +18,6 @@ type AuditEventsClientProps = {
   total: number;
 };
 
-function formatDate(value: string): string {
-  return new Date(value).toLocaleString("ko-KR", {
-    hour: "2-digit",
-    minute: "2-digit",
-    month: "2-digit",
-    day: "2-digit",
-    year: "numeric",
-  });
-}
-
 const columns: DataTableColumn<AuditEventDto>[] = [
   {
     accessorKey: "occurredAt",
@@ -35,7 +26,7 @@ const columns: DataTableColumn<AuditEventDto>[] = [
       const occurredAt = ctx.getValue() as string;
       return (
         <time className="text-neutral-300" dateTime={occurredAt} title={occurredAt}>
-          {formatDate(occurredAt)}
+          {formatConsoleDateTime(occurredAt)}
         </time>
       );
     },

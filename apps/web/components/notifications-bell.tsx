@@ -10,17 +10,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@repo/ui/dropdown-menu";
+import { formatConsoleDateTime } from "../lib/datetime";
 import type { Notification } from "../lib/notifications.types";
 import { useReadStore } from "../lib/notifications-read-store";
-
-function formatTime(iso: string): string {
-  return new Date(iso).toLocaleString("ko-KR", {
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
 
 type NotificationsBellProps = {
   items: Notification[];
@@ -80,7 +72,7 @@ export function NotificationsBell({ items }: NotificationsBellProps) {
                   <span aria-hidden className="ui:h-2 ui:w-2 ui:shrink-0 ui:rounded-full ui:bg-semantic-brand" />
                 ) : null}
               </span>
-              <span className="ui:text-xs ui:text-text-muted">{formatTime(n.createdAt)}</span>
+              <span className="ui:text-xs ui:text-text-muted">{formatConsoleDateTime(n.createdAt, "short")}</span>
             </DropdownMenuItem>
           ))
         )}

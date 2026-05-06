@@ -1,7 +1,8 @@
-import type { Run } from "@repo/api-client";
+import type { Run, RunStatus } from "@repo/api-client";
 import { Alert } from "@repo/ui/alert";
 import { PermissionGate } from "../../../components/permission-gate";
 import { getRunsData } from "../../../lib/runs-mock";
+import { parseString, parseStringOneOf } from "../../../lib/search-params";
 import { RunsFilters, type RunsFilterStatus } from "./runs-filters";
 import { RunsTable } from "./runs-table";
 
@@ -9,25 +10,16 @@ type RunsPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-function parseString(raw: string | string[] | undefined): string | undefined {
-  if (typeof raw !== "string") {
-    return undefined;
-  }
-  const normalized = raw.trim();
-  return normalized.length > 0 ? normalized : undefined;
-}
+const RUN_STATUS_VALUES: readonly RunStatus[] = [
+  "queued",
+  "running",
+  "succeeded",
+  "failed",
+  "cancelled",
+];
 
-function parseStatus(raw: string | undefined): RunsFilterStatus {
-  switch (raw) {
-    case "queued":
-    case "running":
-    case "succeeded":
-    case "failed":
-    case "cancelled":
-      return raw;
-    default:
-      return "all";
-  }
+function parseStatus(raw: string | string[] | undefined): RunsFilterStatus {
+  return parseStringOneOf(raw, RUN_STATUS_VALUES) ?? "all";
 }
 
 function applyRunsFilters(runs: Run[], q: string, status: RunsFilterStatus): Run[] {
@@ -47,7 +39,7 @@ function applyRunsFilters(runs: Run[], q: string, status: RunsFilterStatus): Run
 export default async function RunsPage({ searchParams }: RunsPageProps) {
   const params = await searchParams;
   const query = parseString(params.q) ?? "";
-  const status = parseStatus(parseString(params.status));
+  const status = parseStatus(params.status);
   const runs = await getRunsData();
   const filtered = applyRunsFilters(runs, query, status);
 

@@ -1,4 +1,5 @@
 import type { AuditEventAction, AuditEventDto, AuditEventsPage } from "@repo/api-client";
+import { AUDIT_ACTIONS } from "./audit-actions";
 import { getConsoleApiClient } from "./console-api";
 
 export type AuditSearchParams = {
@@ -9,15 +10,6 @@ export type AuditSearchParams = {
   page?: number;
   size?: number;
 };
-
-const AUDIT_ACTIONS: AuditEventAction[] = [
-  "member.invited",
-  "member.removed",
-  "role.changed",
-  "billing.payment_method_added",
-  "api_key.created",
-  "api_key.revoked",
-];
 
 const MOCK_ACTORS = [
   { id: "usr_owner", name: "김오너", email: "owner@example.com" },

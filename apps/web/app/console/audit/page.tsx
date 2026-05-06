@@ -2,49 +2,25 @@ import { Alert } from "@repo/ui/alert";
 import { Skeleton } from "@repo/ui/skeleton";
 import { Suspense } from "react";
 import { PermissionGate } from "../../../components/permission-gate";
+import { isAuditAction } from "../../../lib/audit-actions";
+import { parsePositiveInt, parseString } from "../../../lib/search-params";
 import { AuditEvents, type AuditQueryState } from "./audit-events";
 
 type AuditPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-const ALLOWED_ACTIONS = new Set([
-  "member.invited",
-  "member.removed",
-  "role.changed",
-  "billing.payment_method_added",
-  "api_key.created",
-  "api_key.revoked",
-] as const);
-
-function parseString(raw: string | string[] | undefined): string | undefined {
-  if (typeof raw === "string" && raw.trim().length > 0) {
-    return raw.trim();
-  }
-  return undefined;
-}
-
-function parsePositiveInt(raw: string | undefined, fallback: number): number {
-  if (!raw) {
-    return fallback;
-  }
-  const parsed = Number.parseInt(raw, 10);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
-}
-
 function toAuditQueryState(params: Record<string, string | string[] | undefined>): AuditQueryState {
   const actionRaw = parseString(params.action);
-  const action = actionRaw && ALLOWED_ACTIONS.has(actionRaw as (typeof ALLOWED_ACTIONS extends Set<infer T> ? T : never))
-    ? (actionRaw as AuditQueryState["action"])
-    : undefined;
+  const action = actionRaw && isAuditAction(actionRaw) ? actionRaw : undefined;
 
   return {
     actor: parseString(params.actor),
     action,
     from: parseString(params.from),
     to: parseString(params.to),
-    page: parsePositiveInt(parseString(params.page), 1),
-    size: parsePositiveInt(parseString(params.size), 20),
+    page: parsePositiveInt(params.page, 1),
+    size: parsePositiveInt(params.size, 20),
   };
 }
 

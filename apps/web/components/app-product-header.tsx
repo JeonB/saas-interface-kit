@@ -4,7 +4,7 @@ import { Button } from "@repo/ui/button";
 import { logoutAction } from "../app/actions/auth";
 import { getSession } from "../lib/session";
 import { NotificationsBellData } from "./notifications-bell-data";
-import { ThemeToggle } from "./ThemeToggle";
+import { ThemeToggle } from "./theme-toggle";
 
 export async function AppProductHeader() {
   const session = await getSession();

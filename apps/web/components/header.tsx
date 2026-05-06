@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Avatar } from "@repo/ui/avatar";
 import { Badge } from "@repo/ui/badge";
 import { DOCS_BASE } from "../lib/config";
-import { ThemeToggle } from "./ThemeToggle";
+import { ThemeToggle } from "./theme-toggle";
 
 const NAV_LINKS = [
   { label: "홈", href: "/" },

@@ -166,9 +166,6 @@ importers:
       '@repo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@xyflow/react':
-        specifier: ^12.9.3
-        version: 12.10.2(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       lucide-react:
         specifier: ^0.544.0
         version: 0.544.0(react@19.2.5)

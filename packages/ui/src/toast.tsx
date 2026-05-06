@@ -1,3 +1,5 @@
+"use client";
+
 import { FloatingPortal } from "@floating-ui/react";
 import {
   createContext,
