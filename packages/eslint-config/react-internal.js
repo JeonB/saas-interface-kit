@@ -1,6 +1,3 @@
-import js from "@eslint/js";
-import eslintConfigPrettier from "eslint-config-prettier";
-import tseslint from "typescript-eslint";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginReact from "eslint-plugin-react";
 import globals from "globals";
@@ -9,12 +6,12 @@ import { config as baseConfig } from "./base.js";
 /**
  * A custom ESLint configuration for libraries that use React.
  *
+ * Inherits the JS recommended + Prettier + typescript-eslint stack from
+ * `baseConfig`; only React-specific layers are added here.
+ *
  * @type {import("eslint").Linter.Config} */
 export const config = [
   ...baseConfig,
-  js.configs.recommended,
-  eslintConfigPrettier,
-  ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   {
     languageOptions: {
