@@ -5,21 +5,21 @@ import { PermissionGate } from "../../../../components/permission-gate";
 
 export default function BillingPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 text-white sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-bold tracking-tight">청구</h1>
-      <p className="mt-2 text-sm text-neutral-400">플랜·결제 수단 UI 자리 (프론트 템플릿)</p>
+    <div className="ui:mx-auto ui:max-w-3xl ui:px-4 ui:py-10 ui:text-text-primary sm:ui:px-6 lg:ui:px-8">
+      <h1 className="ui:text-2xl ui:font-bold ui:tracking-tight">청구</h1>
+      <p className="ui:mt-2 ui:text-sm ui:text-text-secondary">플랜·결제 수단 UI 자리 (프론트 템플릿)</p>
 
-      <Card className="mt-8 border-neutral-800 bg-neutral-900/50">
+      <Card className="ui:mt-8">
         <CardHeader>
           <CardTitle>플랜</CardTitle>
-          <CardDescription className="text-neutral-400">모든 로그인 사용자가 볼 수 있는 영역입니다.</CardDescription>
+          <CardDescription>모든 로그인 사용자가 볼 수 있는 영역입니다.</CardDescription>
         </CardHeader>
         <CardBody>
-          <p className="text-sm text-neutral-300">Pro 플랜 · 월 청구 (데모)</p>
+          <p className="ui:text-sm ui:text-text-secondary">Pro 플랜 · 월 청구 (데모)</p>
         </CardBody>
       </Card>
 
-      <div className="mt-8">
+      <div className="ui:mt-8">
         <PermissionGate
           fallback={
             <Alert title="권한" variant="info">
@@ -28,11 +28,12 @@ export default function BillingPage() {
           }
           permission="billing:manage"
         >
-          <Card className="border-neutral-800 bg-neutral-900/50">
+          <Card>
             <CardHeader>
               <CardTitle>결제 수단</CardTitle>
-              <CardDescription className="text-neutral-400">
-                <code className="rounded bg-neutral-950 px-1">billing:manage</code> 권한이 있을 때만 표시됩니다.
+              <CardDescription>
+                <code className="ui:rounded ui:bg-surface-muted ui:px-1">billing:manage</code> 권한이 있을 때만
+                표시됩니다.
               </CardDescription>
             </CardHeader>
             <CardBody>

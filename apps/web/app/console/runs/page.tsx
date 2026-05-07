@@ -44,9 +44,9 @@ export default async function RunsPage({ searchParams }: RunsPageProps) {
   const filtered = applyRunsFilters(runs, query, status);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 text-white sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-bold tracking-tight">실행 기록</h1>
-      <p className="mt-2 text-sm text-neutral-400">
+    <div className="ui:mx-auto ui:max-w-6xl ui:px-4 ui:py-10 ui:text-text-primary sm:ui:px-6 lg:ui:px-8">
+      <h1 className="ui:text-2xl ui:font-bold ui:tracking-tight">실행 기록</h1>
+      <p className="ui:mt-2 ui:text-sm ui:text-text-secondary">
         최근 실행 이력을 상태와 워크플로 기준으로 필터링한 뒤, 상세 페이지에서 스텝 로그를 확인할 수 있습니다.
       </p>
 
@@ -58,9 +58,9 @@ export default async function RunsPage({ searchParams }: RunsPageProps) {
         }
         permission="runs:read"
       >
-        <div className="mt-8 space-y-6">
+        <div className="ui:mt-8 ui:space-y-6">
           <RunsFilters query={query} status={status} />
-          <div className="overflow-x-auto rounded-lg border border-neutral-800 bg-neutral-900/40 p-4">
+          <div className="ui:overflow-x-auto ui:rounded-ui-lg ui:border ui:border-border-subtle ui:bg-surface-raised ui:p-4">
             <RunsTable runs={filtered} />
           </div>
         </div>
