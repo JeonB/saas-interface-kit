@@ -38,9 +38,9 @@ export default async function AuditPage({ searchParams }: AuditPageProps) {
   const query = toAuditQueryState(await searchParams);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 text-white sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-bold tracking-tight">감사 로그</h1>
-      <p className="mt-2 text-sm text-neutral-400">
+    <div className="ui:mx-auto ui:max-w-5xl ui:px-4 ui:py-10 ui:text-text-primary sm:ui:px-6 lg:ui:px-8">
+      <h1 className="ui:text-2xl ui:font-bold ui:tracking-tight">감사 로그</h1>
+      <p className="ui:mt-2 ui:text-sm ui:text-text-secondary">
         운영 이벤트를 URL 상태 기반 필터로 조회합니다. API가 설정되면 서버 데이터를, 아니면 템플릿 목 데이터를 사용합니다.
       </p>
       <div className="mt-8">

@@ -11,11 +11,12 @@ const MOCK_MEMBERS: MemberRow[] = [
 
 export default async function MembersPage() {
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 text-white sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-bold tracking-tight">멤버</h1>
-      <p className="mt-2 max-w-2xl text-sm text-neutral-400">
-        데모 데이터입니다. 실제 제품에서는 <code className="rounded bg-neutral-900 px-1">@repo/api-client</code>로
-        멤버 API를 호출하고 RBAC는 서버에서 검증하세요.
+    <div className="ui:mx-auto ui:max-w-5xl ui:px-4 ui:py-10 ui:text-text-primary sm:ui:px-6 lg:ui:px-8">
+      <h1 className="ui:text-2xl ui:font-bold ui:tracking-tight">멤버</h1>
+      <p className="ui:mt-2 ui:max-w-2xl ui:text-sm ui:text-text-secondary">
+        데모 데이터입니다. 실제 제품에서는{" "}
+        <code className="ui:rounded ui:bg-surface-muted ui:px-1">@repo/api-client</code>로 멤버 API를 호출하고 RBAC는
+        서버에서 검증하세요.
       </p>
       <PermissionGate
         fallback={
@@ -25,7 +26,7 @@ export default async function MembersPage() {
         }
         permission="members:read"
       >
-        <div className="mt-8 overflow-x-auto rounded-lg border border-neutral-800 bg-neutral-900/40 p-4">
+        <div className="ui:mt-8 ui:overflow-x-auto ui:rounded-ui-lg ui:border ui:border-border-subtle ui:bg-surface-raised ui:p-4">
           <MembersTable data={MOCK_MEMBERS} />
         </div>
       </PermissionGate>
