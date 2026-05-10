@@ -24,19 +24,17 @@ describe("링크 카드", () => {
     const link = screen.getByRole("link", { name: /External/ });
     expect(link).toHaveAttribute("target", "_blank");
     expect(link).toHaveAttribute("rel", "noopener noreferrer");
-    expect(link.getAttribute("href")).toMatch(/^https:\/\/example\.com\/page\?/);
-    expect(link.getAttribute("href")).toContain("utm_source=create-turbo");
+    expect(link).toHaveAttribute("href", "https://example.com/page");
   });
 
-  it("href에 쿼리가 있으면 &로 UTM 추가", () => {
+  it("외부 href의 기존 쿼리는 그대로 유지", () => {
     render(
       <LinkCard href="https://example.com/p?q=1" title="Q">
         Body
       </LinkCard>,
     );
     const link = screen.getByRole("link", { name: /Q/ });
-    expect(link.getAttribute("href")).toContain("q=1");
-    expect(link.getAttribute("href")).toContain("&utm_source=create-turbo");
+    expect(link).toHaveAttribute("href", "https://example.com/p?q=1");
   });
 
   it("앵커에 className 병합", () => {

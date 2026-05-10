@@ -17,15 +17,12 @@ export function LinkCard({
   className?: string;
 }) {
   const external = isExternal(href);
-  const resolvedHref = external
-    ? `${href}${href.includes("?") ? "&" : "?"}utm_source=create-turbo&utm_medium=with-tailwind&utm_campaign=create-turbo`
-    : href;
   const baseClasses =
     "ui:group ui:rounded-ui-md ui:border ui:border-border-subtle ui:px-5 ui:py-4 ui:transition-colors hover:ui:border-border-default hover:ui:bg-surface-muted/40 ui:shadow-ui-sm";
   return (
     <a
       className={cn(baseClasses, className)}
-      href={resolvedHref}
+      href={href}
       {...(external && { rel: "noopener noreferrer", target: "_blank" })}
     >
       <h2 className="ui:mb-3 ui:text-2xl ui:font-semibold ui:text-text-primary">
