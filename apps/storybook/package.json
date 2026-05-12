@@ -13,30 +13,30 @@
   },
   "dependencies": {
     "@repo/ui": "workspace:*",
-    "lucide-react": "^0.544.0",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "lucide-react": "^1.14.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^5.1.1",
+    "@chromatic-com/storybook": "^5.1.2",
     "@repo/eslint-config": "workspace:*",
     "@repo/tailwind-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@storybook/addon-a11y": "^10.3.3",
-    "@storybook/addon-docs": "^10.3.3",
-    "@storybook/addon-vitest": "^10.3.3",
-    "@storybook/react-vite": "^10.3.3",
-    "@tailwindcss/vite": "^4.2.2",
+    "@storybook/addon-a11y": "^10.3.6",
+    "@storybook/addon-docs": "^10.3.6",
+    "@storybook/addon-vitest": "^10.3.6",
+    "@storybook/react-vite": "^10.3.6",
+    "@tailwindcss/vite": "^4.3.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@vitest/browser-playwright": "^4.1.2",
-    "@vitest/coverage-v8": "^4.1.2",
-    "baseline-browser-mapping": "^2.10.13",
+    "@vitest/browser-playwright": "^4.1.6",
+    "@vitest/coverage-v8": "^4.1.6",
+    "baseline-browser-mapping": "^2.10.29",
     "eslint": "^9.39.4",
-    "playwright": "^1.59.0",
-    "storybook": "^10.3.3",
-    "tailwindcss": "^4.2.2",
-    "typescript": "6.0.2",
-    "vitest": "^4.1.2"
+    "playwright": "^1.60.0",
+    "storybook": "^10.3.6",
+    "tailwindcss": "^4.3.0",
+    "typescript": "6.0.3",
+    "vitest": "^4.1.6"
   }
 }
