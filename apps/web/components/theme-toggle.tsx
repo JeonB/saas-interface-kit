@@ -4,19 +4,34 @@ import { useCallback, useEffect, useSyncExternalStore } from "react";
 
 type Theme = "dark" | "light";
 
-const STORAGE_KEY = "northline-theme";
-const STORE_EVENT = "northline-theme-change";
+const STORAGE_KEY = "saas-interface-kit-theme";
+const LEGACY_STORAGE_KEY = "northline-theme";
+const STORE_EVENT = "saas-interface-kit-theme-change";
 const SERVER_DEFAULT: Theme = "dark";
 
 function isTheme(value: string | null): value is Theme {
   return value === "dark" || value === "light";
 }
 
+function readStoredTheme(): string | null {
+  const current = localStorage.getItem(STORAGE_KEY);
+  if (isTheme(current)) {
+    return current;
+  }
+  const legacy = localStorage.getItem(LEGACY_STORAGE_KEY);
+  if (isTheme(legacy)) {
+    localStorage.setItem(STORAGE_KEY, legacy);
+    localStorage.removeItem(LEGACY_STORAGE_KEY);
+    return legacy;
+  }
+  return null;
+}
+
 function readTheme(): Theme {
   if (typeof window === "undefined") {
     return SERVER_DEFAULT;
   }
-  const raw = localStorage.getItem(STORAGE_KEY);
+  const raw = readStoredTheme();
   return isTheme(raw) ? raw : SERVER_DEFAULT;
 }
 

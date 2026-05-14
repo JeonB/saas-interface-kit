@@ -6,7 +6,7 @@ import { Geist } from "next/font/google";
 const geist = Geist({ subsets: ["latin"] });
 
 /** Apply stored theme before paint to avoid flash; must match ThemeToggle STORAGE_KEY and values. */
-const THEME_BOOTSTRAP = `(function(){try{var k="northline-theme";var t=localStorage.getItem(k)||"dark";var r=document.documentElement;if(t==="light"){r.classList.add("light");r.setAttribute("data-theme","light");}else{r.classList.remove("light");r.removeAttribute("data-theme");}}catch(e){}})();`;
+const THEME_BOOTSTRAP = `(function(){try{var k="saas-interface-kit-theme",lk="northline-theme",t=localStorage.getItem(k);if(t!=="light"&&t!=="dark"){var o=localStorage.getItem(lk);if(o==="light"||o==="dark"){localStorage.setItem(k,o);localStorage.removeItem(lk);t=o;}}t=t||"dark";var r=document.documentElement;if(t==="light"){r.classList.add("light");r.setAttribute("data-theme","light");}else{r.classList.remove("light");r.removeAttribute("data-theme");}}catch(e){}})();`;
 
 export const metadata: Metadata = {
   title: {
