@@ -1,4 +1,6 @@
 import type { Integration } from "@repo/api-client";
+import { applyApiDevSimulation } from "./api-dev-simulation";
+import { readApiDevSimulation } from "./api-dev-simulation-server";
 import { getConsoleApiClient } from "./console-api";
 
 const MOCK_INTEGRATIONS: Integration[] = [
@@ -44,9 +46,12 @@ const MOCK_INTEGRATIONS: Integration[] = [
 ];
 
 export async function getIntegrationsData(): Promise<Integration[]> {
-  const client = getConsoleApiClient();
-  if (client) {
-    return client.getIntegrations();
-  }
-  return MOCK_INTEGRATIONS;
+  const simulation = await readApiDevSimulation();
+  return applyApiDevSimulation(simulation, async () => {
+    const client = getConsoleApiClient();
+    if (client) {
+      return client.getIntegrations();
+    }
+    return MOCK_INTEGRATIONS;
+  });
 }

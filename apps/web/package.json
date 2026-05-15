@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint --max-warnings 0",
-    "check-types": "next typegen && tsc --noEmit"
+    "check-types": "next typegen && tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@repo/api-client": "workspace:*",
@@ -32,6 +33,7 @@
     "eslint": "^9.39.4",
     "postcss": "^8.5.14",
     "tailwindcss": "^4.3.0",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "vitest": "^4.1.6"
   }
 }

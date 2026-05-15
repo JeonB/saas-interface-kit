@@ -18,40 +18,24 @@ import {
   CONSOLE_NAV_GROUP_HEADINGS,
   CONSOLE_NAV_GROUP_ORDER,
   CONSOLE_NAV_ITEMS,
-  type ConsoleNavGroup,
   type ConsoleNavItem,
 } from "./console-nav-items";
+import {
+  buildShortcutMap,
+  countNavMatches,
+  filterNavItemsByGroup,
+  isEditableTarget,
+  isPaletteToggleShortcut,
+} from "../lib/console-command-palette-utils";
 
-type NavGroup = ConsoleNavGroup;
 type NavItem = ConsoleNavItem;
 
 const GROUP_HEADINGS = CONSOLE_NAV_GROUP_HEADINGS;
 const NAV_ITEMS = CONSOLE_NAV_ITEMS;
-const GROUP_ORDER = CONSOLE_NAV_GROUP_ORDER;
 
-const SHORTCUT_BY_KEY: ReadonlyMap<string, NavItem> = new Map(
-  NAV_ITEMS.flatMap((item) => (item.shortcutKey ? [[item.shortcutKey, item] as const] : [])),
-);
+const SHORTCUT_BY_KEY = buildShortcutMap(NAV_ITEMS);
 
 const G_PREFIX_TIMEOUT_MS = 1200;
-
-function normalize(s: string): string {
-  return s.trim().toLowerCase();
-}
-
-function matchesQuery(item: NavItem, q: string): boolean {
-  if (!q) return true;
-  const n = normalize(q);
-  const hay = normalize(`${item.label} ${item.keywords}`);
-  return hay.includes(n);
-}
-
-function isEditableTarget(target: EventTarget | null): boolean {
-  if (!(target instanceof HTMLElement)) return false;
-  if (target.isContentEditable) return true;
-  const tag = target.tagName;
-  return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
-}
 
 export function ConsoleCommandPalette() {
   const router = useRouter();
@@ -91,8 +75,7 @@ export function ConsoleCommandPalette() {
       if (e.defaultPrevented) return;
       if (isEditableTarget(e.target)) return;
 
-      const isPalette = (e.metaKey || e.ctrlKey) && (e.key === "k" || e.key === "K");
-      if (isPalette) {
+      if (isPaletteToggleShortcut(e)) {
         e.preventDefault();
         clearGPrefix();
         setOpen((prev) => !prev);
@@ -130,23 +113,9 @@ export function ConsoleCommandPalette() {
     };
   }, [clearGPrefix, navigateTo]);
 
-  const filteredByGroup = useMemo(() => {
-    const map = new Map<NavGroup, NavItem[]>();
-    for (const group of GROUP_ORDER) {
-      map.set(group, []);
-    }
-    for (const item of NAV_ITEMS) {
-      if (matchesQuery(item, search)) {
-        map.get(item.group)?.push(item);
-      }
-    }
-    return map;
-  }, [search]);
+  const filteredByGroup = useMemo(() => filterNavItemsByGroup(search, NAV_ITEMS), [search]);
 
-  const totalMatches = useMemo(
-    () => Array.from(filteredByGroup.values()).reduce((sum, items) => sum + items.length, 0),
-    [filteredByGroup],
-  );
+  const totalMatches = useMemo(() => countNavMatches(filteredByGroup), [filteredByGroup]);
 
   const go = useCallback(
     (item: NavItem) => {
@@ -199,7 +168,7 @@ export function ConsoleCommandPalette() {
           {totalMatches === 0 ? (
             <CommandEmpty>일치하는 페이지가 없습니다.</CommandEmpty>
           ) : (
-            GROUP_ORDER.map((group) => {
+            CONSOLE_NAV_GROUP_ORDER.map((group) => {
               const items = filteredByGroup.get(group) ?? [];
               if (items.length === 0) return null;
               return (

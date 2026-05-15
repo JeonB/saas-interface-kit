@@ -1,4 +1,6 @@
 import type { Run } from "@repo/api-client";
+import { applyApiDevSimulation } from "./api-dev-simulation";
+import { readApiDevSimulation } from "./api-dev-simulation-server";
 import { getConsoleApiClient } from "./console-api";
 
 const MOCK_RUNS: Run[] = [
@@ -68,13 +70,19 @@ const MOCK_RUNS: Run[] = [
 // `@repo/api-client` exposes `getRun(id)` but not a runs list endpoint yet;
 // swap to `client.getRuns(...)` when it lands.
 export async function getRunsData(): Promise<Run[]> {
-  return [...MOCK_RUNS].sort((a, b) => b.startedAt.localeCompare(a.startedAt));
+  const simulation = await readApiDevSimulation();
+  return applyApiDevSimulation(simulation, async () => {
+    return [...MOCK_RUNS].sort((a, b) => b.startedAt.localeCompare(a.startedAt));
+  });
 }
 
 export async function getRunData(runId: string): Promise<Run | null> {
-  const client = getConsoleApiClient();
-  if (client) {
-    return client.getRun(runId);
-  }
-  return MOCK_RUNS.find((run) => run.id === runId) ?? null;
+  const simulation = await readApiDevSimulation();
+  return applyApiDevSimulation(simulation, async () => {
+    const client = getConsoleApiClient();
+    if (client) {
+      return client.getRun(runId);
+    }
+    return MOCK_RUNS.find((run) => run.id === runId) ?? null;
+  });
 }

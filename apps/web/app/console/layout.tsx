@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 import { getSession } from "../../lib/session";
 import { AppProductHeader } from "../../components/app-product-header";
 import { AppSidebar } from "../../components/app-sidebar";
+import { ApiDevSimulationPanelData } from "../../components/api-dev-simulation-panel-data";
 import { ConsoleCommandPalette } from "../../components/console-command-palette";
 import { ShortcutsHelpDialog } from "../../components/shortcuts-help-dialog";
 
@@ -35,6 +36,7 @@ export default async function AppGroupLayout({ children }: { children: React.Rea
         </AppShellHeader>
         <AppShellContent className="ui:bg-surface-canvas ui:p-0" id="main-content">
           <ToastProvider>
+            <ApiDevSimulationPanelData />
             <ConsoleCommandPalette />
             <ShortcutsHelpDialog />
             {children}
