@@ -7,6 +7,7 @@ import {
 } from "@repo/ui/app-shell";
 import { ToastProvider } from "@repo/ui/toast";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getSession } from "../../lib/session";
 import { AppProductHeader } from "../../components/app-product-header";
@@ -22,7 +23,14 @@ export const metadata: Metadata = {
 export default async function AppGroupLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession();
   if (!session) {
-    redirect("/login?from=/console");
+    const h = await headers();
+    const pathname =
+      h.get("x-pathname") ??
+      h.get("next-url")?.replace(/^https?:\/\/[^/]+/, "") ??
+      "/console";
+    const safeFrom =
+      pathname.startsWith("/") && !pathname.startsWith("//") ? pathname : "/console";
+    redirect(`/login?from=${encodeURIComponent(safeFrom)}`);
   }
 
   return (
