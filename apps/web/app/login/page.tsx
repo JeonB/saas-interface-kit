@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Card, CardBody, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
+import { getSession } from "../../lib/session";
 import { LoginForm } from "./login-form";
 
 type LoginPageProps = {
@@ -11,6 +13,11 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const from = typeof fromParam === "string" && fromParam.startsWith("/") && !fromParam.startsWith("//")
     ? fromParam
     : "/console";
+
+  const session = await getSession();
+  if (session) {
+    redirect(from);
+  }
 
   return (
     <div className="w-full max-w-md">
