@@ -10,6 +10,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getSession } from "../../lib/session";
+import { buildLoginRedirectUrl } from "../../lib/redirect-path";
 import { AppProductHeader } from "../../components/app-product-header";
 import { AppSidebar } from "../../components/app-sidebar";
 import { ApiDevSimulationPanelData } from "../../components/api-dev-simulation-panel-data";
@@ -28,9 +29,7 @@ export default async function AppGroupLayout({ children }: { children: React.Rea
       h.get("x-pathname") ??
       h.get("next-url")?.replace(/^https?:\/\/[^/]+/, "") ??
       "/console";
-    const safeFrom =
-      pathname.startsWith("/") && !pathname.startsWith("//") ? pathname : "/console";
-    redirect(`/login?from=${encodeURIComponent(safeFrom)}`);
+    redirect(buildLoginRedirectUrl(pathname));
   }
 
   return (
