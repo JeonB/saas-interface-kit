@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Card, CardBody, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
 import { getSession } from "../../lib/session";
-import { sanitizeRedirectPath } from "../../lib/redirect-path";
+import { resolveAuthenticatedLoginRedirect } from "../../lib/proxy-auth";
 import { LoginForm } from "./login-form";
 
 type LoginPageProps = {
@@ -11,7 +11,7 @@ type LoginPageProps = {
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const { from: fromParam } = await searchParams;
-  const from = sanitizeRedirectPath(fromParam);
+  const from = resolveAuthenticatedLoginRedirect(fromParam ?? null);
 
   const session = await getSession();
   if (session) {

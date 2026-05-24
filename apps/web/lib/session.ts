@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { cache } from "react";
 import type { Role } from "./rbac";
 import { isRole } from "./rbac";
 import { SESSION_COOKIE_NAME } from "./session-constants";
@@ -97,7 +98,7 @@ function isSignedSessionPayload(value: unknown): value is SignedSessionPayload {
   );
 }
 
-export async function getSession(): Promise<SessionUser | null> {
+export const getSession = cache(async (): Promise<SessionUser | null> => {
   const cookieStore = await cookies();
   const raw = cookieStore.get(SESSION_COOKIE_NAME)?.value;
   if (!raw) {
@@ -109,4 +110,4 @@ export async function getSession(): Promise<SessionUser | null> {
     return null;
   }
   return user;
-}
+});
