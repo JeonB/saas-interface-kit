@@ -3,9 +3,9 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { cache } from "react";
 import type { Role } from "./rbac";
 import { isRole } from "./rbac";
-import { SESSION_COOKIE_NAME } from "./session-constants";
+import { SESSION_COOKIE_NAME, SESSION_TTL_SECONDS } from "./session-constants";
 
-export { SESSION_COOKIE_NAME } from "./session-constants";
+export { SESSION_COOKIE_NAME, SESSION_TTL_SECONDS } from "./session-constants";
 
 export type SessionUser = {
   id: string;
@@ -15,8 +15,6 @@ export type SessionUser = {
   orgId: string;
   orgName: string;
 };
-
-const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7;
 
 /** Development-only session signing fallback. */
 export const FALLBACK_DEV_SESSION_SECRET = "development-only-set-session-secret" as const;

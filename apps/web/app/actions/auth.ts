@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { signSession, type SessionUser } from "../../lib/session";
-import { SESSION_COOKIE_NAME } from "../../lib/session-constants";
+import { SESSION_COOKIE_NAME, getSessionCookieOptions } from "../../lib/session-constants";
 import { sanitizeRedirectPath } from "../../lib/redirect-path";
 import { isRole, type Role } from "../../lib/rbac";
 
@@ -52,13 +52,7 @@ export async function loginAction(
   const token = signSession(user);
 
   const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE_NAME, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7,
-  });
+  cookieStore.set(SESSION_COOKIE_NAME, token, getSessionCookieOptions());
 
   redirect(safeFrom);
 }

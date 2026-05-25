@@ -1,5 +1,6 @@
 import { createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
+import { SESSION_TTL_SECONDS, getSessionCookieOptions } from "./session-constants";
 import {
   FALLBACK_DEV_SESSION_SECRET,
   signSession,
@@ -17,6 +18,10 @@ const demoUser: SessionUser = {
 };
 
 describe("session", () => {
+  it("aligns cookie maxAge with session token TTL", () => {
+    expect(getSessionCookieOptions().maxAge).toBe(SESSION_TTL_SECONDS);
+  });
+
   it("signSession and verifySignedSession round-trip", () => {
     const token = signSession(demoUser);
     expect(verifySignedSession(token)).toEqual(demoUser);
