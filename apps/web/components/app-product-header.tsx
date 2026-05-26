@@ -1,7 +1,10 @@
 import { Avatar } from "@repo/ui/avatar";
 import { Badge } from "@repo/ui/badge";
 import { Button } from "@repo/ui/button";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { logoutAction } from "../app/actions/auth";
+import { buildLoginRedirectUrl } from "../lib/redirect-path";
 import { getSession } from "../lib/session";
 import { NotificationsBellData } from "./notifications-bell-data";
 import { ThemeToggle } from "./theme-toggle";
@@ -9,7 +12,9 @@ import { ThemeToggle } from "./theme-toggle";
 export async function AppProductHeader() {
   const session = await getSession();
   if (!session) {
-    return null;
+    const h = await headers();
+    const pathname = h.get("x-pathname") ?? "/console";
+    redirect(buildLoginRedirectUrl(pathname));
   }
 
   return (

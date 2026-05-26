@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { signSession, type SessionUser } from "../../lib/session";
 import { SESSION_COOKIE_NAME, getSessionCookieOptions } from "../../lib/session-constants";
-import { sanitizeRedirectPath } from "../../lib/redirect-path";
+import { resolveAuthenticatedLoginRedirect } from "../../lib/proxy-auth";
 import { isRole, type Role } from "../../lib/rbac";
 
 const DEMO_ORG_ID = "org_demo";
@@ -35,7 +35,7 @@ export async function loginAction(
   const fromRaw = formData.get("from");
 
   const email = typeof emailRaw === "string" ? emailRaw.trim() : "";
-  const safeFrom = sanitizeRedirectPath(typeof fromRaw === "string" ? fromRaw : undefined);
+  const safeFrom = resolveAuthenticatedLoginRedirect(typeof fromRaw === "string" ? fromRaw : null);
 
   if (!email || !email.includes("@")) {
     return { error: "이메일 형식을 확인하세요." };
