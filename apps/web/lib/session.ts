@@ -3,7 +3,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { cache } from "react";
 import type { Role } from "./rbac";
 import { isRole } from "./rbac";
-import { SESSION_COOKIE_NAME, SESSION_TTL_SECONDS } from "./session-constants";
+import { SESSION_COOKIE_NAME, SESSION_TTL_SECONDS, getSessionCookieDeleteOptions } from "./session-constants";
 
 export { SESSION_COOKIE_NAME, SESSION_TTL_SECONDS } from "./session-constants";
 
@@ -104,7 +104,7 @@ export const getSession = cache(async (): Promise<SessionUser | null> => {
   }
   const user = verifySignedSession(raw);
   if (!user) {
-    cookieStore.delete(SESSION_COOKIE_NAME);
+    cookieStore.delete(getSessionCookieDeleteOptions());
     return null;
   }
   return user;

@@ -10,7 +10,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getSession } from "../../lib/session";
-import { buildLoginRedirectUrl } from "../../lib/redirect-path";
+import { buildLoginRedirectUrl, resolveConsoleRequestPathname } from "../../lib/redirect-path";
 import { AppProductHeader } from "../../components/app-product-header";
 import { AppSidebar } from "../../components/app-sidebar";
 import { ApiDevSimulationPanelData } from "../../components/api-dev-simulation-panel-data";
@@ -25,11 +25,7 @@ export default async function AppGroupLayout({ children }: { children: React.Rea
   const session = await getSession();
   if (!session) {
     const h = await headers();
-    const pathname =
-      h.get("x-pathname") ??
-      h.get("next-url")?.replace(/^https?:\/\/[^/]+/, "") ??
-      "/console";
-    redirect(buildLoginRedirectUrl(pathname));
+    redirect(buildLoginRedirectUrl(resolveConsoleRequestPathname(h)));
   }
 
   return (

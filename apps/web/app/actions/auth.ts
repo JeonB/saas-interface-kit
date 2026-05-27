@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { signSession, type SessionUser } from "../../lib/session";
-import { SESSION_COOKIE_NAME, getSessionCookieOptions } from "../../lib/session-constants";
+import { SESSION_COOKIE_NAME, getSessionCookieDeleteOptions, getSessionCookieOptions } from "../../lib/session-constants";
 import { resolveAuthenticatedLoginRedirect } from "../../lib/proxy-auth";
 import { isRole, type Role } from "../../lib/rbac";
 
@@ -59,6 +59,6 @@ export async function loginAction(
 
 export async function logoutAction(): Promise<void> {
   const cookieStore = await cookies();
-  cookieStore.delete(SESSION_COOKIE_NAME);
+  cookieStore.delete(getSessionCookieDeleteOptions());
   redirect("/");
 }

@@ -5,7 +5,7 @@ import {
   resolveUnauthenticatedRedirect,
 } from "./lib/proxy-auth";
 import { verifySignedSession } from "./lib/session";
-import { SESSION_COOKIE_NAME } from "./lib/session-constants";
+import { SESSION_COOKIE_NAME, getSessionCookieDeleteOptions } from "./lib/session-constants";
 
 /** Next.js 16 app convention: `proxy.ts` / `export function proxy` replace deprecated `middleware`. */
 export function proxy(request: NextRequest) {
@@ -28,7 +28,7 @@ export function proxy(request: NextRequest) {
       new URL(resolveUnauthenticatedRedirect(pathname), request.url),
     );
     if (raw) {
-      res.cookies.delete(SESSION_COOKIE_NAME);
+      res.cookies.delete(getSessionCookieDeleteOptions());
     }
     return res;
   }

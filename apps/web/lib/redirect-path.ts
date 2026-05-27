@@ -20,3 +20,16 @@ export function buildLoginRedirectUrl(
 ): string {
   return `/login?from=${encodeURIComponent(sanitizeRedirectPath(raw, fallback))}`;
 }
+
+type RequestHeaders = Readonly<{ get(name: string): string | null }>;
+
+export function resolveConsoleRequestPathname(
+  headers: RequestHeaders,
+  fallback = DEFAULT_CONSOLE_PATH,
+): string {
+  const raw =
+    headers.get("x-pathname") ??
+    headers.get("next-url")?.replace(/^https?:\/\/[^/]+/, "") ??
+    fallback;
+  return sanitizeRedirectPath(raw, fallback);
+}

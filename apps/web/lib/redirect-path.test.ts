@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildLoginRedirectUrl, sanitizeRedirectPath } from "./redirect-path";
+import { buildLoginRedirectUrl, resolveConsoleRequestPathname, sanitizeRedirectPath } from "./redirect-path";
 
 describe("sanitizeRedirectPath", () => {
   it("returns valid internal paths", () => {
@@ -29,5 +29,24 @@ describe("buildLoginRedirectUrl", () => {
 
   it("falls back to /console for unsafe paths", () => {
     expect(buildLoginRedirectUrl("//evil.com")).toBe("/login?from=%2Fconsole");
+  });
+});
+
+describe("resolveConsoleRequestPathname", () => {
+  it("prefers x-pathname header", () => {
+    const headers = { get: (name: string) => (name === "x-pathname" ? "/console/runs" : null) };
+    expect(resolveConsoleRequestPathname(headers)).toBe("/console/runs");
+  });
+
+  it("parses next-url when x-pathname is missing", () => {
+    const headers = {
+      get: (name: string) => (name === "next-url" ? "https://app.example.com/console/workflows" : null),
+    };
+    expect(resolveConsoleRequestPathname(headers)).toBe("/console/workflows");
+  });
+
+  it("falls back for unsafe resolved paths", () => {
+    const headers = { get: (name: string) => (name === "x-pathname" ? "//evil.com" : null) };
+    expect(resolveConsoleRequestPathname(headers)).toBe("/console");
   });
 });
