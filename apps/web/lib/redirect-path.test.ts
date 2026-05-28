@@ -48,6 +48,10 @@ describe("buildLoginRedirectUrl", () => {
   it("falls back to /console for unsafe paths", () => {
     expect(buildLoginRedirectUrl("//evil.com")).toBe("/login?from=%2Fconsole");
   });
+
+  it("falls back to /console for non-console internal paths", () => {
+    expect(buildLoginRedirectUrl("/login")).toBe("/login?from=%2Fconsole");
+  });
 });
 
 describe("resolveConsoleRequestPathname", () => {

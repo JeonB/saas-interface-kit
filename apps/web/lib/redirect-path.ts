@@ -29,7 +29,7 @@ export function buildLoginRedirectUrl(
   raw: string | null | undefined,
   fallback = DEFAULT_CONSOLE_PATH,
 ): string {
-  return `/login?from=${encodeURIComponent(sanitizeRedirectPath(raw, fallback))}`;
+  return `/login?from=${encodeURIComponent(sanitizeConsoleRedirectPath(raw, fallback))}`;
 }
 
 type RequestHeaders = Readonly<{ get(name: string): string | null }>;
