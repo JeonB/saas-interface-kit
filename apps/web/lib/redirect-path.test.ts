@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { buildLoginRedirectUrl, resolveConsoleRequestPathname, sanitizeRedirectPath } from "./redirect-path";
+import {
+  buildConsoleLoginRedirectFromHeaders,
+  buildLoginRedirectUrl,
+  resolveConsoleRequestPathname,
+  sanitizeConsoleRedirectPath,
+  sanitizeRedirectPath,
+} from "./redirect-path";
 
 describe("sanitizeRedirectPath", () => {
   it("returns valid internal paths", () => {
@@ -19,6 +25,18 @@ describe("sanitizeRedirectPath", () => {
   it("uses custom fallback when provided", () => {
     expect(sanitizeRedirectPath(undefined, "/login")).toBe("/login");
     expect(sanitizeRedirectPath("//evil.com", "/login")).toBe("/login");
+  });
+});
+
+describe("sanitizeConsoleRedirectPath", () => {
+  it("allows console paths only", () => {
+    expect(sanitizeConsoleRedirectPath("/console")).toBe("/console");
+    expect(sanitizeConsoleRedirectPath("/console/runs")).toBe("/console/runs");
+  });
+
+  it("falls back for non-console internal paths", () => {
+    expect(sanitizeConsoleRedirectPath("/login")).toBe("/console");
+    expect(sanitizeConsoleRedirectPath("/")).toBe("/console");
   });
 });
 
@@ -48,5 +66,14 @@ describe("resolveConsoleRequestPathname", () => {
   it("falls back for unsafe resolved paths", () => {
     const headers = { get: (name: string) => (name === "x-pathname" ? "//evil.com" : null) };
     expect(resolveConsoleRequestPathname(headers)).toBe("/console");
+  });
+});
+
+describe("buildConsoleLoginRedirectFromHeaders", () => {
+  it("builds login redirect from request headers", () => {
+    const headers = { get: (name: string) => (name === "x-pathname" ? "/console/settings" : null) };
+    expect(buildConsoleLoginRedirectFromHeaders(headers)).toBe(
+      "/login?from=%2Fconsole%2Fsettings",
+    );
   });
 });

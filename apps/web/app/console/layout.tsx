@@ -10,7 +10,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getSession } from "../../lib/session";
-import { buildLoginRedirectUrl, resolveConsoleRequestPathname } from "../../lib/redirect-path";
+import { buildConsoleLoginRedirectFromHeaders } from "../../lib/redirect-path";
 import { AppProductHeader } from "../../components/app-product-header";
 import { AppSidebar } from "../../components/app-sidebar";
 import { ApiDevSimulationPanelData } from "../../components/api-dev-simulation-panel-data";
@@ -24,8 +24,7 @@ export const metadata: Metadata = {
 export default async function AppGroupLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession();
   if (!session) {
-    const h = await headers();
-    redirect(buildLoginRedirectUrl(resolveConsoleRequestPathname(h)));
+    redirect(buildConsoleLoginRedirectFromHeaders(await headers()));
   }
 
   return (

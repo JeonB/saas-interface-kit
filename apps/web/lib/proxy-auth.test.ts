@@ -22,5 +22,9 @@ describe("proxy-auth", () => {
       expect(resolveAuthenticatedLoginRedirect("//evil.com")).toBe("/console");
       expect(resolveAuthenticatedLoginRedirect(null)).toBe("/console");
     });
+
+    it("falls back for non-console internal paths", () => {
+      expect(resolveAuthenticatedLoginRedirect("/login")).toBe("/console");
+    });
   });
 });

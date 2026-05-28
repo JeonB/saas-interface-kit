@@ -14,6 +14,17 @@ export function sanitizeRedirectPath(
   return trimmed;
 }
 
+export function sanitizeConsoleRedirectPath(
+  raw: string | null | undefined,
+  fallback = DEFAULT_CONSOLE_PATH,
+): string {
+  const sanitized = sanitizeRedirectPath(raw, fallback);
+  if (sanitized === "/console" || sanitized.startsWith("/console/")) {
+    return sanitized;
+  }
+  return fallback;
+}
+
 export function buildLoginRedirectUrl(
   raw: string | null | undefined,
   fallback = DEFAULT_CONSOLE_PATH,
@@ -32,4 +43,11 @@ export function resolveConsoleRequestPathname(
     headers.get("next-url")?.replace(/^https?:\/\/[^/]+/, "") ??
     fallback;
   return sanitizeRedirectPath(raw, fallback);
+}
+
+export function buildConsoleLoginRedirectFromHeaders(
+  headers: RequestHeaders,
+  fallback = DEFAULT_CONSOLE_PATH,
+): string {
+  return buildLoginRedirectUrl(resolveConsoleRequestPathname(headers, fallback));
 }
