@@ -1,12 +1,13 @@
 import { Card, CardBody, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { buildLoginRedirectUrl } from "../../../lib/redirect-path";
+import { buildConsoleLoginRedirectFromHeaders } from "../../../lib/redirect-path";
 import { getSession } from "../../../lib/session";
 
 export default async function OrgSettingsPage() {
   const session = await getSession();
   if (!session) {
-    redirect(buildLoginRedirectUrl("/console/settings"));
+    redirect(buildConsoleLoginRedirectFromHeaders(await headers()));
   }
 
   return (

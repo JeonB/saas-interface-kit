@@ -42,7 +42,7 @@ export function resolveConsoleRequestPathname(
     headers.get("x-pathname") ??
     headers.get("next-url")?.replace(/^https?:\/\/[^/]+/, "") ??
     fallback;
-  return sanitizeRedirectPath(raw, fallback);
+  return sanitizeConsoleRedirectPath(raw, fallback);
 }
 
 export function buildConsoleLoginRedirectFromHeaders(

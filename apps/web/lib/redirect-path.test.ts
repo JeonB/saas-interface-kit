@@ -71,6 +71,11 @@ describe("resolveConsoleRequestPathname", () => {
     const headers = { get: (name: string) => (name === "x-pathname" ? "//evil.com" : null) };
     expect(resolveConsoleRequestPathname(headers)).toBe("/console");
   });
+
+  it("falls back for non-console internal paths", () => {
+    const headers = { get: (name: string) => (name === "x-pathname" ? "/login" : null) };
+    expect(resolveConsoleRequestPathname(headers)).toBe("/console");
+  });
 });
 
 describe("buildConsoleLoginRedirectFromHeaders", () => {
