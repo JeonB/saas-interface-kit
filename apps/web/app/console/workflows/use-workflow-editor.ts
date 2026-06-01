@@ -1,0 +1,202 @@
+"use client";
+
+import { useCallback, useMemo, useRef, useState } from "react";
+import {
+  addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
+  type Connection,
+  type EdgeChange,
+  type NodeChange,
+  type RunStep,
+  type XYPosition,
+} from "@repo/ui";
+import {
+  definitionToXYFlow,
+  ensureWorkflowSeeds,
+  executeWorkflow,
+  loadDefinition,
+  loadRegistry,
+  saveDefinition,
+  updateWorkflowMeta,
+  xyFlowToDefinition,
+  type WorkflowFlowEdge,
+  type WorkflowFlowNode,
+} from "../../../lib/workflow";
+import {
+  AUTOMATION_NODE_TYPES,
+  defaultNodeData,
+  summarizeNodeData,
+  type AutomationNodeType,
+  type NodeRunStatus,
+  type WorkflowNodeData,
+} from "../../../lib/workflow/types";
+
+function loadInitialFlow(workflowId: string): {
+  nodes: WorkflowFlowNode[];
+  edges: WorkflowFlowEdge[];
+  name: string;
+} {
+  ensureWorkflowSeeds();
+  const entry = loadRegistry().find((e) => e.id === workflowId);
+  const def = loadDefinition(workflowId);
+  if (!def) {
+    return { nodes: [], edges: [], name: entry?.name ?? "워크플로" };
+  }
+  const flow = definitionToXYFlow(def);
+  return { nodes: flow.nodes, edges: flow.edges, name: entry?.name ?? "워크플로" };
+}
+
+type UseWorkflowEditorOptions = {
+  workflowId: string;
+};
+
+export function useWorkflowEditor({ workflowId }: UseWorkflowEditorOptions) {
+  const initial = useMemo(() => loadInitialFlow(workflowId), [workflowId]);
+  const [workflowName, setWorkflowName] = useState(initial.name);
+  const [nodes, setNodes] = useState<WorkflowFlowNode[]>(initial.nodes);
+  const [edges, setEdges] = useState<WorkflowFlowEdge[]>(initial.edges);
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [runSteps, setRunSteps] = useState<RunStep[]>([]);
+  const [runWarnings, setRunWarnings] = useState<string[]>([]);
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const persist = useCallback(
+    (nextNodes: WorkflowFlowNode[], nextEdges: WorkflowFlowEdge[]) => {
+      const definition = xyFlowToDefinition(nextNodes, nextEdges);
+      saveDefinition(workflowId, definition);
+    },
+    [workflowId],
+  );
+
+  const schedulePersist = useCallback(
+    (nextNodes: WorkflowFlowNode[], nextEdges: WorkflowFlowEdge[]) => {
+      if (saveTimer.current) clearTimeout(saveTimer.current);
+      saveTimer.current = setTimeout(() => persist(nextNodes, nextEdges), 400);
+    },
+    [persist],
+  );
+
+  const onNodesChange = useCallback(
+    (changes: NodeChange<WorkflowFlowNode>[]) => {
+      setNodes((prev) => {
+        const next = applyNodeChanges(changes, prev);
+        schedulePersist(next, edges);
+        return next;
+      });
+    },
+    [edges, schedulePersist],
+  );
+
+  const onEdgesChange = useCallback(
+    (changes: EdgeChange<WorkflowFlowEdge>[]) => {
+      setEdges((prev) => {
+        const next = applyEdgeChanges(changes, prev);
+        schedulePersist(nodes, next);
+        return next;
+      });
+    },
+    [nodes, schedulePersist],
+  );
+
+  const onConnect = useCallback(
+    (connection: Connection) => {
+      setEdges((prev) => {
+        const next = addEdge(
+          { ...connection, id: `e_${connection.source}_${connection.target}` },
+          prev,
+        );
+        schedulePersist(nodes, next);
+        return next;
+      });
+    },
+    [nodes, schedulePersist],
+  );
+
+  const onDropNode = useCallback(
+    (type: AutomationNodeType, position: XYPosition) => {
+      if (!AUTOMATION_NODE_TYPES.includes(type)) return;
+      const id = `n_${crypto.randomUUID().slice(0, 8)}`;
+      const data = defaultNodeData(type);
+      const newNode: WorkflowFlowNode = {
+        id,
+        type,
+        position,
+        data: { ...data, summary: summarizeNodeData(type, data) },
+      };
+      setNodes((prev) => {
+        const next = [...prev, newNode];
+        schedulePersist(next, edges);
+        return next;
+      });
+    },
+    [edges, schedulePersist],
+  );
+
+  const updateNodeData = useCallback(
+    (nodeId: string, patch: Partial<WorkflowNodeData>) => {
+      setNodes((prev) => {
+        const next = prev.map((n) => {
+          if (n.id !== nodeId) return n;
+          const merged = { ...n.data, ...patch };
+          return {
+            ...n,
+            data: {
+              ...merged,
+              summary: summarizeNodeData(n.type, merged),
+            },
+          };
+        });
+        schedulePersist(next, edges);
+        return next;
+      });
+    },
+    [edges, schedulePersist],
+  );
+
+  const saveNow = useCallback(() => {
+    persist(nodes, edges);
+    updateWorkflowMeta(workflowId, { name: workflowName });
+  }, [edges, nodes, persist, workflowId, workflowName]);
+
+  const runTest = useCallback(() => {
+    const definition = xyFlowToDefinition(nodes, edges);
+    const result = executeWorkflow(definition);
+    setRunSteps(result.steps);
+    setRunWarnings(result.warnings);
+
+    setNodes((prev) =>
+      prev.map((n) => ({
+        ...n,
+        data: {
+          ...n.data,
+          runStatus: (result.nodeStatuses[n.id] ?? "idle") as NodeRunStatus,
+        },
+      })),
+    );
+  }, [edges, nodes]);
+
+  const selectedNode = useMemo(
+    () => nodes.find((n) => n.id === selectedNodeId) ?? null,
+    [nodes, selectedNodeId],
+  );
+
+  return {
+    workflowName,
+    setWorkflowName,
+    nodes,
+    edges,
+    selectedNode,
+    selectedNodeId,
+    setSelectedNodeId,
+    onNodesChange,
+    onEdgesChange,
+    onConnect,
+    onDropNode,
+    updateNodeData,
+    saveNow,
+    runTest,
+    runSteps,
+    runWarnings,
+  };
+}

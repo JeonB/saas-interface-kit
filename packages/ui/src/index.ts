@@ -119,6 +119,32 @@ export { FilterBar, FilterChip } from "./filter-bar";
 export type { FilterBarProps, FilterChipProps } from "./filter-bar";
 export { FlowCanvas } from "./flow-canvas";
 export type { FlowCanvasEdge, FlowCanvasNode, FlowCanvasProps } from "./flow-canvas";
+export {
+  NodePalette,
+  WorkflowEditor,
+  WORKFLOW_AUTOMATION_NODE_TYPES,
+  WORKFLOW_DRAG_TYPE,
+  WORKFLOW_PALETTE_ITEMS,
+  addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
+} from "./workflow-editor";
+export type {
+  Connection,
+  Edge,
+  EdgeChange,
+  Node,
+  NodeChange,
+  NodePaletteProps,
+  WorkflowAutomationNodeType,
+  WorkflowEditorEdge,
+  WorkflowEditorNode,
+  WorkflowEditorNodeData,
+  WorkflowEditorProps,
+  WorkflowEditorRunStatus,
+  WorkflowPaletteItem,
+  XYPosition,
+} from "./workflow-editor";
 export { Gradient } from "./gradient";
 export { iconSizeFromComponentSize } from "./icon-size";
 export { Input } from "./input";

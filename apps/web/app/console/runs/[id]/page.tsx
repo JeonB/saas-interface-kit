@@ -1,28 +1,14 @@
 import { notFound } from "next/navigation";
-import type { FlowCanvasEdge, FlowCanvasNode } from "@repo/ui/flow-canvas";
 import { Alert } from "@repo/ui/alert";
-import { FlowCanvas } from "@repo/ui/flow-canvas";
 import { RunStatusBadge } from "@repo/ui/run-status-badge";
 import { StepLogPanel } from "@repo/ui/step-log-panel";
 import { PermissionGate } from "../../../../components/permission-gate";
 import { getRunData } from "../../../../lib/runs-mock";
+import { RunWorkflowGraph } from "../run-workflow-graph";
 
 type RunDetailPageProps = {
   params: Promise<{ id: string }>;
 };
-
-function buildFlow(runId: string): { nodes: FlowCanvasNode[]; edges: FlowCanvasEdge[] } {
-  const nodes: FlowCanvasNode[] = [
-    { id: `${runId}-trigger`, position: { x: 0, y: 0 }, data: { label: "Trigger" }, type: "input" },
-    { id: `${runId}-transform`, position: { x: 240, y: 0 }, data: { label: "Transform" } },
-    { id: `${runId}-target`, position: { x: 480, y: 0 }, data: { label: "Target API" }, type: "output" },
-  ];
-  const edges: FlowCanvasEdge[] = [
-    { id: `${runId}-e1`, source: `${runId}-trigger`, target: `${runId}-transform` },
-    { id: `${runId}-e2`, source: `${runId}-transform`, target: `${runId}-target` },
-  ];
-  return { nodes, edges };
-}
 
 export default async function RunDetailPage({ params }: RunDetailPageProps) {
   const { id } = await params;
@@ -30,13 +16,13 @@ export default async function RunDetailPage({ params }: RunDetailPageProps) {
   if (!run) {
     notFound();
   }
-  const flow = buildFlow(id);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 text-white sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-bold tracking-tight">실행 상세</h1>
-      <div className="mt-2 flex items-center gap-3 text-sm text-neutral-400">
+    <div className="ui:mx-auto ui:max-w-6xl ui:px-4 ui:py-10 ui:text-text-primary sm:ui:px-6 lg:ui:px-8">
+      <h1 className="ui:text-2xl ui:font-bold ui:tracking-tight">실행 상세</h1>
+      <div className="ui:mt-2 ui:flex ui:items-center ui:gap-3 ui:text-sm ui:text-text-secondary">
         <span>Run ID: {run.id}</span>
+        <span>Workflow: {run.workflowId}</span>
         <RunStatusBadge status={run.status} />
       </div>
 
@@ -48,10 +34,13 @@ export default async function RunDetailPage({ params }: RunDetailPageProps) {
         }
         permission="runs:read"
       >
-        <div className="mt-8 grid gap-6 lg:grid-cols-2">
-          <section className="rounded-lg border border-neutral-800 bg-neutral-900/40 p-4">
-            <h2 className="text-sm font-semibold text-white">워크플로 그래프 (읽기 전용)</h2>
-            <FlowCanvas ariaLabel="실행 그래프" className="mt-4" edges={flow.edges} nodes={flow.nodes} readOnly />
+        <div className="ui:mt-8 ui:grid ui:gap-6 lg:ui:grid-cols-2">
+          <section className="ui:rounded-ui-lg ui:border ui:border-border-subtle ui:bg-surface-raised ui:p-4">
+            <h2 className="ui:text-sm ui:font-semibold ui:text-text-primary">워크플로 그래프</h2>
+            <p className="ui:mt-1 ui:text-xs ui:text-text-muted">
+              localStorage에 저장된 정의를 기준으로 표시합니다. 완료된 스텝 노드는 강조됩니다.
+            </p>
+            <RunWorkflowGraph runSteps={run.steps} workflowId={run.workflowId} />
           </section>
           <StepLogPanel steps={run.steps} title="스텝 로그" />
         </div>
