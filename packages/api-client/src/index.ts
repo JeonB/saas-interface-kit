@@ -7,12 +7,14 @@ export {
   DEFAULT_REQUEST_TIMEOUT_MS,
   DEFAULT_RETRY_BACKOFF_FACTOR,
   DEFAULT_RETRY_DELAY_MS,
+  DEFAULT_RETRY_JITTER,
 } from "./client";
 export type {
   ConsoleApiClient,
   ConsoleApiClientConfig,
   ConsoleApiRequestOptions,
   GetAuditEventsParams,
+  GetNotificationsParams,
 } from "./client";
 export type {
   AuditEventAction,
@@ -23,6 +25,9 @@ export type {
   Integration,
   IntegrationStatus,
   MemberSummary,
+  NotificationCategory,
+  NotificationDto,
+  NotificationSeverity,
   OrganizationSummary,
   OrgRole,
   Run,

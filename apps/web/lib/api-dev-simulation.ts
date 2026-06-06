@@ -88,21 +88,6 @@ export async function applyApiDevSimulation<T>(
   return fn();
 }
 
-export function createSimulatedFetch(
-  baseFetch: typeof fetch,
-  simulation: ApiDevSimulation,
-): typeof fetch {
-  return async (input, init) => {
-    if (simulation.delayMs > 0) {
-      await delayMs(simulation.delayMs);
-    }
-    if (simulation.fault !== "none") {
-      throwApiDevFault(simulation.fault);
-    }
-    return baseFetch(input, init);
-  };
-}
-
 export function isApiDevSimulationActive(simulation: ApiDevSimulation): boolean {
   return simulation.delayMs > 0 || simulation.fault !== "none";
 }

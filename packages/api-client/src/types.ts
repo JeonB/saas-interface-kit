@@ -100,3 +100,18 @@ export type Run = {
   finishedAt?: string;
   steps: RunStep[];
 };
+
+export type NotificationCategory = "run" | "integration" | "billing" | "member" | "system";
+
+export type NotificationSeverity = "info" | "success" | "warning" | "error";
+
+/** Console notification feed entry (named *Dto to avoid clashing with the DOM `Notification`). */
+export type NotificationDto = {
+  id: string;
+  title: string;
+  description: string;
+  category: NotificationCategory;
+  severity: NotificationSeverity;
+  createdAt: string;
+  href?: string;
+};

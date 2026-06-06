@@ -575,6 +575,178 @@ describe("createConsoleApiClient", () => {
     expect(fetchImpl).toHaveBeenCalledTimes(1);
   });
 
+  it("parses runs list from /v1/runs", async () => {
+    const fetchImpl = vi.fn(
+      async (): Promise<Response> =>
+        new Response(
+          JSON.stringify([
+            {
+              id: "run_1",
+              workflowId: "wf_1",
+              status: "succeeded",
+              startedAt: "2026-04-28T11:00:00.000Z",
+              finishedAt: "2026-04-28T11:00:06.000Z",
+              steps: [],
+            },
+          ]),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        ),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+    });
+
+    await expect(client.getRuns()).resolves.toHaveLength(1);
+    expect(fetchImpl).toHaveBeenCalledWith(
+      "https://api.example/v1/runs",
+      expect.objectContaining({ signal: expect.any(AbortSignal) }),
+    );
+  });
+
+  it("parses notifications and forwards category/severity filters", async () => {
+    const fetchImpl = vi.fn(
+      async (): Promise<Response> =>
+        new Response(
+          JSON.stringify([
+            {
+              id: "ntf_1",
+              title: "워크플로 실행 실패",
+              description: "run_1002가 중단되었습니다.",
+              category: "run",
+              severity: "error",
+              createdAt: "2026-04-28T10:50:04.000Z",
+              href: "/console/runs/run_1002",
+            },
+          ]),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        ),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+    });
+
+    await expect(
+      client.getNotifications({ category: "run", severity: "error" }),
+    ).resolves.toMatchObject([{ id: "ntf_1", category: "run" }]);
+    expect(fetchImpl).toHaveBeenCalledWith(
+      "https://api.example/v1/notifications?category=run&severity=error",
+      expect.objectContaining({ signal: expect.any(AbortSignal) }),
+    );
+  });
+
+  it("requests /v1/notifications without query when no filters are set", async () => {
+    const fetchImpl = vi.fn(
+      async (): Promise<Response> =>
+        new Response(JSON.stringify([]), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+    });
+
+    await expect(client.getNotifications()).resolves.toEqual([]);
+    expect(fetchImpl).toHaveBeenCalledWith(
+      "https://api.example/v1/notifications",
+      expect.objectContaining({ signal: expect.any(AbortSignal) }),
+    );
+  });
+
+  it("parses members list from /v1/members", async () => {
+    const fetchImpl = vi.fn(
+      async (): Promise<Response> =>
+        new Response(
+          JSON.stringify([
+            { id: "1", name: "김운영", email: "owner@example.com", role: "owner" },
+          ]),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        ),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+    });
+
+    await expect(client.getMembers()).resolves.toEqual([
+      { id: "1", name: "김운영", email: "owner@example.com", role: "owner" },
+    ]);
+    expect(fetchImpl).toHaveBeenCalledWith(
+      "https://api.example/v1/members",
+      expect.objectContaining({ signal: expect.any(AbortSignal) }),
+    );
+  });
+
+  it("applies jitter in [0.5, 1] of the backoff delay by default", async () => {
+    vi.useFakeTimers();
+    const randomSpy = vi.spyOn(Math, "random").mockReturnValue(0);
+    try {
+      const fetchImpl = vi
+        .fn()
+        .mockResolvedValueOnce(
+          new Response("unavailable", { status: 503, headers: { "Content-Type": "text/plain" } }),
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify({ status: "ok" }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          }),
+        );
+      const client = createConsoleApiClient({
+        baseUrl: "https://api.example",
+        fetchImpl,
+        requestTimeoutMs: 5_000,
+        maxRetries: 1,
+        retryDelayMs: 100,
+      });
+
+      const pending = client.healthCheck();
+      // Math.random() === 0 → jitter factor 0.5 → wait 50ms instead of 100ms.
+      await vi.advanceTimersByTimeAsync(50);
+      await expect(pending).resolves.toEqual({ status: "ok" });
+      expect(fetchImpl).toHaveBeenCalledTimes(2);
+    } finally {
+      randomSpy.mockRestore();
+    }
+  });
+
+  it("uses the exact backoff delay when retryJitter is false", async () => {
+    vi.useFakeTimers();
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response("unavailable", { status: 503, headers: { "Content-Type": "text/plain" } }),
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+      );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      requestTimeoutMs: 5_000,
+      maxRetries: 1,
+      retryDelayMs: 100,
+      retryJitter: false,
+    });
+
+    const pending = client.healthCheck();
+    await vi.advanceTimersByTimeAsync(99);
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    await vi.advanceTimersByTimeAsync(1);
+    await expect(pending).resolves.toEqual({ status: "ok" });
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+
   it("URL-encodes run id in getRun request path", async () => {
     const fetchImpl = vi.fn(
       async (): Promise<Response> =>

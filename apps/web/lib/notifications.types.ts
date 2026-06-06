@@ -1,16 +1,13 @@
-export type NotificationCategory = "run" | "integration" | "billing" | "member" | "system";
+import type {
+  NotificationCategory,
+  NotificationDto,
+  NotificationSeverity,
+} from "@repo/api-client";
 
-export type NotificationSeverity = "info" | "success" | "warning" | "error";
+// DTO contract lives in @repo/api-client; re-exported here so console code keeps one import path.
+export type { NotificationCategory, NotificationSeverity };
 
-export type Notification = {
-  id: string;
-  title: string;
-  description: string;
-  category: NotificationCategory;
-  severity: NotificationSeverity;
-  createdAt: string;
-  href?: string;
-};
+export type Notification = NotificationDto;
 
 export type NotificationFilter = {
   category?: NotificationCategory;

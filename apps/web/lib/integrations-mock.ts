@@ -1,9 +1,14 @@
+import { unstable_cache } from "next/cache";
 import type { Integration } from "@repo/api-client";
-import { applyApiDevSimulation } from "./api-dev-simulation";
-import { readApiDevSimulation } from "./api-dev-simulation-server";
-import { getConsoleApiClient } from "./console-api";
+import { requireConsoleApiClient } from "./console-api";
+import {
+  CONSOLE_DATA_CACHE_TAG,
+  CONSOLE_DATA_REVALIDATE_SECONDS,
+  getConsoleData,
+} from "./console-data";
 
-const MOCK_INTEGRATIONS: Integration[] = [
+/** Shared by the data accessor below and the mock API route handlers (single source). */
+export const MOCK_INTEGRATIONS: Integration[] = [
   {
     id: "int_slack",
     name: "Slack Alerts",
@@ -45,13 +50,16 @@ const MOCK_INTEGRATIONS: Integration[] = [
   },
 ];
 
+const fetchCachedIntegrations = unstable_cache(
+  async () => requireConsoleApiClient().getIntegrations(),
+  ["console-integrations"],
+  { revalidate: CONSOLE_DATA_REVALIDATE_SECONDS, tags: [CONSOLE_DATA_CACHE_TAG] },
+);
+
 export async function getIntegrationsData(): Promise<Integration[]> {
-  const simulation = await readApiDevSimulation();
-  return applyApiDevSimulation(simulation, async () => {
-    const client = getConsoleApiClient();
-    if (client) {
-      return client.getIntegrations();
-    }
-    return MOCK_INTEGRATIONS;
+  return getConsoleData({
+    fetchCached: fetchCachedIntegrations,
+    fetchLive: (client) => client.getIntegrations(),
+    mockFallback: () => MOCK_INTEGRATIONS,
   });
 }

@@ -90,3 +90,32 @@ export const RunSchema = z.object({
   finishedAt: z.string().datetime({ offset: true }).optional(),
   steps: z.array(RunStepSchema),
 });
+
+export const OrgRoleSchema = z.enum(["owner", "admin", "member", "viewer"]);
+
+export const MemberSummarySchema = z.object({
+  id: z.string().min(1),
+  email: z.string().email(),
+  name: z.string().min(1),
+  role: OrgRoleSchema,
+});
+
+export const NotificationCategorySchema = z.enum([
+  "run",
+  "integration",
+  "billing",
+  "member",
+  "system",
+]);
+
+export const NotificationSeveritySchema = z.enum(["info", "success", "warning", "error"]);
+
+export const NotificationDtoSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  description: z.string().min(1),
+  category: NotificationCategorySchema,
+  severity: NotificationSeveritySchema,
+  createdAt: z.string().datetime({ offset: true }),
+  href: z.string().min(1).optional(),
+});

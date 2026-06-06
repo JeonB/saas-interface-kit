@@ -1,7 +1,14 @@
+import { unstable_cache } from "next/cache";
 import type { Workflow } from "@repo/api-client";
-import { getConsoleApiClient } from "./console-api";
+import { requireConsoleApiClient } from "./console-api";
+import {
+  CONSOLE_DATA_CACHE_TAG,
+  CONSOLE_DATA_REVALIDATE_SECONDS,
+  getConsoleData,
+} from "./console-data";
 
-const MOCK_WORKFLOWS: Workflow[] = [
+/** Shared by the data accessor below and the mock API route handlers (single source). */
+export const MOCK_WORKFLOWS: Workflow[] = [
   {
     id: "wf_lead_sync",
     name: "Lead Intake to CRM",
@@ -31,10 +38,16 @@ const MOCK_WORKFLOWS: Workflow[] = [
   },
 ];
 
+const fetchCachedWorkflows = unstable_cache(
+  async () => requireConsoleApiClient().getWorkflows(),
+  ["console-workflows"],
+  { revalidate: CONSOLE_DATA_REVALIDATE_SECONDS, tags: [CONSOLE_DATA_CACHE_TAG] },
+);
+
 export async function getWorkflowsData(): Promise<Workflow[]> {
-  const client = getConsoleApiClient();
-  if (client) {
-    return client.getWorkflows();
-  }
-  return MOCK_WORKFLOWS;
+  return getConsoleData({
+    fetchCached: fetchCachedWorkflows,
+    fetchLive: (client) => client.getWorkflows(),
+    mockFallback: () => MOCK_WORKFLOWS,
+  });
 }

@@ -1,6 +1,12 @@
+import { unstable_cache } from "next/cache";
 import type { AuditEventAction, AuditEventDto, AuditEventsPage } from "@repo/api-client";
 import { AUDIT_ACTIONS } from "./audit-actions";
-import { getConsoleApiClient } from "./console-api";
+import { requireConsoleApiClient } from "./console-api";
+import {
+  CONSOLE_DATA_CACHE_TAG,
+  CONSOLE_DATA_REVALIDATE_SECONDS,
+  getConsoleData,
+} from "./console-data";
 
 export type AuditSearchParams = {
   actor?: string;
@@ -26,7 +32,8 @@ function pickAction(index: number): AuditEventAction {
   return AUDIT_ACTIONS[index % AUDIT_ACTIONS.length] as AuditEventAction;
 }
 
-const MOCK_AUDIT_EVENTS: AuditEventDto[] = Array.from({ length: 72 }, (_, idx) => {
+/** Shared by the data accessor below and the mock API route handlers (single source). */
+export const MOCK_AUDIT_EVENTS: AuditEventDto[] = Array.from({ length: 72 }, (_, idx) => {
   const actor = pickActor(idx);
   const action = pickAction(idx);
   const dayOffset = idx % 28;
@@ -53,22 +60,10 @@ function normalizePositiveInt(raw: number | undefined, fallback: number): number
   return Math.floor(raw);
 }
 
-export async function getAuditEventsData(params: AuditSearchParams): Promise<AuditEventsPage> {
+/** Pure filter/pagination over the mock events; reused by the mock API route handler. */
+export function filterMockAuditEvents(params: AuditSearchParams): AuditEventsPage {
   const page = normalizePositiveInt(params.page, 1);
   const size = normalizePositiveInt(params.size, 20);
-  const client = getConsoleApiClient();
-
-  if (client) {
-    return client.getAuditEvents({
-      actor: params.actor,
-      action: params.action,
-      from: params.from,
-      to: params.to,
-      page,
-      size,
-    });
-  }
-
   const actorFilter = params.actor?.trim().toLowerCase();
   const fromDate = params.from ? new Date(`${params.from}T00:00:00.000Z`) : null;
   const toDate = params.to ? new Date(`${params.to}T23:59:59.999Z`) : null;
@@ -101,4 +96,28 @@ export async function getAuditEventsData(params: AuditSearchParams): Promise<Aud
     page,
     size,
   };
+}
+
+const fetchCachedAuditEvents = unstable_cache(
+  // Arguments are part of the cache key, so each filter combination is cached separately.
+  async (params: AuditSearchParams) => requireConsoleApiClient().getAuditEvents(params),
+  ["console-audit-events"],
+  { revalidate: CONSOLE_DATA_REVALIDATE_SECONDS, tags: [CONSOLE_DATA_CACHE_TAG] },
+);
+
+export async function getAuditEventsData(params: AuditSearchParams): Promise<AuditEventsPage> {
+  const normalized: AuditSearchParams = {
+    actor: params.actor,
+    action: params.action,
+    from: params.from,
+    to: params.to,
+    page: normalizePositiveInt(params.page, 1),
+    size: normalizePositiveInt(params.size, 20),
+  };
+
+  return getConsoleData({
+    fetchCached: () => fetchCachedAuditEvents(normalized),
+    fetchLive: (client) => client.getAuditEvents(normalized),
+    mockFallback: () => filterMockAuditEvents(normalized),
+  });
 }

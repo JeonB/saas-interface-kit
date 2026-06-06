@@ -6,7 +6,6 @@ import {
 } from "@repo/api-client";
 import {
   applyApiDevSimulation,
-  createSimulatedFetch,
   DEFAULT_API_DEV_SIMULATION,
   isApiDevSimulationActive,
   parseApiDevSimulation,
@@ -63,14 +62,4 @@ describe("api-dev-simulation", () => {
     expect(fn).not.toHaveBeenCalled();
   });
 
-  it("createSimulatedFetch injects delay and faults", async () => {
-    vi.useFakeTimers();
-    const baseFetch = vi.fn(async () => new Response("{}"));
-    const fetchImpl = createSimulatedFetch(baseFetch, { delayMs: 300, fault: "none" });
-    const pending = fetchImpl("https://api.example/health");
-    expect(baseFetch).not.toHaveBeenCalled();
-    await vi.advanceTimersByTimeAsync(300);
-    await pending;
-    expect(baseFetch).toHaveBeenCalledOnce();
-  });
 });

@@ -2,6 +2,8 @@ import {
   AuditEventsPageSchema,
   HealthCheckSchema,
   IntegrationSchema,
+  MemberSummarySchema,
+  NotificationDtoSchema,
   RunSchema,
   UsageSummaryDtoSchema,
   WorkflowSchema,
@@ -10,13 +12,20 @@ import type {
   AuditEventAction,
   AuditEventsPage,
   Integration,
+  MemberSummary,
+  NotificationCategory,
+  NotificationDto,
+  NotificationSeverity,
   Run,
   UsageSummaryDto,
   Workflow,
 } from "./types";
 
-/** Default ceiling for outbound requests so SSR and UI do not hang on a stalled API. */
-export const DEFAULT_REQUEST_TIMEOUT_MS = 10_000;
+/**
+ * Default ceiling for outbound requests so SSR and UI do not hang on a stalled API.
+ * Kept short (5s) to release connections quickly during traffic spikes.
+ */
+export const DEFAULT_REQUEST_TIMEOUT_MS = 5_000;
 
 /** Default extra GET attempts after the first try (each full attempt uses `requestTimeoutMs`). */
 export const DEFAULT_MAX_RETRIES = 0;
@@ -25,6 +34,9 @@ export const DEFAULT_MAX_RETRIES = 0;
 export const DEFAULT_RETRY_DELAY_MS = 250;
 
 export const DEFAULT_RETRY_BACKOFF_FACTOR = 2;
+
+/** Retry waits are jittered by default so simultaneous clients do not retry in lockstep. */
+export const DEFAULT_RETRY_JITTER = true;
 
 function generateRequestId(): string {
   const c = globalThis.crypto;
@@ -46,7 +58,7 @@ export type ConsoleApiClientConfig = {
   /** When set, aborts the request after this many milliseconds (combined with `init.signal` when provided). */
   requestTimeoutMs?: number;
   /**
-   * Retries idempotent GETs (`healthCheck`, `getUsageSummary`) on transient failures.
+   * Retries idempotent GETs on transient failures.
    * Each attempt has its own `requestTimeoutMs` budget.
    */
   maxRetries?: number;
@@ -54,6 +66,11 @@ export type ConsoleApiClientConfig = {
   retryDelayMs?: number;
   /** Multiplier applied to the wait after each failed attempt. */
   retryBackoffFactor?: number;
+  /**
+   * When true (default), each retry wait is multiplied by a random factor in [0.5, 1]
+   * to spread retries from many clients over time (thundering-herd protection).
+   */
+  retryJitter?: boolean;
 };
 
 export class ConsoleApiError extends Error {
@@ -189,13 +206,22 @@ export type GetAuditEventsParams = {
   signal?: AbortSignal;
 };
 
+export type GetNotificationsParams = {
+  category?: NotificationCategory;
+  severity?: NotificationSeverity;
+  signal?: AbortSignal;
+};
+
 export type ConsoleApiClient = {
   healthCheck: (options?: ConsoleApiRequestOptions) => Promise<{ status: string }>;
   getUsageSummary: (options?: ConsoleApiRequestOptions) => Promise<UsageSummaryDto>;
   getAuditEvents: (params?: GetAuditEventsParams) => Promise<AuditEventsPage>;
   getIntegrations: (options?: ConsoleApiRequestOptions) => Promise<Integration[]>;
   getRun: (runId: string, options?: ConsoleApiRequestOptions) => Promise<Run>;
+  getRuns: (options?: ConsoleApiRequestOptions) => Promise<Run[]>;
   getWorkflows: (options?: ConsoleApiRequestOptions) => Promise<Workflow[]>;
+  getNotifications: (params?: GetNotificationsParams) => Promise<NotificationDto[]>;
+  getMembers: (options?: ConsoleApiRequestOptions) => Promise<MemberSummary[]>;
 };
 
 export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleApiClient {
@@ -204,6 +230,15 @@ export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleA
   const maxRetries = Math.max(0, config.maxRetries ?? DEFAULT_MAX_RETRIES);
   const retryDelayMs = config.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS;
   const retryBackoffFactor = config.retryBackoffFactor ?? DEFAULT_RETRY_BACKOFF_FACTOR;
+  const retryJitter = config.retryJitter ?? DEFAULT_RETRY_JITTER;
+
+  function computeRetryWaitMs(attempt: number): number {
+    const baseWaitMs = retryDelayMs * Math.pow(retryBackoffFactor, attempt);
+    if (!retryJitter) {
+      return baseWaitMs;
+    }
+    return baseWaitMs * (0.5 + Math.random() * 0.5);
+  }
 
   async function request<T>(
     path: string,
@@ -246,8 +281,7 @@ export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleA
           isRetriableError(lastError) &&
           outerSignal?.aborted !== true
         ) {
-          const waitMs = retryDelayMs * Math.pow(retryBackoffFactor, attempt);
-          await delay(waitMs, outerSignal ?? undefined);
+          await delay(computeRetryWaitMs(attempt), outerSignal ?? undefined);
           continue;
         }
         if (timedOut && !userAborted) {
@@ -270,8 +304,7 @@ export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleA
           outerSignal?.aborted !== true
         ) {
           lastError = err;
-          const waitMs = retryDelayMs * Math.pow(retryBackoffFactor, attempt);
-          await delay(waitMs, outerSignal ?? undefined);
+          await delay(computeRetryWaitMs(attempt), outerSignal ?? undefined);
           continue;
         }
         throw err;
@@ -336,6 +369,29 @@ export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleA
     getRun: (runId, options) =>
       request<Run>(`/v1/runs/${encodeURIComponent(runId)}`, { signal: options?.signal }, (raw) =>
         RunSchema.parse(raw),
+      ),
+    getRuns: (options) =>
+      request<Run[]>("/v1/runs", { signal: options?.signal }, (raw) =>
+        RunSchema.array().parse(raw),
+      ),
+    getNotifications: (params) => {
+      const search = new URLSearchParams();
+      if (params?.category) {
+        search.set("category", params.category);
+      }
+      if (params?.severity) {
+        search.set("severity", params.severity);
+      }
+      const query = search.toString();
+      return request<NotificationDto[]>(
+        `/v1/notifications${query ? `?${query}` : ""}`,
+        { signal: params?.signal },
+        (raw) => NotificationDtoSchema.array().parse(raw),
+      );
+    },
+    getMembers: (options) =>
+      request<MemberSummary[]>("/v1/members", { signal: options?.signal }, (raw) =>
+        MemberSummarySchema.array().parse(raw),
       ),
   };
 }

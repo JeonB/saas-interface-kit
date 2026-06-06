@@ -1,7 +1,17 @@
+import { unstable_cache } from "next/cache";
+import { requireConsoleApiClient } from "./console-api";
+import {
+  CONSOLE_DATA_CACHE_TAG,
+  CONSOLE_DATA_REVALIDATE_SECONDS,
+  getConsoleData,
+} from "./console-data";
 import type { Notification, NotificationCategory, NotificationFilter, NotificationSeverity } from "./notifications.types";
 
-/** Demo notifications aligned with runs / integrations mock timestamps. */
-const MOCK_NOTIFICATIONS: Notification[] = [
+/**
+ * Demo notifications aligned with runs / integrations mock timestamps.
+ * Shared by the data accessor below and the mock API route handlers (single source).
+ */
+export const MOCK_NOTIFICATIONS: Notification[] = [
   {
     id: "ntf_run_failed",
     title: "워크플로 실행 실패",
@@ -95,13 +105,27 @@ function applyServerFilter(items: Notification[], filter: NotificationFilter): N
   });
 }
 
-/**
- * Returns notifications for the console. Swap to `client.getNotifications(filter)`
- * once `@repo/api-client` ships that endpoint; until then both code paths use mock data.
- */
-export async function getNotificationsData(filter: NotificationFilter = {}): Promise<Notification[]> {
+/** Filtered + sorted mock notifications; reused by the mock API route handler. */
+export function queryMockNotifications(filter: NotificationFilter = {}): Notification[] {
   const sorted = [...MOCK_NOTIFICATIONS].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   return applyServerFilter(sorted, filter);
+}
+
+const fetchCachedNotifications = unstable_cache(
+  // Arguments are part of the cache key, so each filter combination is cached separately.
+  async (filter: { category?: NotificationCategory; severity?: NotificationSeverity }) =>
+    requireConsoleApiClient().getNotifications(filter),
+  ["console-notifications"],
+  { revalidate: CONSOLE_DATA_REVALIDATE_SECONDS, tags: [CONSOLE_DATA_CACHE_TAG] },
+);
+
+export async function getNotificationsData(filter: NotificationFilter = {}): Promise<Notification[]> {
+  const query = { category: filter.category, severity: filter.severity };
+  return getConsoleData({
+    fetchCached: () => fetchCachedNotifications(query),
+    fetchLive: (client) => client.getNotifications(query),
+    mockFallback: () => queryMockNotifications(query),
+  });
 }
 
 export { isCategory, isSeverity };

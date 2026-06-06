@@ -1,9 +1,14 @@
-import type { Run } from "@repo/api-client";
-import { applyApiDevSimulation } from "./api-dev-simulation";
-import { readApiDevSimulation } from "./api-dev-simulation-server";
-import { getConsoleApiClient } from "./console-api";
+import { unstable_cache } from "next/cache";
+import { ConsoleApiError, type Run } from "@repo/api-client";
+import { requireConsoleApiClient } from "./console-api";
+import {
+  CONSOLE_DATA_CACHE_TAG,
+  CONSOLE_DATA_REVALIDATE_SECONDS,
+  getConsoleData,
+} from "./console-data";
 
-const MOCK_RUNS: Run[] = [
+/** Shared by the data accessors below and the mock API route handlers (single source). */
+export const MOCK_RUNS: Run[] = [
   {
     id: "run_1001",
     workflowId: "wf_lead_sync",
@@ -67,22 +72,41 @@ const MOCK_RUNS: Run[] = [
   },
 ];
 
-// `@repo/api-client` exposes `getRun(id)` but not a runs list endpoint yet;
-// swap to `client.getRuns(...)` when it lands.
+export function sortRunsByStartedAtDesc(runs: readonly Run[]): Run[] {
+  return [...runs].sort((a, b) => b.startedAt.localeCompare(a.startedAt));
+}
+
+const fetchCachedRuns = unstable_cache(
+  async () => requireConsoleApiClient().getRuns(),
+  ["console-runs"],
+  { revalidate: CONSOLE_DATA_REVALIDATE_SECONDS, tags: [CONSOLE_DATA_CACHE_TAG] },
+);
+
+const fetchCachedRun = unstable_cache(
+  async (runId: string) => requireConsoleApiClient().getRun(runId),
+  ["console-run"],
+  { revalidate: CONSOLE_DATA_REVALIDATE_SECONDS, tags: [CONSOLE_DATA_CACHE_TAG] },
+);
+
 export async function getRunsData(): Promise<Run[]> {
-  const simulation = await readApiDevSimulation();
-  return applyApiDevSimulation(simulation, async () => {
-    return [...MOCK_RUNS].sort((a, b) => b.startedAt.localeCompare(a.startedAt));
+  return getConsoleData({
+    fetchCached: async () => sortRunsByStartedAtDesc(await fetchCachedRuns()),
+    fetchLive: async (client) => sortRunsByStartedAtDesc(await client.getRuns()),
+    mockFallback: () => sortRunsByStartedAtDesc(MOCK_RUNS),
   });
 }
 
 export async function getRunData(runId: string): Promise<Run | null> {
-  const simulation = await readApiDevSimulation();
-  return applyApiDevSimulation(simulation, async () => {
-    const client = getConsoleApiClient();
-    if (client) {
-      return client.getRun(runId);
+  try {
+    return await getConsoleData<Run | null>({
+      fetchCached: () => fetchCachedRun(runId),
+      fetchLive: (client) => client.getRun(runId),
+      mockFallback: () => MOCK_RUNS.find((run) => run.id === runId) ?? null,
+    });
+  } catch (error) {
+    if (error instanceof ConsoleApiError && error.status === 404) {
+      return null;
     }
-    return MOCK_RUNS.find((run) => run.id === runId) ?? null;
-  });
+    throw error;
+  }
 }
