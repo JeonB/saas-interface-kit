@@ -11,13 +11,26 @@ function ApiStatusFallback() {
   );
 }
 
+function DashboardFallback() {
+  return (
+    <div className="mx-auto max-w-5xl space-y-4 px-4 py-16 sm:px-6 lg:px-8">
+      <Skeleton className="h-10 w-1/2" />
+      <Skeleton className="h-32 w-full" />
+      <Skeleton className="h-64 w-full" />
+    </div>
+  );
+}
+
 export default function AppHomePage() {
   return (
     <>
       <Suspense fallback={<ApiStatusFallback />}>
         <ApiStatusBanner />
       </Suspense>
-      <DashboardOverview />
+      {/* Session/cookie-dependent data stays inside Suspense so the static shell streams first (PPR-ready). */}
+      <Suspense fallback={<DashboardFallback />}>
+        <DashboardOverview />
+      </Suspense>
     </>
   );
 }

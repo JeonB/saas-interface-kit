@@ -16,6 +16,6 @@ export async function setApiDevSimulationAction(simulation: ApiDevSimulation): P
     sameSite: "lax",
     maxAge: 60 * 60 * 24,
   });
-  revalidatePath("/console/integrations");
-  revalidatePath("/console/runs");
+  // Simulation now affects every console data accessor, so refresh the whole console subtree.
+  revalidatePath("/console", "layout");
 }

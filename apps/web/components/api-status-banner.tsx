@@ -1,9 +1,12 @@
 import { ConsoleApiNetworkError, ConsoleApiTimeoutError } from "@repo/api-client";
 import { Alert } from "@repo/ui/alert";
+import { readApiDevSimulation } from "../lib/api-dev-simulation-server";
 import { getConsoleApiClient } from "../lib/console-api";
 
 export async function ApiStatusBanner() {
-  const client = getConsoleApiClient();
+  // Carries the dev simulation so a simulated outage also degrades the health banner.
+  const simulation = await readApiDevSimulation();
+  const client = getConsoleApiClient(simulation);
   if (!client) {
     return (
       <div className="mx-auto max-w-5xl px-4 pt-6 sm:px-6 lg:px-8">
