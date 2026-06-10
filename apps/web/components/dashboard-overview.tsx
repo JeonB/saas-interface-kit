@@ -6,13 +6,16 @@ import { EmptyState } from "@repo/ui/empty-state";
 import { Gradient } from "@repo/ui/gradient";
 import { StatCard } from "@repo/ui/stat-card";
 import { DOCS_BASE } from "../lib/config";
+import { getUsageSummaryData } from "../lib/usage-mock";
+import { formatActiveSeats, formatChurnRate, formatMrrUsd } from "../lib/usage-format";
 import { OnboardingChecklist } from "./onboarding-checklist";
 
 function isExternalDocsHref(href: string): boolean {
   return href.startsWith("http://") || href.startsWith("https://");
 }
 
-export function DashboardOverview() {
+export async function DashboardOverview() {
+  const usage = await getUsageSummaryData();
   const cursorHelpHref = `${DOCS_BASE}/docs/cursor-help`;
   const cursorHelpExternal = isExternalDocsHref(cursorHelpHref);
 
@@ -49,10 +52,10 @@ export function DashboardOverview() {
           </p>
         </div>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard delta="전기 대비 +6.1%" label="MRR" trend="up" value="$48.2k" />
-          <StatCard delta="-0.2pp" label="이탈률" trend="up" value="1.0%" />
-          <StatCard delta="+128" label="활성 시트" trend="up" value="1,842" />
-          <StatCard delta="변동 없음" label="NPS" trend="neutral" value="44" />
+          <StatCard delta="전기 대비 +6.1%" label="MRR" trend="up" value={formatMrrUsd(usage.mrrUsd)} />
+          <StatCard delta="-0.2pp" label="이탈률" trend="up" value={formatChurnRate(usage.churnRate)} />
+          <StatCard delta="+128" label="활성 시트" trend="up" value={formatActiveSeats(usage.activeSeats)} />
+          <StatCard delta="변동 없음" label="NPS" trend="neutral" value={String(usage.nps)} />
         </div>
       </section>
 

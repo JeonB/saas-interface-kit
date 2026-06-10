@@ -1,15 +1,11 @@
 import { Alert } from "@repo/ui/alert";
-import { MembersTable, type MemberRow } from "../../../components/members-table";
+import { MembersTable } from "../../../components/members-table";
 import { PermissionGate } from "../../../components/permission-gate";
-
-const MOCK_MEMBERS: MemberRow[] = [
-  { id: "1", name: "김운영", email: "owner@example.com", role: "owner" },
-  { id: "2", name: "이관리", email: "admin@example.com", role: "admin" },
-  { id: "3", name: "박멤버", email: "member@example.com", role: "member" },
-  { id: "4", name: "최뷰어", email: "viewer@example.com", role: "viewer" },
-];
+import { getMembersData } from "../../../lib/members-mock";
 
 export default async function MembersPage() {
+  const members = await getMembersData();
+
   return (
     <div className="ui:mx-auto ui:max-w-5xl ui:px-4 ui:py-10 ui:text-text-primary sm:ui:px-6 lg:ui:px-8">
       <h1 className="ui:text-2xl ui:font-bold ui:tracking-tight">멤버</h1>
@@ -27,7 +23,7 @@ export default async function MembersPage() {
         permission="members:read"
       >
         <div className="ui:mt-8 ui:overflow-x-auto ui:rounded-ui-lg ui:border ui:border-border-subtle ui:bg-surface-raised ui:p-4">
-          <MembersTable data={MOCK_MEMBERS} />
+          <MembersTable data={members} />
         </div>
       </PermissionGate>
     </div>

@@ -3,6 +3,10 @@ import { Badge } from "@repo/ui/badge";
 import { Button } from "@repo/ui/button";
 import { Gradient } from "@repo/ui/gradient";
 
+// Marketing landing has no session/searchParams dependency: prerender it so
+// traffic spikes are served from static output / CDN instead of SSR.
+export const dynamic = "force-static";
+
 export default function MarketingHomePage() {
   return (
     <div className="relative flex flex-col">
