@@ -1,0 +1,56 @@
+{
+  "name": "@repo/tokens",
+  "version": "0.1.0",
+  "description": "Design tokens for saas-interface-kit. CSS theme is the source of truth; TypeScript exports the locked core values and CSS variable names.",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": [
+    "theme.css"
+  ],
+  "files": [
+    "dist",
+    "theme.css"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./theme.css": "./theme.css"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeonB/saas-interface-kit.git",
+    "directory": "packages/tokens"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src --max-warnings 0",
+    "prepublishOnly": "pnpm run build",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "tailwindcss": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^25.7.0",
+    "eslint": "^9.39.4",
+    "tailwindcss": "^4.3.0",
+    "typescript": "6.0.3",
+    "vitest": "^4.1.6"
+  }
+}
