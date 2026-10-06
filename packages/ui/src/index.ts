@@ -77,6 +77,8 @@ export type {
   ComponentVariant,
   FeedbackVariant,
 } from "./contracts";
+export { coreTokens, cssVars } from "@repo/tokens";
+export type { TokenGroup } from "@repo/tokens";
 export { DataTable } from "./data-table";
 export type { DataTableColumn, DataTableProps } from "./data-table";
 export {

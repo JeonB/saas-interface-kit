@@ -19,7 +19,7 @@ export default function FoundationsPage() {
           리브랜딩 시 아래 <strong className="text-white">색 3개</strong>와{" "}
           <strong className="text-white">간격 5단계</strong>만 바꾸면 시맨틱·컴포넌트가 따라옵니다.
           정의 위치:{" "}
-          <code className="rounded bg-neutral-900 px-1">shared-styles.css</code> 상단{" "}
+          <code className="rounded bg-neutral-900 px-1">@repo/tokens/theme.css</code> 상단{" "}
           <code className="rounded bg-neutral-900 px-1">core-*</code> 블록.
         </p>
 
@@ -116,7 +116,7 @@ export default function FoundationsPage() {
         <h2 className="text-xl font-semibold text-white">토큰이 있는 위치</h2>
         <ul className="list-disc space-y-2 pl-6 text-sm text-neutral-300">
           <li>
-            <code className="rounded bg-neutral-900 px-1">packages/tailwind-config/shared-styles.css</code> —{" "}
+            <code className="rounded bg-neutral-900 px-1">packages/tokens/theme.css</code> —{" "}
             <code className="rounded bg-neutral-900 px-1">@theme</code> 정의(색, 반경, 간격, 타이포).
           </li>
           <li>

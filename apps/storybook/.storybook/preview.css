@@ -1,6 +1,6 @@
 /* Tailwind for Storybook: same prefix(ui) and theme as @repo/ui */
 @import "tailwindcss" prefix(ui);
-@import "@repo/tailwind-config";
+@import "@repo/tokens/theme.css";
 
 /* Scan UI package and stories so all used ui: classes are generated */
 @source "../stories/**/*.tsx";

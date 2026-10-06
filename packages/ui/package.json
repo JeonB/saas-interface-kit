@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
+    "@repo/tokens": "workspace:*",
     "@radix-ui/react-slot": "^1.2.4",
     "@tanstack/react-table": "^8.21.3",
     "@xyflow/react": "^12.10.2",
@@ -39,7 +40,6 @@
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
-    "@repo/tailwind-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@size-limit/file": "^12.1.0",
     "@tailwindcss/cli": "^4.3.0",

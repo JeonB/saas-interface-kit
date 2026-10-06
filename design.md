@@ -1,7 +1,7 @@
 # Design Guide
 
 B2B SaaS 콘솔 화면을 위한 **saas-interface-kit** 디자인 방향성과 반복 패턴 정리 문서입니다.
-토큰의 단일 출처는 `packages/tailwind-config/shared-styles.css`이며, 컴포넌트 구현은 `@repo/ui` 패키지를 따릅니다.
+토큰의 단일 출처는 `packages/tokens/theme.css`(`@repo/tokens`)이며, 컴포넌트 구현은 `@repo/ui` 패키지를 따릅니다.
 
 상세한 라이브 예시·Do/Don't는 docs 앱(`http://localhost:3000`)과 Storybook(`http://localhost:6006`)을 함께 참고하세요.
 
@@ -33,7 +33,7 @@ B2B SaaS 콘솔 화면을 위한 **saas-interface-kit** 디자인 방향성과 �
 ### 스타일링 아키텍처
 
 ```text
-packages/tailwind-config/shared-styles.css   ← @theme 토큰 (단일 출처)
+packages/tokens/theme.css                    ← @theme 토큰 (단일 출처, @repo/tokens)
         ↓
 packages/ui/src/styles.css                   ← Tailwind + prefix(ui)
         ↓
@@ -104,7 +104,7 @@ ui:border-semantic-{variant}/30 ui:bg-semantic-{variant}/10 ui:text-semantic-{va
 
 ### 2.5 라이트 모드
 
-`<html class="light">` 또는 `data-theme="light"` 시 `shared-styles.css`에서 서피스·텍스트·테두리·그림자를 오버라이드합니다.
+`<html class="light">` 또는 `data-theme="light"` 시 `packages/tokens/theme.css`에서 서피스·텍스트·테두리·그림자를 오버라이드합니다.
 
 | 토큰             | 값 (라이트) |
 | ---------------- | ----------- |
