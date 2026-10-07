@@ -24,6 +24,12 @@ describe("@repo/tokens theme contract", () => {
     }
   });
 
+  it("keeps the font import in fonts.css so it can precede Tailwind", () => {
+    const fontsCss = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "../fonts.css"), "utf8");
+    expect(fontsCss.startsWith("@import url(")).toBe(true);
+    expect(themeCss).not.toContain("@import url(");
+  });
+
   it("keeps locked core color and spacing values in theme.css", () => {
     expect(themeCss).toContain(`--color-core-primary: ${coreTokens.color.primary};`);
     expect(themeCss).toContain(`--color-core-muted: ${coreTokens.color.muted};`);

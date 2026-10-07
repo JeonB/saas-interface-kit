@@ -1,2 +1,3 @@
-/* Compatibility shim. The theme source of truth is @repo/tokens/theme.css. */
+/* Compatibility shim. Prefer @repo/tokens/fonts.css and @repo/tokens/theme.css. */
+@import "@repo/tokens/fonts.css";
 @import "@repo/tokens/theme.css";

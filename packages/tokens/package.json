@@ -5,10 +5,12 @@
   "type": "module",
   "license": "MIT",
   "sideEffects": [
+    "fonts.css",
     "theme.css"
   ],
   "files": [
     "dist",
+    "fonts.css",
     "theme.css"
   ],
   "main": "./dist/index.js",
@@ -19,7 +21,14 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
-    "./theme.css": "./theme.css"
+    "./fonts.css": {
+      "style": "./fonts.css",
+      "default": "./fonts.css"
+    },
+    "./theme.css": {
+      "style": "./theme.css",
+      "default": "./theme.css"
+    }
   },
   "publishConfig": {
     "access": "public"

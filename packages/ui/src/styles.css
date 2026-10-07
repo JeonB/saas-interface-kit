@@ -1,3 +1,5 @@
-/* Component-level styles for the UI package */
+/* Component-level styles for the UI package.
+   The font import has to stay first so it is not emitted after Tailwind rules. */
+@import "@repo/tokens/fonts.css";
 @import "tailwindcss" prefix(ui);
 @import "@repo/tokens/theme.css";

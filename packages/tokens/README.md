@@ -13,6 +13,7 @@ pnpm add @repo/tokens
 Tailwind CSS 4를 쓰는 앱은 테마를 CSS에서 가져옵니다.
 
 ```css
+@import "@repo/tokens/fonts.css";
 @import "tailwindcss";
 @import "@repo/tokens/theme.css";
 ```
