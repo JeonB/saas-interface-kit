@@ -14,10 +14,11 @@
 
 ### 패키지
 
-- **@repo/ui** — 공유 React 컴포넌트와 스타일(Tailwind, `ui:` 접두사). web·docs에서 사용.
+- **@repo/tokens** — 디자인 토큰. `theme.css`가 값의 단일 출처이고, `coreTokens` / `cssVars`로 코드에서 참조합니다. npm에 게시합니다.
+- **@repo/ui** — 공유 React 컴포넌트와 스타일(Tailwind, `ui:` 접두사). `@repo/tokens`를 의존성으로 두고 npm에 게시합니다.
 - **@repo/ui 워크플로 모듈** — `ConnectorCard`, `RunStatusBadge`, `StepLogPanel`, `FlowCanvas`, `WorkflowEditor`로 통합/워크플로/실행 로그 UI를 조합. 웹 콘솔 `/console/workflows`에서 노드형 자동화 편집(localStorage) 및 테스트 실행을 지원합니다.
 - **@repo/api-client** — `createConsoleApiClient` 기반의 타입 안전 API 클라이언트(Zod 스키마 파싱, 타임아웃/재시도/요청 ID 지원).
-- **@repo/tailwind-config** — 공유 Tailwind 테마(시맨틱 토큰 + 팔레트).
+- **@repo/tailwind-config** — `@repo/tokens/theme.css`를 가리키는 호환 엔트리와 PostCSS 설정. 새 코드는 `@repo/tokens`를 import합니다.
 - **@repo/typescript-config** — 공유 `tsconfig` 프리셋.
 - **@repo/eslint-config** — 공유 ESLint 설정.
 
@@ -69,6 +70,35 @@ NEXT_PUBLIC_API_URL=http://localhost:3001/api/mock
 - 콘솔의 개발용 시뮬레이션 패널(지연·503·타임아웃·네트워크 오류)은 `x-api-dev-simulation` 헤더로 mock 핸들러까지 전달되어 HTTP 레벨에서 장애를 재현합니다(프로덕션에서는 무시).
 - API가 5xx/타임아웃으로 실패하면 콘솔 데이터는 mock 스냅샷으로 점진적으로 강등되고, `/console`의 API 상태 배너가 장애를 표시합니다.
 - 조직 공통 데이터(integrations, workflows, members, usage 등)는 서버에서 60초 캐시(`unstable_cache`, 태그 `console-data`)되어 트래픽 급증 시 origin 호출을 흡수합니다.
+
+## npm 레지스트리에서 토큰·컴포넌트 쓰기
+
+`@repo/tokens`와 `@repo/ui`는 이 저장소 밖에서도 같은 import 경로로 씁니다. 모노레포 안에서는 `workspace:*`가 로컬 패키지를 연결하고, 다른 저장소에서는 레지스트리에 게시된 버전을 설치합니다.
+
+```sh
+pnpm add @repo/tokens @repo/ui
+```
+
+```css
+@import "@repo/tokens/fonts.css";
+@import "tailwindcss";
+@import "@repo/tokens/theme.css";
+```
+
+```tsx
+import "@repo/ui/styles.css";
+import { Button, Card, coreTokens, cssVars } from "@repo/ui";
+```
+
+토큰만 필요할 때는 `@repo/ui` 없이 `@repo/tokens`만 설치합니다.
+
+```ts
+import { coreTokens, cssVars } from "@repo/tokens";
+```
+
+`main`에 푸시되면 Changesets가 버전 PR을 만들고, 그 PR이 머지되면 `.github/workflows/release.yml`이 npm에 게시합니다. 저장소 시크릿 `NPM_TOKEN`에 `@repo` 스코프 게시 권한이 있어야 합니다. 그 스코프를 쓸 수 없으면 첫 게시 전에 패키지 이름을 소유한 스코프로 바꿉니다.
+
+모노레포 앱의 의존성을 레지스트리 버전으로 바꾸지는 않습니다. 토큰을 수정할 때마다 게시와 재설치가 필요해져서, 같은 저장소 안에서는 워크스페이스 링크가 맞습니다.
 
 ## @repo/ui 사용하기
 

@@ -25,7 +25,7 @@ UI 토큰, 레이아웃 레시피, 콘솔 패턴은 저장소 루트의 [design.
 ### 주의할 점
 
 - **네이티브 빌드 스크립트**: pnpm 10은 기본적으로 postinstall 스크립트를 차단합니다. 루트 `package.json`의 `pnpm.onlyBuiltDependencies`에 `@parcel/watcher`, `esbuild`, `sharp`가 허용되어 있습니다. 설치 후 "Ignored build scripts" 경고가 보이면 `pnpm install --force`를 한 번 실행하세요.
-- **앱 실행 전 `@repo/ui` 빌드 필수**: `web`, `docs`, `storybook` 앱은 `@repo/ui`의 `dist/` 디렉터리에서 import합니다. `dist/`가 없으면(예: 새 클론) dev 서버 시작 전에 `pnpm build` 또는 `pnpm --filter @repo/ui build`를 실행하세요. 루트 `pnpm check-types`가 `@repo/ui` 모듈 누락으로 실패할 때도 동일합니다.
+- **앱 실행 전 `@repo/tokens`와 `@repo/ui` 빌드 필수**: 앱은 `@repo/ui`의 `dist/`에서 컴포넌트를 import하고, `@repo/ui`는 `@repo/tokens`의 `dist/`에서 토큰 타입을 읽습니다. `dist/`가 없으면(예: 새 클론) dev 서버 시작 전에 `pnpm build`를 실행하세요. 루트 `pnpm check-types`는 turbo `^build`로 토큰 빌드를 UI 타입 검사보다 먼저 돌립니다.
 - **Turbo TUI 모드**: `turbo.json`이 `"ui": "tui"`를 사용해 대화형 터미널 UI를 렌더링합니다. CI나 비대화형 환경에서 `pnpm dev`를 실행해도 동작하지만 로그가 섞일 수 있습니다. 앱별 dev 명령(`pnpm --filter web dev`)은 이를 피할 수 있습니다.
 - **Docs 리다이렉트**: docs 앱 루트(`localhost:3000`)는 `/docs`로 307 리다이렉트합니다. Next.js의 정상 동작입니다.
 - **환경 변수**: `NEXT_PUBLIC_DOCS_URL`(docs 링크 대상), `SESSION_SECRET`(데모 세션 쿠키 서명), `NEXT_PUBLIC_API_URL`(`@repo/api-client`용 선택 API 베이스 URL). 프로덕션에서는 `SESSION_SECRET`을 강한 랜덤 값으로 설정하세요. 누락되었거나 개발용 placeholder인 경우 `apps/web/instrumentation.ts`가 서버 시작 시 예외를 던집니다. `.env.example`을 참고하세요.

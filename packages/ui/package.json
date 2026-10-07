@@ -1,6 +1,15 @@
 {
   "name": "@repo/ui",
   "version": "0.1.0",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeonB/saas-interface-kit.git",
+    "directory": "packages/ui"
+  },
   "sideEffects": [
     "**/*.css"
   ],
@@ -14,6 +23,7 @@
   },
   "scripts": {
     "build": "pnpm run build:styles && pnpm run build:components",
+    "prepublishOnly": "pnpm run build",
     "build:styles": "tailwindcss -i ./src/styles.css -o ./dist/index.css",
     "build:components": "tsc -p tsconfig.build.json",
     "check-types": "tsc --noEmit",

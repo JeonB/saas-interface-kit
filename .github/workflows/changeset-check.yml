@@ -25,10 +25,10 @@ jobs:
 
       - name: Check for changeset
         run: |
-          CHANGED=$(git diff --name-only origin/main...HEAD -- packages/ui/src/)
+          CHANGED=$(git diff --name-only origin/main...HEAD -- packages/ui/src/ packages/tokens/)
           if [ -n "$CHANGED" ]; then
             CHANGESETS=$(find .changeset -name '*.md' ! -name 'README.md' | head -1)
             if [ -z "$CHANGESETS" ]; then
-              echo "::warning::packages/ui/src has changes but no changeset found. Run 'pnpm changeset' to document your changes."
+              echo "::warning::packages/ui or packages/tokens changed but no changeset was found. Run 'pnpm changeset'."
             fi
           fi

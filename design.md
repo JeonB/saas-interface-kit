@@ -40,6 +40,8 @@ packages/ui/src/styles.css                   ← Tailwind + prefix(ui)
 apps/web, apps/storybook                     ← @repo/ui/styles.css import
 ```
 
+npm에 게시하는 패키지는 `@repo/tokens`와 `@repo/ui`입니다. 이 저장소의 앱은 `workspace:*`로 같은 패키지를 연결하고, 다른 저장소는 레지스트리 버전을 import합니다.
+
 | 레이어              | Tailwind 접두사 | 용도                                     |
 | ------------------- | --------------- | ---------------------------------------- |
 | `@repo/ui` 컴포넌트 | `ui:`           | 시맨틱 토큰 (`ui:bg-surface-raised` 등)  |

@@ -18,6 +18,7 @@ export default function MonorepoPage() {
 │   ├── docs/       # 이 문서 사이트
 │   └── storybook/  # UI 컴포넌트 스토리
 ├── packages/
+│   ├── tokens/     # @repo/tokens 디자인 토큰
 │   ├── ui/         # 공유 @repo/ui 컴포넌트
 │   ├── tailwind-config/
 │   ├── typescript-config/
@@ -35,7 +36,7 @@ export default function MonorepoPage() {
           </code>{" "}
           에서 <code className="rounded bg-neutral-800 px-1 py-0.5">apps/*</code>와{" "}
           <code className="rounded bg-neutral-800 px-1 py-0.5">packages/*</code>를 정의합니다.
-          앱은 <Badge variant="default">workspace:*</Badge>로 패키지에 의존합니다.
+          앱은 <Badge variant="default">workspace:*</Badge>로 패키지에 의존합니다. 저장소 밖에서는 게시된 <code className="rounded bg-neutral-800 px-1 py-0.5">@repo/tokens</code>와 <code className="rounded bg-neutral-800 px-1 py-0.5">@repo/ui</code>를 npm에서 설치합니다.
         </p>
       </section>
 

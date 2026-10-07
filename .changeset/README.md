@@ -14,7 +14,7 @@ pnpm changeset
 
 대화형 프롬프트가 나타나면:
 
-1. **변경된 패키지 선택** — 보통 `@repo/ui`
+1. **변경된 패키지 선택** — `@repo/tokens` 또는 `@repo/ui`
 2. **변경 유형 선택** — `patch`(버그 수정), `minor`(새 기능), `major`(breaking change)
 3. **변경 설명 작성** — 무엇을 왜 변경했는지 한 줄로 기술
 
