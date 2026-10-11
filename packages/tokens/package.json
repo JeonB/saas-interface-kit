@@ -1,6 +1,6 @@
 {
   "name": "@repo/tokens",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Design tokens for saas-interface-kit. CSS theme is the source of truth; TypeScript exports the locked core values and CSS variable names.",
   "type": "module",
   "license": "MIT",
