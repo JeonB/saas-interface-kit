@@ -164,6 +164,40 @@ describe("createConsoleApiClient", () => {
     expect(fetchImpl).toHaveBeenCalledTimes(1);
   });
 
+  it("does not retry non-idempotent POST requests on 503", async () => {
+    const fetchImpl = vi.fn(
+      async (_input: RequestInfo | URL, _init?: RequestInit): Promise<Response> =>
+        new Response("unavailable", { status: 503, headers: { "Content-Type": "text/plain" } }),
+    );
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      maxRetries: 3,
+      retryDelayMs: 0,
+    });
+
+    await expect(client.createWorkflowRun("wf_1")).rejects.toMatchObject({ status: 503 });
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    expect(fetchImpl.mock.calls[0]?.[1]?.method).toBe("POST");
+  });
+
+  it("does not retry non-idempotent requests on network errors", async () => {
+    const fetchImpl = vi.fn(async (): Promise<Response> => {
+      throw new TypeError("Failed to fetch");
+    });
+    const client = createConsoleApiClient({
+      baseUrl: "https://api.example",
+      fetchImpl,
+      maxRetries: 3,
+      retryDelayMs: 0,
+    });
+
+    await expect(client.patchWorkflow("wf_1", { name: "x" })).rejects.toThrow(
+      ConsoleApiNetworkError,
+    );
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
   it("does not retry when the attempt times out", async () => {
     const fetchImpl = vi.fn(createHangingFetch());
     const client = createConsoleApiClient({

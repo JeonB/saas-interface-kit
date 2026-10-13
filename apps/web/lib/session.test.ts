@@ -1,12 +1,8 @@
 import { createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import { SESSION_TTL_SECONDS, getSessionCookieDeleteOptions, getSessionCookieOptions } from "./session-constants";
-import {
-  FALLBACK_DEV_SESSION_SECRET,
-  signSession,
-  verifySignedSession,
-  type SessionUser,
-} from "./session";
+import { signSession, verifySignedSession, type SessionUser } from "./session";
+import { FALLBACK_DEV_SESSION_SECRET } from "./session-secret";
 
 const demoUser: SessionUser = {
   id: "usr_demo",

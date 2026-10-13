@@ -1,4 +1,8 @@
-import { applyMockApiSimulation, mockApiJson } from "../../../../../lib/mock-api";
+import {
+  applyMockApiSimulation,
+  MOCK_API_SWR_CACHE_CONTROL,
+  mockApiJson,
+} from "../../../../../lib/mock-api";
 import { isCategory, isSeverity, queryMockNotifications } from "../../../../../lib/notifications-mock";
 
 export async function GET(request: Request) {
@@ -14,5 +18,6 @@ export async function GET(request: Request) {
       category: categoryRaw && isCategory(categoryRaw) ? categoryRaw : undefined,
       severity: severityRaw && isSeverity(severityRaw) ? severityRaw : undefined,
     }),
+    { cacheControl: MOCK_API_SWR_CACHE_CONTROL },
   );
 }

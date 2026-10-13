@@ -1,15 +1,14 @@
-import { FALLBACK_DEV_SESSION_SECRET } from "./lib/session";
+import { getProductionSessionSecretProblem } from "./lib/session-secret";
 
 export function register() {
   if (process.env.NODE_ENV !== "production") {
     return;
   }
 
-  const raw = process.env.SESSION_SECRET;
-  const trimmed = typeof raw === "string" ? raw.trim() : "";
-  if (!trimmed || trimmed === FALLBACK_DEV_SESSION_SECRET) {
+  const problem = getProductionSessionSecretProblem(process.env.SESSION_SECRET);
+  if (problem) {
     throw new Error(
-      "[web] SESSION_SECRET must be set to a strong random value in production (not the development placeholder).",
+      `[web] ${problem}. Set SESSION_SECRET to a strong random value in production (e.g. \`openssl rand -base64 32\`).`,
     );
   }
 }

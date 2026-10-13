@@ -28,7 +28,7 @@ UI 토큰, 레이아웃 레시피, 콘솔 패턴은 저장소 루트의 [design.
 - **앱 실행 전 `@repo/tokens`와 `@repo/ui` 빌드 필수**: 앱은 `@repo/ui`의 `dist/`에서 컴포넌트를 import하고, `@repo/ui`는 `@repo/tokens`의 `dist/`에서 토큰 타입을 읽습니다. `dist/`가 없으면(예: 새 클론) dev 서버 시작 전에 `pnpm build`를 실행하세요. 루트 `pnpm check-types`는 turbo `^build`로 토큰 빌드를 UI 타입 검사보다 먼저 돌립니다.
 - **Turbo TUI 모드**: `turbo.json`이 `"ui": "tui"`를 사용해 대화형 터미널 UI를 렌더링합니다. CI나 비대화형 환경에서 `pnpm dev`를 실행해도 동작하지만 로그가 섞일 수 있습니다. 앱별 dev 명령(`pnpm --filter web dev`)은 이를 피할 수 있습니다.
 - **Docs 리다이렉트**: docs 앱 루트(`localhost:3000`)는 `/docs`로 307 리다이렉트합니다. Next.js의 정상 동작입니다.
-- **환경 변수**: `NEXT_PUBLIC_DOCS_URL`(docs 링크 대상), `SESSION_SECRET`(데모 세션 쿠키 서명), `NEXT_PUBLIC_API_URL`(`@repo/api-client`용 선택 API 베이스 URL). 프로덕션에서는 `SESSION_SECRET`을 강한 랜덤 값으로 설정하세요. 누락되었거나 개발용 placeholder인 경우 `apps/web/instrumentation.ts`가 서버 시작 시 예외를 던집니다. `.env.example`을 참고하세요.
+- **환경 변수**: `NEXT_PUBLIC_DOCS_URL`(docs 링크 대상), `SESSION_SECRET`(데모 세션 쿠키 서명), `NEXT_PUBLIC_API_URL`(`@repo/api-client`용 선택 API 베이스 URL). 프로덕션에서는 `SESSION_SECRET`을 강한 랜덤 값으로 설정하세요. 누락되었거나, 개발용 placeholder이거나, 32자 미만인 경우 `apps/web/instrumentation.ts`가 서버 시작 시 예외를 던집니다(검증 로직: `apps/web/lib/session-secret.ts`). `.env.example`을 참고하세요.
 - **`web` liveness**: `web`의 `GET /api/health`는 프로브용으로 `{"status":"ok"}`와 `Cache-Control: no-store`를 반환합니다. `@repo/api-client`가 사용하는 선택적 백엔드 `GET {NEXT_PUBLIC_API_URL}/health`와는 별개입니다.
 - **API 클라이언트 패키지**: `@repo/api-client`는 타임아웃/재시도/요청 ID 동작이 있는 타입 안전 API 호출(`/health`, `/v1/*`)을 제공합니다. `NEXT_PUBLIC_API_URL`이 설정되지 않으면 web 콘솔은 mock 데이터로 폴백합니다.
 - **커버리지 범위**: 커버리지 임계값은 `@repo/ui`에 적용됩니다. `@repo/api-client` 커버리지는 이 프론트엔드 템플릿에서 신호를 집중·안정적으로 유지하기 위해 현재 스키마 검증 경로를 대상으로 합니다.

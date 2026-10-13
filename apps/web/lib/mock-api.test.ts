@@ -89,14 +89,23 @@ describe("applyMockApiSimulation", () => {
 });
 
 describe("mockApiJson", () => {
-  it("serves SWR cache headers by default", async () => {
+  it("is not cacheable by default", async () => {
     const response = mockApiJson({ ok: true });
-    expect(response.headers.get("Cache-Control")).toBe(MOCK_API_SWR_CACHE_CONTROL);
+    expect(response.headers.get("Cache-Control")).toBe(MOCK_API_NO_STORE);
     await expect(response.json()).resolves.toEqual({ ok: true });
   });
 
-  it("honors a cache-control override", () => {
-    const response = mockApiJson([], { cacheControl: MOCK_API_NO_STORE });
+  it("serves SWR cache headers when opted in", () => {
+    const response = mockApiJson([], { cacheControl: MOCK_API_SWR_CACHE_CONTROL });
+    expect(response.headers.get("Cache-Control")).toBe(MOCK_API_SWR_CACHE_CONTROL);
+  });
+
+  it("never caches non-2xx responses even when opted in", () => {
+    const response = mockApiJson(
+      { error: "Workflow not found" },
+      { status: 404, cacheControl: MOCK_API_SWR_CACHE_CONTROL },
+    );
+    expect(response.status).toBe(404);
     expect(response.headers.get("Cache-Control")).toBe(MOCK_API_NO_STORE);
   });
 });

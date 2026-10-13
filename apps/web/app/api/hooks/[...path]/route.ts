@@ -45,7 +45,7 @@ async function handleWebhook(request: Request, context: RouteContext): Promise<R
   const result = await executeWorkflowOnServer(workflow.definition, { payload });
   const finishedAt = new Date().toISOString();
 
-  await getRunServerStore().createRun({
+  const run = await getRunServerStore().createRun({
     workflowId: workflow.id,
     status: result.status,
     startedAt,
@@ -54,8 +54,9 @@ async function handleWebhook(request: Request, context: RouteContext): Promise<R
   });
 
   if (result.status === "failed") {
+    // Public endpoint: step logs stay in the run record instead of the response body.
     return NextResponse.json(
-      { error: "Workflow execution failed", steps: result.steps },
+      { error: "Workflow execution failed", runId: run.id },
       { status: 500 },
     );
   }

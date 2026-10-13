@@ -62,7 +62,7 @@ export type ConsoleApiClientConfig = {
   /** When set, aborts the request after this many milliseconds (combined with `init.signal` when provided). */
   requestTimeoutMs?: number;
   /**
-   * Retries idempotent GETs on transient failures.
+   * Retries idempotent GET/HEAD requests on transient failures; POST/PUT/PATCH are never retried.
    * Each attempt has its own `requestTimeoutMs` budget.
    */
   maxRetries?: number;
@@ -107,7 +107,7 @@ export class ConsoleApiNetworkError extends Error {
   }
 }
 
-function isLikelyNetworkFailure(e: unknown): boolean {
+function isNetworkFailure(e: unknown): boolean {
   if (e instanceof TypeError) {
     return true;
   }
@@ -115,6 +115,12 @@ function isLikelyNetworkFailure(e: unknown): boolean {
     return true;
   }
   return false;
+}
+
+/** Only these methods are retried: replaying POST/PUT/PATCH could duplicate side effects. */
+function isIdempotentMethod(method: string | undefined): boolean {
+  const normalized = (method ?? "GET").toUpperCase();
+  return normalized === "GET" || normalized === "HEAD";
 }
 
 function createTimeoutAbort(ms: number): { signal: AbortSignal; clear: () => void } {
@@ -176,16 +182,6 @@ function isRetriableHttpStatus(status: number): boolean {
   return status === 502 || status === 503 || status === 504;
 }
 
-function isRetriableFetchFailure(e: unknown): boolean {
-  if (e instanceof TypeError) {
-    return true;
-  }
-  if (e instanceof DOMException && e.name === "NetworkError") {
-    return true;
-  }
-  return false;
-}
-
 function isRetriableError(e: unknown): boolean {
   if (e instanceof ConsoleApiTimeoutError) {
     return false;
@@ -193,7 +189,7 @@ function isRetriableError(e: unknown): boolean {
   if (e instanceof ConsoleApiError && isRetriableHttpStatus(e.status)) {
     return true;
   }
-  return isRetriableFetchFailure(e);
+  return isNetworkFailure(e);
 }
 
 export type ConsoleApiRequestOptions = {
@@ -273,8 +269,9 @@ export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleA
     const outerSignal = init?.signal;
     let lastError: unknown;
     const requestId = config.getRequestId?.() ?? generateRequestId();
+    const attemptLimit = isIdempotentMethod(init?.method) ? maxRetries : 0;
 
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    for (let attempt = 0; attempt <= attemptLimit; attempt++) {
       const headers = new Headers(init?.headers);
       headers.set("Accept", "application/json");
       headers.set("X-Request-Id", requestId);
@@ -302,7 +299,7 @@ export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleA
           lastError = e;
         }
         if (
-          attempt < maxRetries &&
+          attempt < attemptLimit &&
           isRetriableError(lastError) &&
           outerSignal?.aborted !== true
         ) {
@@ -312,7 +309,7 @@ export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleA
         if (timedOut && !userAborted) {
           throw new ConsoleApiTimeoutError(timeoutMs);
         }
-        if (!userAborted && isLikelyNetworkFailure(e)) {
+        if (!userAborted && isNetworkFailure(e)) {
           throw new ConsoleApiNetworkError(undefined, { cause: e });
         }
         throw e;
@@ -324,7 +321,7 @@ export function createConsoleApiClient(config: ConsoleApiClientConfig): ConsoleA
         const text = await res.text();
         const err = new ConsoleApiError(res.status, text);
         if (
-          attempt < maxRetries &&
+          attempt < attemptLimit &&
           isRetriableHttpStatus(res.status) &&
           outerSignal?.aborted !== true
         ) {

@@ -1,6 +1,6 @@
 import type { RunStatus } from "@repo/api-client";
 import type { RunStep } from "@repo/ui/step-log-panel";
-import type { ResourceStore } from "../resource-store";
+import { getResourceStore, type ResourceStore } from "../resource-store";
 import type { WorkflowDefinition, NodeRunStatus } from "../workflow/types";
 import { defaultLabel } from "../workflow/types";
 import { createExecutionContext, type ExecutionContext } from "./context";
@@ -22,7 +22,6 @@ export async function executeWorkflowOnServer(
     resources?: ResourceStore;
   },
 ): Promise<ExecuteWorkflowServerResult> {
-  const { getResourceStore } = await import("../resource-store");
   const resources = options?.resources ?? getResourceStore();
   const { ordered, warnings } = topologicalOrder(definition);
   const steps: RunStep[] = [];

@@ -85,12 +85,20 @@ export async function applyMockApiSimulation(headers: Headers): Promise<Response
   }
 }
 
+/**
+ * JSON response for mock API routes. Caching is opt-in (`cacheControl`) and only honored for
+ * 2xx responses, so mutations, errors, and mutable resources never land in a shared cache.
+ */
 export function mockApiJson(
   data: unknown,
   options?: { cacheControl?: string; status?: number },
 ): Response {
+  const status = options?.status ?? 200;
+  const isSuccess = status >= 200 && status < 300;
   return Response.json(data, {
-    status: options?.status ?? 200,
-    headers: { "Cache-Control": options?.cacheControl ?? MOCK_API_SWR_CACHE_CONTROL },
+    status,
+    headers: {
+      "Cache-Control": isSuccess ? (options?.cacheControl ?? MOCK_API_NO_STORE) : MOCK_API_NO_STORE,
+    },
   });
 }

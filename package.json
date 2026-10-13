@@ -1,5 +1,5 @@
 {
-  "name": "with-tailwind",
+  "name": "saas-interface-kit",
   "private": true,
   "scripts": {
     "build": "turbo run build",
@@ -20,7 +20,7 @@
     "turbo": "^2.9.12"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20.9.0"
   },
   "packageManager": "pnpm@10.19.0"
 }

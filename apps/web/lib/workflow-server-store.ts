@@ -1,6 +1,6 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { Workflow } from "@repo/api-client";
+import { createJsonFileStore } from "./json-file-store";
 import { deriveTriggerLabel } from "./workflow/derive-trigger-label";
 import { SEED_DEFINITIONS, SEED_REGISTRY } from "./workflow/seeds";
 import {
@@ -23,10 +23,6 @@ type WorkflowStoreFile = {
 const DEFAULT_DATA_DIR = path.join(process.cwd(), ".workflow-data");
 const STORE_FILENAME = "store.json";
 
-function defaultStorePath(dataDir: string): string {
-  return path.join(dataDir, STORE_FILENAME);
-}
-
 function seedStore(): WorkflowStoreFile {
   const workflows: Record<string, StoredWorkflow> = {};
   for (const entry of SEED_REGISTRY) {
@@ -40,9 +36,9 @@ function seedStore(): WorkflowStoreFile {
   return { workflows };
 }
 
-function parseStore(raw: string): WorkflowStoreFile {
-  const parsed = JSON.parse(raw) as WorkflowStoreFile;
-  if (!parsed.workflows || typeof parsed.workflows !== "object") {
+function parseStore(raw: unknown): WorkflowStoreFile {
+  const parsed = raw as WorkflowStoreFile;
+  if (!parsed?.workflows || typeof parsed.workflows !== "object") {
     throw new Error("Invalid workflow store file");
   }
   return parsed;
@@ -68,47 +64,29 @@ export type WorkflowServerStore = {
 };
 
 export function createWorkflowServerStore(dataDir = DEFAULT_DATA_DIR): WorkflowServerStore {
-  const storePath = defaultStorePath(dataDir);
-
-  async function readStore(): Promise<WorkflowStoreFile> {
-    try {
-      const raw = await readFile(storePath, "utf8");
-      return parseStore(raw);
-    } catch (error) {
-      if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
-        throw error;
-      }
-      const seeded = seedStore();
-      await mkdir(dataDir, { recursive: true });
-      await writeFile(storePath, JSON.stringify(seeded, null, 2), "utf8");
-      return seeded;
-    }
-  }
-
-  async function writeStore(store: WorkflowStoreFile): Promise<void> {
-    await mkdir(dataDir, { recursive: true });
-    await writeFile(storePath, JSON.stringify(store, null, 2), "utf8");
-  }
+  const file = createJsonFileStore<WorkflowStoreFile>({
+    filePath: path.join(dataDir, STORE_FILENAME),
+    seed: seedStore,
+    parse: parseStore,
+  });
 
   return {
     async listWorkflows() {
-      const store = await readStore();
+      const store = await file.read();
       return Object.values(store.workflows).map(({ definition: _d, ...meta }) => meta);
     },
 
     async listStoredWorkflows() {
-      const store = await readStore();
+      const store = await file.read();
       return Object.values(store.workflows);
     },
 
     async getWorkflow(workflowId) {
-      const store = await readStore();
+      const store = await file.read();
       return store.workflows[workflowId] ?? null;
     },
 
-    async createWorkflow(name) {
-      const store = await readStore();
-      const id = `wf_${crypto.randomUUID().slice(0, 8)}`;
+    createWorkflow(name) {
       const definition = WorkflowDefinitionSchema.parse({
         version: 1,
         nodes: [
@@ -126,71 +104,72 @@ export function createWorkflowServerStore(dataDir = DEFAULT_DATA_DIR): WorkflowS
       });
 
       const workflow: StoredWorkflow = {
-        id,
+        id: `wf_${crypto.randomUUID().slice(0, 8)}`,
         name,
         trigger: deriveTriggerLabel(definition),
         status: "draft",
         updatedAt: new Date().toISOString(),
         definition,
       };
-      store.workflows[id] = workflow;
-      await writeStore(store);
-      return workflow;
+      return file.update((store) => {
+        store.workflows[workflow.id] = workflow;
+        return workflow;
+      });
     },
 
-    async updateWorkflowMeta(workflowId, patch) {
-      const store = await readStore();
-      const current = store.workflows[workflowId];
-      if (!current) return null;
+    updateWorkflowMeta(workflowId, patch) {
+      return file.update((store) => {
+        const current = store.workflows[workflowId];
+        if (!current) return null;
 
-      const next: StoredWorkflow = {
-        ...current,
-        ...patch,
-        updatedAt: new Date().toISOString(),
-      };
-      store.workflows[workflowId] = next;
-      await writeStore(store);
-      return next;
+        const next: StoredWorkflow = {
+          ...current,
+          ...patch,
+          updatedAt: new Date().toISOString(),
+        };
+        store.workflows[workflowId] = next;
+        return next;
+      });
     },
 
     async putDefinition(workflowId, definition) {
       const parsed = WorkflowDefinitionSchema.parse(definition);
-      const store = await readStore();
-      const current = store.workflows[workflowId];
-      if (!current) return null;
+      return file.update((store) => {
+        const current = store.workflows[workflowId];
+        if (!current) return null;
 
-      const next: StoredWorkflow = {
-        ...current,
-        trigger: deriveTriggerLabel(parsed),
-        updatedAt: new Date().toISOString(),
-        definition: parsed,
-      };
-      store.workflows[workflowId] = next;
-      await writeStore(store);
-      return next;
+        const next: StoredWorkflow = {
+          ...current,
+          trigger: deriveTriggerLabel(parsed),
+          updatedAt: new Date().toISOString(),
+          definition: parsed,
+        };
+        store.workflows[workflowId] = next;
+        return next;
+      });
     },
 
-    async publishWorkflow(workflowId) {
-      const store = await readStore();
-      const current = store.workflows[workflowId];
-      if (!current) {
-        return { ok: false, error: "not_found" };
-      }
+    publishWorkflow(workflowId) {
+      return file.update((store) => {
+        const current = store.workflows[workflowId];
+        if (!current) {
+          return { ok: false, error: "not_found" } as const;
+        }
 
-      const candidates: WebhookWorkflowCandidate[] = Object.values(store.workflows);
-      const conflict = findWebhookPathConflict(candidates, workflowId, current.definition);
-      if (conflict) {
-        return { ok: false, error: "path_conflict", conflictWorkflowId: conflict.id };
-      }
+        const candidates: WebhookWorkflowCandidate[] = Object.values(store.workflows);
+        const conflict = findWebhookPathConflict(candidates, workflowId, current.definition);
+        if (conflict) {
+          return { ok: false, error: "path_conflict", conflictWorkflowId: conflict.id } as const;
+        }
 
-      const next: StoredWorkflow = {
-        ...current,
-        status: "active",
-        updatedAt: new Date().toISOString(),
-      };
-      store.workflows[workflowId] = next;
-      await writeStore(store);
-      return { ok: true, workflow: next };
+        const next: StoredWorkflow = {
+          ...current,
+          status: "active",
+          updatedAt: new Date().toISOString(),
+        };
+        store.workflows[workflowId] = next;
+        return { ok: true, workflow: next } as const;
+      });
     },
   };
 }

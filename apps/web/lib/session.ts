@@ -4,6 +4,7 @@ import { cache } from "react";
 import type { Role } from "./rbac";
 import { isRole } from "./rbac";
 import { SESSION_COOKIE_NAME, SESSION_TTL_SECONDS, getSessionCookieDeleteOptions } from "./session-constants";
+import { resolveSessionSecret } from "./session-secret";
 
 export { SESSION_COOKIE_NAME, SESSION_TTL_SECONDS } from "./session-constants";
 
@@ -16,16 +17,13 @@ export type SessionUser = {
   orgName: string;
 };
 
-/** Development-only session signing fallback. */
-export const FALLBACK_DEV_SESSION_SECRET = "development-only-set-session-secret" as const;
-
 type SignedSessionPayload = SessionUser & {
   exp: number;
   iat: number;
 };
 
 function sessionSecret(): string {
-  return process.env.SESSION_SECRET ?? FALLBACK_DEV_SESSION_SECRET;
+  return resolveSessionSecret(process.env.SESSION_SECRET);
 }
 
 export function signSession(user: SessionUser): string {

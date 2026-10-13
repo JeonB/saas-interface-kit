@@ -54,7 +54,7 @@ NEXT_PUBLIC_DOCS_URL=https://docs.example.com   # 또는 동일 출처 /docs는 
 
 추가 환경 변수:
 
-- `SESSION_SECRET` — `apps/web` 데모 세션 쿠키 서명 키(프로덕션에서는 긴 랜덤 문자열 권장)
+- `SESSION_SECRET` — `apps/web` 데모 세션 쿠키 서명 키. 프로덕션에서는 32자 이상의 랜덤 문자열이어야 하며, 아니면 서버 시작이 실패합니다(예: `openssl rand -base64 32`).
 - `NEXT_PUBLIC_API_URL` — 선택 항목. 설정 시 `@repo/api-client`를 통해 콘솔 API(예: `/health`, `/v1/*`)를 호출하고, 미설정 시 mock 데이터로 동작
 
 ### Mock API 모드
@@ -69,7 +69,8 @@ NEXT_PUBLIC_API_URL=http://localhost:3001/api/mock
 - 응답 데이터는 `apps/web/lib/*-mock.ts`의 fixture와 단일 출처를 공유합니다.
 - 콘솔의 개발용 시뮬레이션 패널(지연·503·타임아웃·네트워크 오류)은 `x-api-dev-simulation` 헤더로 mock 핸들러까지 전달되어 HTTP 레벨에서 장애를 재현합니다(프로덕션에서는 무시).
 - API가 5xx/타임아웃으로 실패하면 콘솔 데이터는 mock 스냅샷으로 점진적으로 강등되고, `/console`의 API 상태 배너가 장애를 표시합니다.
-- 조직 공통 데이터(integrations, workflows, members, usage 등)는 서버에서 60초 캐시(`unstable_cache`, 태그 `console-data`)되어 트래픽 급증 시 origin 호출을 흡수합니다.
+- 조직 공통 데이터(integrations, workflows, members, usage 등)는 서버에서 30초 캐시(`unstable_cache`, 태그 `console-data`)되어 트래픽 급증 시 origin 호출을 흡수합니다.
+- mock API 응답은 기본적으로 `Cache-Control: no-store`입니다. 정적 fixture 엔드포인트(integrations, members, usage summary, notifications)의 2xx 응답만 CDN용 `s-maxage` / `stale-while-revalidate`를 붙입니다.
 
 ## npm 레지스트리에서 토큰·컴포넌트 쓰기
 

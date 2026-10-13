@@ -29,4 +29,15 @@ describe("resource-store", () => {
     expect(deleted).toBe(true);
     expect(await store.listRows("leads")).toHaveLength(0);
   });
+
+  it("keeps every row when rows are created concurrently", async () => {
+    dataDir = mkdtempSync(path.join(tmpdir(), "resource-store-"));
+    const store = createResourceStore(dataDir);
+
+    await Promise.all(
+      Array.from({ length: 20 }, (_, i) => store.createRow("leads", { email: `lead${i}@example.com` })),
+    );
+
+    expect(await store.countRows("leads")).toBe(20);
+  });
 });
